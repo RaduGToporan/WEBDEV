@@ -10,12 +10,12 @@ public class UserController {
 
 	@GetMapping("/profile")
 	public String profile(@RequestParam(name="type", required=false, defaultValue="user") String name, Model model) {
-        if (name == "admin") {
+        if (name.equals("admin")) {
+            model.addAttribute("page", "Dashboard");
+		    return "user/dashboard";
+        } else {
             model.addAttribute("page", "Profile");
 		    return "user/profile";
-        } else {
-            model.addAttribute("page", "Home");
-		    return "user/dashboard";
         }
 		
 	}
