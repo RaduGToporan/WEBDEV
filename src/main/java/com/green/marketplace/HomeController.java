@@ -13,4 +13,22 @@ public class HomeController {
 		return "index";
 	}
 
+	@GetMapping("/faq")
+	public String faq(Model model) {
+		model.addAttribute("page", "FAQ");
+		return "faq";
+	}
+
+	@GetMapping("/contact")
+	public String contact(Model model) {
+		model.addAttribute("page", "Contact");
+		return "contact";
+	}
+
+	@GetMapping("/about")
+	public String about(Model model) {
+		model.addAttribute("page", "About");
+		return "about";
+	}
+
 }
