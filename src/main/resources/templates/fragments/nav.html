@@ -5,27 +5,27 @@
         </div>
         <ul>
             <li th:switch="${page}">
-                <a th:case="'home'" th:href="'#'">Home</a>
+                <a th:case="'Home'" th:href="'#'">Home</a>
                 <a th:case="*"  th:href="@{/}">Home</a>
             </li>
   
             <li th:switch="${page}">
-                <a th:case="'catalogue'" th:href="'#'">Products</a>
-                <a th:case="*" th:href="@{/catalogue}">Products</a>
+                <a th:case="'Catalogue'" th:href="'#'">Catalogue</a>
+                <a th:case="*" th:href="@{/catalogue}">Catalogue</a>
             </li>
   
             <li th:switch="${page}">
-                <a th:case="'about'" th:href="'#'">About</a>
+                <a th:case="'About'" th:href="'#'">About</a>
                 <a th:case="*" th:href="@{/about}">About</a>
             </li>    
   
             <li th:switch="${page}">
-                <a th:case="'faq'" th:href="'#'">FAQ</a>
+                <a th:case="'FAQ'" th:href="'#'">FAQ</a>
                 <a th:case="*" th:href="@{/faq}">FAQ</a>
             </li>         
   
             <li th:switch="${page}">
-                <a th:case="'contact'" th:href="'#'">Contact</a>
+                <a th:case="'Contact'" th:href="'#'">Contact</a>
                 <a th:case="*" th:href="@{/contact}">Contact</a>
             </li>       
         </ul>
