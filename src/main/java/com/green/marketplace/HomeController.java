@@ -3,15 +3,32 @@ package com.green.marketplace;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
 
 	@GetMapping("/")
-	public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
-		model.addAttribute("name", name);
+	public String home(Model model) {
+		model.addAttribute("page", "Home");
 		return "index";
+	}
+
+	@GetMapping("/faq")
+	public String faq(Model model) {
+		model.addAttribute("page", "FAQ");
+		return "faq";
+	}
+
+	@GetMapping("/contact")
+	public String contact(Model model) {
+		model.addAttribute("page", "Contact");
+		return "contact";
+	}
+
+	@GetMapping("/about")
+	public String about(Model model) {
+		model.addAttribute("page", "About");
+		return "about";
 	}
 
 }
