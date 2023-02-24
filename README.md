@@ -10,3 +10,20 @@ Relevant info:
 | Jamie |	Cronin |	20338271 |	jamie.cronin@ucdconnect.ie |
 | Loid |	Tayag	| 20357741 |	loid.tayag@ucdconnect.ie |
 | Radu |	Toporan	| 22206161 |	radu.toporan@ucdconnect.ie |
+
+
+### Test Login Info
+jamie
+helloworld
+
+nicky
+pass123
+
+loid
+password
+
+radu
+marketplace
+
+tom 
+models
