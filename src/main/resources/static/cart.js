@@ -15,7 +15,7 @@ function getCart() {
 // Add a given quantity of a product to the cart
 function addToCart(productId, trained, quantity) {
     const cart = getCart();
-    const cartId = productId.toString() + (function() {
+    const cartId = productId.toString() + (function() { // Anonymous function to tag key
         if (trained) {return "t";}
         return "u";
     })();
