@@ -6,5 +6,85 @@
 		<nav th:replace="~{fragments/nav}"></nav>
 
 		<h1 th:text="${page}"></h1>
+
+		<!-- Hidden form to POST shopping cart data to backend -->
+		<form th:if="${getRequest}" id="goToCart" method="POST" action="/order/cart" style="display:none;">
+			<input name="scJson" id="scJson">
+			<input name="cartCount" id="cartCount">
+		</form>
+
+		<!-- Automatically POST the shopping cart details to the backend -->
+		<script th:if="${getRequest}">
+			$('#goToCart').submit(function() {
+				console.log($('#shoppingCart').value);
+				const cart = getCart();
+				document.getElementById('scJson').value = mapStringify(getCart());
+				document.getElementById('cartCount').value = cartCount();
+				return true;
+			});
+			$("#goToCart").submit();
+		</script>
+
+		<!-- If the cart is empty only show message -->
+		<div th:if="!${getRequest} and ${cartEmpty}">
+			<h4>Your Cart is Empty!</h4>
+		</div>
+
+		<!-- If the cart is not empty show a table of cart items -->
+		<div th:if="!${getRequest} and !${cartEmpty}">
+			<table>
+				<tr>
+					<th colspan="2">Item</th>
+					<th>Unit Price</th>
+					<th>Quantity</th>
+					<th>Price</th>
+					<th></th>
+				</tr>
+				<!-- A row is only displayed if there is more than one of the product in the cart -->
+				<!-- The "data-key" attribute in each row refers to the key of the product in the shopping cart in the Map in cookies -->
+				<!-- The row index is used to form the row's id -->
+				<tr th:each="item, stat: ${items}" th:if="${item.quantity > 0}" th:id="|cart-item-${stat.index}|" th:attr="data-key=|${item.key}|">
+					<td><img class="icon" th:src="@{/images/blank.png}"></td>
+					<td th:text="${item.name}" />
+					<td th:text="'€' + ${item.unitPrice}" />
+					<td><input class="quantity" th:attr="onfocusout=|update('cart-item-${stat.index}')|" type="number" th:value="${item.quantity}"></td>
+					<td th:text="'€' + ${item.price}" />
+					<td>
+						<button th:attr="onclick=|delItem('cart-item-${stat.index}')|"><img class="x" th:src="@{/images/x.png}"></button>
+					</td>
+				</tr>
+			</table>
+			
+			<input class="my-button" type="button" onclick="checkout()" value="Proceed to Payment">
+		</div>
+
+		
+		<script>
+			// This is called when the quantity input field loses focus
+			function update(id) {
+				// Get new item quantity
+				const newQuantity = document.getElementById(id).getElementsByClassName('quantity')[0].value
+
+				// Ensure valid quantity
+				if (parseInt(newQuantity) >= 0) {
+					const key = document.getElementById(id).getAttribute('data-key'); // Get the item's shopping cart key
+					setCartItem(key, newQuantity); // Update quantity in shopping cart
+					location.assign("/order/cart"); // Refresh the page to update values
+				} else {
+					// TODO: More elegant solution needed
+					alert("Please enter a positive quantity");
+				}
+			}
+
+			function delItem(id) {
+				const key = document.getElementById(id).getAttribute('data-key'); // Get the item's shopping cart key
+				setCartItem(key, 0); // Update the quantity in shopping cart
+				location.assign("/order/cart"); // Refresh the page to update values
+			}
+
+			function checkout() {
+				location.assign("/order/checkout");
+			}
+		</script>
 	</body>
 </html>

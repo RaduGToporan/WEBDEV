@@ -1,4 +1,7 @@
+// TODO: Fix floating point bug with odd numbers of products
+
 // Retrieve the cart from cookies, initialize if undefined
+// https://stackoverflow.com/questions/28918232/how-do-i-persist-a-es6-map-in-localstorage-or-elsewhere
 function getCart() {
     var cart;
     if (localStorage.cart == undefined) {
@@ -26,6 +29,13 @@ function addToCart(productId, trained, quantity) {
     localStorage.cart = JSON.stringify(Array.from(cart));
 }
 
+// Set the quantity of an item in the cart given the key
+function setCartItem(key, value) {
+    const cart = getCart();
+    cart.set(key, value);
+    localStorage.cart = JSON.stringify(Array.from(cart));
+}
+
 // Count total items in the cart
 function cartCount() {
     const cart = getCart();
@@ -36,7 +46,18 @@ function cartCount() {
     return total;
 }
 
-// Print the entire cart to the console
+// Convert a JS Map into a JSON Map
+function mapStringify(map) {
+    res = "{"
+    map.forEach((value, key) => {
+        res += "\"" + key + "\":" + parseInt(value) + ", "
+    })
+    res = res.slice(0, -2)
+    res += "}"
+    return res;
+}
+
+// Print the entire cart to the console (testing purposes only)
 function showCart() {
     const cart = getCart();
     cart.forEach((value, key) => {
@@ -44,4 +65,12 @@ function showCart() {
         console.log(value);
         console.log("");
     })
+}
+
+// Add the elements from the make-shift "catalogue" to the shopping cart (testing purposes only)
+function addCart() {
+    const prod = document.getElementById('prodId');
+    const train = $('#trained');
+    const quant = document.getElementById('quant');
+    addToCart(parseInt(prod.value), train.is(':checked'), parseInt(quant.value));
 }
