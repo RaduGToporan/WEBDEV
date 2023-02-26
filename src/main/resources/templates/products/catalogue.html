@@ -1,10 +1,195 @@
 <!DOCTYPE html>    
 <html xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="~{fragments/head}"></head>
-
+	<meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Document</title>
+        <link rel="stylesheet" th:href="@{/cataloguestyle.css}">
+	</head>
 	<body>
-		<nav th:replace="~{fragments/nav}"></nav>
 
-		<h1 th:text="${page}"></h1>
+		<div class="header">
+			<img src="logo.png" alt="logo" class="logo">
+			<h1 class="name">Green</h1>
+			<a href="#">  <img class="icon" src="profile.png" alt="profile"></a>
+			<a href="#"><img class="icon" src="cart.png" alt="shopping"></a>
+	  
+		  </div>
+		  <nav class="nav">
+			<div class="nav-icon">
+			  <a href="#">Home</a>
+			</div>
+			<div class="nav-icon">
+			  <a href="#">Market</a>
+			</div>
+			<div class="nav-icon">
+			  <a href="#">FAQ</a>
+			</div>
+		  </nav>
+	  
+		  <div class="search">
+			<br>
+	  
+			<div class="filter-button">
+			  <button style="background-color: #b0b0b0" type="button" class="btn btn-secondary btn-block">Clear Filters</button>
+			</div>
+			<table class="filter">
+			  <tr>
+				<td>
+				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+				  <label class="form-check-label" for="flexCheckDefault">Default checkbox</label>
+				</td>
+			  </tr>
+			  <tr style="background-color: #DEDEDE">
+				<td>
+				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
+				  <label class="form-check-label" for="flexCheckDefault1">Default checkbox</label>
+				</td>
+			  </tr>
+			  <tr>
+				<td>
+				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
+				  <label class="form-check-label" for="flexCheckDefault2">Default checkbox</label>
+				</td>
+			  </tr>
+			  <tr style="background-color: #DEDEDE">
+				<td>
+				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
+				  <label class="form-check-label" for="flexCheckDefault3">Default checkbox</label>
+				</td>
+			  </tr>
+			  <tr>
+				<td>
+				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
+				  <label class="form-check-label" for="flexCheckDefault4">Default checkbox</label>
+				</td>
+			  </tr>
+			</table>
+		  </div>
+	  
+		  <div class="ad-image">
+			  <h2 style="color:white">Insert Image/ Ad here</h2>
+		  </div>
+	  
+		  <div class="order-by-container">
+			<form action="/action_page.php">
+			  <label for="cars">Sort By</label>
+			  <select name="cars" id="cars">
+				<option value="volvo">None</option>
+				<option value="saab">A -> Z</option>
+				<option value="opel">Z -> A</option>
+				<option value="audi">$ -> $$$</option>
+				<option value="audi">$$$ -> $</option>
+			  </select>
+			</form>
+		  </div>
+		  <br>
+		  <br>
+		  <br>
+	  
+		  <div class="product-container">
+			<div class="product-half-container-des">
+			  <h3>NAME</h3>
+			  <p>DESCRIPTION</p>
+			  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+			</div>
+			<br>
+			<br>
+			  <div class="product-half-container-price">
+				<br>
+	  
+				<div class="check-box-container">
+				  <div class="form-check">
+					<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+					<label class="form-check-label" for="flexRadioDefault1">
+					  Trained
+					</label>
+				  </div>
+				  <div class="form-check">
+					<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+					<label class="form-check-label" for="flexRadioDefault2">
+					  Untrained
+					</label>
+				  </div>
+				</div>
+				<div class="price-box">
+				  $$$$$
+				</div>
+			  <button type="button" class="btn btn-danger btn-lg">Add to Cart</button>
+			</div>
+		  </div>
+		  <br>
+		  <br>
+	  
+	  
+			<div class="product-container">
+			  <div class="product-half-container-des">
+				<h3>NAME</h3>
+				<p>DESCRIPTION</p>
+				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+			  </div>
+			  <br>
+			  <br>
+				<div class="product-half-container-price">
+				  <br>
+	  
+				  <div class="check-box-container">
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault11">
+					  <label class="form-check-label" for="flexRadioDefault11">
+						Trained
+					  </label>
+					</div>
+					<div class="form-check">
+					  <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault21" checked>
+					  <label class="form-check-label" for="flexRadioDefault21">
+						Untrained
+					  </label>
+					</div>
+				  </div>
+				  <div class="price-box">
+					$$$$$
+				  </div>
+				<button type="button" class="btn btn-danger btn-lg">Add to Cart</button>
+			  </div>
+			</div>
+			<br>
+			<br>
+	  
+	  
+			  <div class="product-container">
+				<div class="product-half-container-des">
+				  <h3>NAME</h3>
+				  <p>DESCRIPTION</p>
+				  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+				</div>
+				<br>
+				<br>
+				  <div class="product-half-container-price">
+					<br>
+	  
+					<div class="check-box-container">
+					  <div class="form-check">
+						<input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault12">
+						<label class="form-check-label" for="flexRadioDefault12">
+						  Trained
+						</label>
+					  </div>
+					  <div class="form-check">
+						<input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault22" checked>
+						<label class="form-check-label" for="flexRadioDefault22">
+						  Untrained
+						</label>
+					  </div>
+					</div>
+					<div class="price-box">
+					  $$$$$
+					</div>
+				  <button type="button" class="btn btn-danger btn-lg">Add to Cart</button>
+				</div>
+			  </div>
+			  <br>
+			  <br>
+	  
 	</body>
 </html>
