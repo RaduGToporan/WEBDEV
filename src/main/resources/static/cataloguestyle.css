@@ -1,0 +1,141 @@
+.header{
+    height: 100px;
+    background-color: white;
+  }
+  img.logo{
+    float: left;
+      left: 0px;
+      margin-left: 3%;
+  
+  }
+  .name{
+    float: left;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    margin: 0;
+    margin-top: 30px;
+    margin-left: 2%;
+  
+  }
+  img.icon{
+    float: right;
+    height: 100px;
+    width: 100px;
+    right: 0px;
+    margin-right: 10px;
+    left: auto;
+  }
+  
+  .nav{
+    height: 30px;
+    background-color: #4a4a4a;
+  }
+  .nav-icon{
+    float: left;
+    margin-left: 23%;
+    margin-top: 3px;
+  }
+  .search{
+    float: left;
+    margin-left: max(40px,4%);
+  
+    width: 20%;
+    background-color: #DEDEDE;
+    height: 800px;
+    min-width: 300px;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) ;
+  }
+  
+  body{
+    background-color: #FBFBFB;
+  }
+  
+  .top{
+    height: 30px;
+    background-color: #6A6A6A;
+  }
+  .filter-button{
+    padding: 10px;
+  }
+  .filter{
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
+  
+  
+  }
+  .filter tr{
+    height: 40px;
+    background-color: #FBFBFB;
+  }
+  
+  a{
+    text-decoration: none;
+    color: white;
+  }
+  .ad-image{
+    margin-left: 240px;
+    height: 200px;
+    background-color: black;
+  }
+  .order-by-container{
+    float: right;
+    height: 50px;
+    width: 150px;
+    margin-right: 0px;
+    margin-top: 20px;
+  }
+  
+  .product-container{
+  
+    background-color: white;
+    margin:auto;
+    margin-left: max(360px, 26%);
+    width: 72%;
+    height: 160px;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) ;
+  
+  
+  }
+  .product-half-container-des{
+    padding-top: 15px;
+    float: left;
+    width: 50%;
+  }
+  .product-half-container-price{
+    float: left;
+    width: 45%;
+    margin-top:-10px;
+     margin-left:5%
+  }
+  
+  .product-container h3{
+    display: inline;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 0;
+  }
+  .product-container p{
+    margin-left: 10px;
+  }
+  .product-container h4{
+    width: 10%;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 0;
+  }
+  .price-box{
+    float: left;
+    width: 20%;
+    font-size: 20px;
+    border: solid 1px;
+    text-align: center;
+    margin-top: 10px;
+    margin-right: 40px;
+  }
+  .check-box-container{
+    float: left;
+    width: 40%;
+  }
+  
