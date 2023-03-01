@@ -58,6 +58,13 @@
 			<input class="my-button" type="button" onclick="checkout()" value="Proceed to Payment">
 		</div>
 
+		<div th:if="${unavailable}">
+			<h5>Unfortunately, the following items are currently unavailable:</h5>
+			<ul>
+				<li th:each="item: ${unavailable}" th:text="${item}" />
+			</ul>
+		</div>
+
 		
 		<script>
 			// This is called when the quantity input field loses focus

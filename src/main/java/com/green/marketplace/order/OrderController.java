@@ -44,7 +44,8 @@ public class OrderController {
 
 			try{ // try block required for ObjectMapper
 				Map<String, Integer> scMap = objectMapper.readValue(scJson, Map.class); // Parse the JSON-formatted Map
-				ArrayList<CartItem> scList = new ArrayList<CartItem>(); // List of items in the cart
+				ArrayList<CartItem> scList = new ArrayList<>(); // List of items in the cart
+				ArrayList<String> unavailableItems = new ArrayList<>(); // List of items in the cart that are not available
 
 				for (String key : scMap.keySet()) {
 					// The last character in the key string determines whether the model is trained or not
@@ -60,20 +61,32 @@ public class OrderController {
 						String itemName = resultSet.getString("name");
 						int unitPrice;
 						int quantity = scMap.get(key);
+						boolean available = resultSet.getBoolean("available");
 
-						// Make appropriate changes depending on if model is trained
-						if (trained) {
-							itemName += " (Trained)";
-							unitPrice = resultSet.getInt("trainedprice");
-						} else {
-							itemName += " (Untrained)";
-							unitPrice = resultSet.getInt("untrainedprice");
+						if (available && quantity > 0) {
+							// Make appropriate changes depending on if model is trained
+							if (trained) {
+								itemName += " (Trained)";
+								unitPrice = resultSet.getInt("trainedprice");
+							} else {
+								itemName += " (Untrained)";
+								unitPrice = resultSet.getInt("untrainedprice");
+							}
+
+							scList.add(new CartItem(key, itemName, unitPrice/100.0, quantity));
+						} else if (!available && quantity > 0) {
+							if (!unavailableItems.contains(itemName)) { // Don't add both trained and untrained models
+								unavailableItems.add(itemName);
+							}
+
 						}
-
-						scList.add(new CartItem(key, itemName, unitPrice/100.0, quantity));
 					}
 				}
 				model.addAttribute("items", scList);
+				if (unavailableItems.size() > 0) {
+					model.addAttribute("unavailable", unavailableItems);
+				}
+				
 			} catch(IOException e) { // For ObjectMapper
 				e.printStackTrace();
 			}
