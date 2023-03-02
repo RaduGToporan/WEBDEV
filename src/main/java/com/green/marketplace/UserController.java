@@ -10,6 +10,7 @@ public class UserController {
 
 	@GetMapping("/profile")
 	public String profile(@RequestParam(name="type", required=false, defaultValue="user") String name, Model model) {
+		System.out.println(name);
         if (name.equals("admin")) {
             model.addAttribute("page", "Dashboard");
 		    return "user/dashboard";
@@ -18,6 +19,12 @@ public class UserController {
 		    return "user/profile";
         }
 		
+	}
+
+	// TODO delete when login done
+	@GetMapping("/dashboard")
+	public String dashboard() {
+		return "user/dashboard";
 	}
 
     @GetMapping("/login")
