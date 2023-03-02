@@ -109,10 +109,7 @@ public class OrderController {
 
 	@PostMapping("/order/checkout")
 	public String checkout(@RequestParam String checkoutItems, Model model) {
-		System.out.println(checkoutItems);
-		System.out.println("\n\n");
 		ObjectMapper objectMapper = new ObjectMapper();
-					
 		
 		try {
 			List<CheckoutItem> x = objectMapper.readValue(checkoutItems, new TypeReference<List<CheckoutItem>>(){});
