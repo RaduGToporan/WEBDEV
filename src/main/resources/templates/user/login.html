@@ -1,10 +1,19 @@
-<!DOCTYPE html>    
-<html xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="~{fragments/head}"></head>
-
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+	<head th:replace="~{fragments/head}">
+		<link rel="stylesheet" href="demo.css">
+	</head>
 	<body>
 		<nav th:replace="~{fragments/nav}"></nav>
-
-		<h1 th:text="${page}"></h1>
+		<form id="credentials" action="/">
+			<label for="username">Username</label>
+			<input name="username" type="text" id="username" class="spacing">
+			<label for="password">Password</label>
+			<input name="password" type="password" id="password" class="spacing">
+			<input type="submit" value="Login">
+			<button id="close" type="button">
+				<img alt="close_icon" src="close.svg">
+			</button>
+		</form>
 	</body>
 </html>
