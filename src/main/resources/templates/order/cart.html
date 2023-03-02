@@ -43,10 +43,10 @@
 				<!-- A row is only displayed if there is more than one of the product in the cart -->
 				<!-- The "data-key" attribute in each row refers to the key of the product in the shopping cart in the Map in cookies -->
 				<!-- The row index is used to form the row's id -->
-				<tr th:each="item, stat: ${items}" th:if="${item.quantity > 0}" th:id="|cart-item-${stat.index}|" th:attr="data-key=|${item.key}|">
+				<tr class="cart-item" th:each="item, stat: ${items}" th:if="${item.quantity > 0}" th:id="|cart-item-${stat.index}|" th:attr="data-key=|${item.key}|">
 					<td><img class="icon" th:src="@{/images/blank.png}"></td>
-					<td th:text="${item.name}" />
-					<td th:text="'€' + ${item.unitPrice}" />
+					<td class="item-name" th:text="${item.name}" />
+					<td class="unit-price" th:text="'€' + ${item.unitPrice}" />
 					<td><input class="quantity" th:attr="onfocusout=|update('cart-item-${stat.index}')|" type="number" th:value="${item.quantity}"></td>
 					<td th:text="'€' + ${item.price}" />
 					<td>
@@ -54,8 +54,11 @@
 					</td>
 				</tr>
 			</table>
-			
-			<input class="my-button" type="button" onclick="checkout()" value="Proceed to Payment">
+			<form method="POST" action="/order/checkout">
+				<input style="display:none;" type="text" id="checkoutItems" name="checkoutItems">
+				<input class="my-button" type="submit" value="Proceed to Payment">
+			</form>
+			<button onclick="updateCheckout()">Click Me!</button>
 		</div>
 
 		<div th:if="${unavailable}">
@@ -89,9 +92,27 @@
 				location.assign("/order/cart"); // Refresh the page to update values
 			}
 
+			function updateCheckout() {
+				const items = document.getElementsByClassName("cart-item");
+				const checkoutItems = document.getElementById("checkoutItems");
+				var output = "[";
+				for (let item of items) {
+					const productId = item.getAttribute("data-key");
+					const productName = item.getElementsByClassName("item-name")[0].textContent;
+					const quantity = parseInt(item.getElementsByClassName("quantity")[0].value);
+					const unitPrice = parseFloat(item.getElementsByClassName("unit-price")[0].textContent.substring(1));
+					output += '{"id":"' + productId + '", "name": "' + productName + '", "quantity":' + quantity + ', "unitPrice":' + unitPrice + '},';
+				}
+				output = output.substring(0, output.length - 1);
+				output += "]"
+				checkoutItems.value = output;
+			}
+
 			function checkout() {
 				location.assign("/order/checkout");
 			}
+
+			document.onload = updateCheckout();
 		</script>
 	</body>
 </html>

@@ -3,6 +3,7 @@ package com.green.marketplace.order;
 import java.io.IOException;
 import java.util.Map;
 import java.util.ArrayList;
+import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @Controller
 public class OrderController {
@@ -101,6 +103,23 @@ public class OrderController {
 
 	@GetMapping("/order/checkout")
 	public String checkout(Model model) {
+		model.addAttribute("page", "Checkout");
+		return "order/checkout";
+	}
+
+	@PostMapping("/order/checkout")
+	public String checkout(@RequestParam String checkoutItems, Model model) {
+		System.out.println(checkoutItems);
+		System.out.println("\n\n");
+		ObjectMapper objectMapper = new ObjectMapper();
+					
+		
+		try {
+			List<CheckoutItem> x = objectMapper.readValue(checkoutItems, new TypeReference<List<CheckoutItem>>(){});
+			model.addAttribute("items", x);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		model.addAttribute("page", "Checkout");
 		return "order/checkout";
 	}

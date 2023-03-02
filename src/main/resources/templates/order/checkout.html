@@ -6,5 +6,9 @@
 		<nav th:replace="~{fragments/nav}"></nav>
 
 		<h1 th:text="${page}"></h1>
+
+		<ul>
+			<li th:each="item: ${items}" th:text="${item.name}" />
+		</ul>
 	</body>
 </html>
