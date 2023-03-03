@@ -3,15 +3,15 @@
 	<head th:replace="~{fragments/head}"></head>
 	<body>
 		<nav th:replace="~{fragments/nav}"></nav>
-		<form id="credentials" action="/profile" method="get">
+		<form id="credentials" action="/profile" method="post">
 			<label for="username">Username</label>
 			<input name="username" type="text" id="username" class="spacing">
 			<label for="password">Password</label>
 			<input name="password" type="password" id="password" class="spacing">
 			<input type="submit" value="Login">
-			<button id="close" type="button">
+			<a id="close" href="/">
 				<img alt="close_icon" th:src="@{images/close.svg}">
-			</button>
+			</a>
 		</form>
 	</body>
 </html>

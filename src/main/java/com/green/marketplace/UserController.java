@@ -14,73 +14,76 @@ import java.util.UUID;
 
 @Controller
 public class UserController {
-	@GetMapping("/profile")
+	@GetMapping("login")
+	public String login() {
+		return "user/login";
+	}
+
+	@PostMapping("profile")
 	public String profile(HttpServletResponse res, @RequestParam(defaultValue="user") String username, @RequestParam String password, Model model) {
-		if (username.equals("admin")) {
-			if (password.equals("ai_marketplace")) {
-				model.addAttribute("page", "Dashboard");
-				return "user/dashboard";
-			}
+		if (username.equals("admin") && password.equals("ai_marketplace")) {
+			model.addAttribute("page", "Dashboard");
+			return "user/dashboard";
         } else if (!username.equals("user")){
 			SCryptPasswordEncoder codec = new SCryptPasswordEncoder(64, 8, 1, 32, 16);
-			Connection connection = connectDatabase();
 
 			try {
-				ResultSet rs = connection.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
+				Connection conn = connectDatabase();
+				ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
+				String rsName = rs.getString("username");
+				String rsPass = rs.getString("password");
+
 				while (rs.next()) {
-					if (username.equals(rs.getString("username")) && codec.matches(password, rs.getString("password"))) {
+					if (username.equals(rsName) && codec.matches(password, rs.getString("rsPass"))) {
 						UUID sessionID = UUID.randomUUID();
-						String query = String.format("UPDATE marketplace.users SET sessionID='%s' WHERE password='%s' AND username='%s'", sessionID, rs.getString("password"), rs.getString("username"));
-						connection.prepareStatement(query).execute();
-						Cookie cookie = new Cookie("sessionID", sessionID.toString());
-						res.addCookie(cookie);
+						String query = String.format("UPDATE marketplace.users SET sessionID='%s' WHERE username='%s' AND password='%s'", sessionID, rsName, rsPass);
+
+						conn.prepareStatement(query).execute();
+						res.addCookie(new Cookie("sessionID", sessionID.toString()));
 						model.addAttribute("page", "User");
-						return "user/profile";
+						return "redirect:/user/profile";
 					}
 				}
+
+				conn.close();
 			} catch (SQLException e) {
-				throw new RuntimeException(e);
+				model.addAttribute("Invalid login");
+				return "redirect:/";
 			}
         }
 
-		return "index";
+		model.addAttribute("Invalid login");
+		return "redirect:/";
 	}
 
-    @GetMapping("/login")
-	public String login(Model model) {
-		return "user/login";
-	}
-    
-
-    @GetMapping("/signup")
-	public String signup(Model model) {
+    @GetMapping("signup")
+	public String signup() {
 		return "user/signup";
 	}
-	@PostMapping("/signup")
+
+	/*
+	* Unique ID is prone to error if we allow deletion of accounts but isn't a requirement, so it's fine
+	* */
+	@PostMapping("signup")
 	public String signupPost(HttpServletResponse res, @RequestParam String username, @RequestParam String email, @RequestParam String password) {
-		// Unique ID is prone to error if we allow deletion of accounts but isn't a requirement
-		SCryptPasswordEncoder codec = new SCryptPasswordEncoder(64, 8, 1, 32, 16);
-		Connection connection = connectDatabase();
 		try {
-			ResultSet rs = connection.prepareStatement("SELECT COUNT(*) AS total FROM marketplace.users").executeQuery();
+			SCryptPasswordEncoder codec = new SCryptPasswordEncoder(64, 8, 1, 32, 16);
+			Connection conn = connectDatabase();
+			ResultSet rs = conn.prepareStatement("SELECT COUNT(*) AS total FROM marketplace.users").executeQuery();
 			String query = "";
 			UUID sessionID = UUID.randomUUID();
+
 			if (rs.next()) {
 				query = String.format("INSERT INTO users VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s')", rs.getInt("total"), username, codec.encode(password), email, "N/A", "2020-04-07", sessionID);
 			}
-			Cookie cookie = new Cookie("sessionID", sessionID.toString());
-			res.addCookie(cookie);
-			PreparedStatement preparedStatement = connection.prepareStatement(query);
-			preparedStatement.execute();
-			connection.close();
-		} catch (SQLException e) {
-			throw new RuntimeException(e);
-		}
-		return "index";
-	}
 
-	public boolean validSession(Boolean sessionID) {
-		return false;
+			res.addCookie(new Cookie("sessionID", sessionID.toString()));
+			conn.prepareStatement(query);
+			conn.close();
+			return "redirect:/";
+		} catch (SQLException e) {
+			return "redirect:/";
+		}
 	}
 
 	public Connection connectDatabase() {
@@ -89,6 +92,5 @@ public class UserController {
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		}
-
 	}
 }
