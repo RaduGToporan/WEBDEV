@@ -7,10 +7,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
-
 	@GetMapping("/profile")
 	public String profile(@RequestParam(name="type", required=false, defaultValue="user") String name, Model model) {
-		System.out.println(name);
         if (name.equals("admin")) {
             model.addAttribute("page", "Dashboard");
 		    return "user/dashboard";
@@ -32,12 +30,10 @@ public class UserController {
 		model.addAttribute("page", "Log In");
 		return "user/login";
 	}
-    
 
     @GetMapping("/signup")
 	public String home(Model model) {
 		model.addAttribute("page", "Sign Up");
 		return "user/signup";
 	}
-
 }
