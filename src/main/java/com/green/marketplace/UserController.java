@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.UUID;
 
 @Controller
@@ -42,11 +39,15 @@ public class UserController {
 	}
 	@PostMapping("/signup")
 	public String signupPost(@RequestParam String username, @RequestParam String email, @RequestParam String password) {
-		// TODO create incrementing uniqueID
+		// Unique ID is prone to error if we allow deletion of accounts but isn't a requirement
 		SCryptPasswordEncoder codec = new SCryptPasswordEncoder(64, 8, 1, 32, 16);
 		Connection connection = database();
-		String query = String.format("INSERT INTO users VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s')", 72, username, codec.encode(password), email, "N/A", "2020-04-07", UUID.randomUUID());
 		try {
+			ResultSet rs = connection.prepareStatement("SELECT COUNT(*) AS total FROM marketplace.users").executeQuery();
+			String query = "";
+			if (rs.next()) {
+				query = String.format("INSERT INTO users VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s')", rs.getInt("total"), username, codec.encode(password), email, "N/A", "2020-04-07", UUID.randomUUID());
+			}
 			PreparedStatement preparedStatement = connection.prepareStatement(query);
 			preparedStatement.execute();
 			connection.close();
