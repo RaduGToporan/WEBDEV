@@ -1,0 +1,83 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    width: 66vw;
+    margin: auto;
+    background-color: #8a8af1;
+    height: 100vh;
+}
+
+#options {
+    display: flex;
+    justify-content: space-around;
+    padding-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+#options > button {
+    background: none;
+    border: none;
+}
+
+#settings {
+    display: flex;
+    flex-direction: column;
+}
+
+#settings > * {
+}
+
+#settings > div {
+    margin: auto auto 1rem;
+}
+
+table {
+    border-collapse: collapse;
+    margin: auto;
+    padding-bottom: 10rem;
+}
+
+td, th{
+    border: 0.15rem solid black;
+    padding: 0.5rem;
+}
+
+.stretch_width {
+    width: 100%;
+}
+
+#credentials {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #8a8af1;
+    padding: 3rem 8rem;
+    border-radius: 3rem 0 3rem 3rem;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.spacing {
+    margin-bottom: 1rem;
+}
+
+input, button, select {
+    padding: 0.3rem;
+}
+
+#close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    border-radius: .6rem 0 .6rem .6rem;
+}
+
+#close img {
+    width: 1.6rem;
+}
