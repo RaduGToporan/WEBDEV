@@ -6,7 +6,7 @@ document.getElementById("username")?.addEventListener("change", async e => {
     let valid = await fetch(`http://localhost:8080/validateUsername?username=${e.target.value}`);
     valid = await valid.text()
     if (valid === "false") {
-        alert("Username can't be 'admin'")
+        alert("Username taken")
         e.target.value = ""
     }
 })
