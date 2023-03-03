@@ -30,18 +30,18 @@ public class UserController {
 			try {
 				Connection conn = connectDatabase();
 				ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
-				String rsName = rs.getString("username");
-				String rsPass = rs.getString("password");
 
 				while (rs.next()) {
-					if (username.equals(rsName) && codec.matches(password, rs.getString("rsPass"))) {
+					String rsName = rs.getString("username");
+					String rsPass = rs.getString("password");
+
+					if (username.equals(rsName) && codec.matches(password, rsPass)) {
 						UUID sessionID = UUID.randomUUID();
 						String query = String.format("UPDATE marketplace.users SET sessionID='%s' WHERE username='%s' AND password='%s'", sessionID, rsName, rsPass);
-
 						conn.prepareStatement(query).execute();
 						res.addCookie(new Cookie("sessionID", sessionID.toString()));
 						model.addAttribute("page", "User");
-						return "redirect:/user/profile";
+						return "user/profile";
 					}
 				}
 
@@ -78,7 +78,7 @@ public class UserController {
 			}
 
 			res.addCookie(new Cookie("sessionID", sessionID.toString()));
-			conn.prepareStatement(query);
+			conn.prepareStatement(query).execute();
 			conn.close();
 			return "redirect:/";
 		} catch (SQLException e) {
