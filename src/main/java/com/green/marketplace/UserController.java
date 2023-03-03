@@ -14,8 +14,6 @@ import java.util.UUID;
 
 @Controller
 public class UserController {
-	// TODO if broswer closes clear SessionID
-
 	@GetMapping("/profile")
 	public String profile(HttpServletResponse res, @RequestParam(defaultValue="user") String username, @RequestParam String password, Model model) {
 		if (username.equals("admin")) {
