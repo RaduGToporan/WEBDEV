@@ -1,8 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-	<head th:replace="~{fragments/head}">
-		<link rel="stylesheet" href="demo.css">
-	</head>
+	<head th:replace="~{fragments/head}"></head>
 	<body>
 		<nav th:replace="~{fragments/nav}"></nav>
 		<form id="credentials" action="/signup" method="post">
@@ -14,7 +12,7 @@
 			<input name="password" type="password" id="password" class="spacing">
 			<input type="submit" value="Create account">
 			<button id="close" type="button">
-				<img alt="close_icon" src="close.svg">
+				<img alt="close_icon" th:src="@{images/close.svg}">
 			</button>
 		</form>
 	</body>
