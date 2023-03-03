@@ -99,7 +99,7 @@ public class UserController {
 	@ResponseBody
 	public String validateUsername(@RequestParam String username) {
 		if (username.equals("admin")) {
-			return "falseAdmin";
+			return "false";
 		}
 		else {
 			Connection conn = connectDatabase();
@@ -108,7 +108,7 @@ public class UserController {
 
 				while (rs.next()) {
 					if (rs.getString("username").equals(username)) {
-						return "falseDup";
+						return "false";
 					}
 				}
 
