@@ -48,6 +48,7 @@ public class OrderController {
 				Map<String, Integer> scMap = objectMapper.readValue(scJson, Map.class); // Parse the JSON-formatted Map
 				ArrayList<CartItem> scList = new ArrayList<>(); // List of items in the cart
 				ArrayList<String> unavailableItems = new ArrayList<>(); // List of items in the cart that are not available
+				double totalPrice = 0;
 
 				for (String key : scMap.keySet()) {
 					// The last character in the key string determines whether the model is trained or not
@@ -74,8 +75,9 @@ public class OrderController {
 								itemName += " (Untrained)";
 								unitPrice = resultSet.getInt("untrainedprice");
 							}
-
-							scList.add(new CartItem(key, itemName, unitPrice/100.0, quantity));
+							CartItem newItem = new CartItem(key, itemName, unitPrice/100.0, quantity);
+							scList.add(newItem);
+							totalPrice += newItem.getPrice();
 						} else if (!available && quantity > 0) {
 							if (!unavailableItems.contains(itemName)) { // Don't add both trained and untrained models
 								unavailableItems.add(itemName);
@@ -84,6 +86,7 @@ public class OrderController {
 						}
 					}
 				}
+				model.addAttribute("totalPrice", totalPrice);
 				model.addAttribute("items", scList);
 				if (unavailableItems.size() > 0) {
 					model.addAttribute("unavailable", unavailableItems);

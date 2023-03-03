@@ -46,19 +46,26 @@
 				<tr class="cart-item" th:each="item, stat: ${items}" th:if="${item.quantity > 0}" th:id="|cart-item-${stat.index}|" th:attr="data-key=|${item.key}|">
 					<td><img class="icon" th:src="@{/images/blank.png}"></td>
 					<td class="item-name" th:text="${item.name}" />
-					<td class="unit-price" th:text="'€' + ${item.unitPrice}" />
+					<td class="unit-price" th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
 					<td><input class="quantity" th:attr="onfocusout=|update('cart-item-${stat.index}')|" type="number" th:value="${item.quantity}"></td>
-					<td th:text="'€' + ${item.price}" />
+					<td th:text="'€' + ${#numbers.formatDecimal(item.price,2,2)}" />
 					<td>
 						<button th:attr="onclick=|delItem('cart-item-${stat.index}')|"><img class="x" th:src="@{/images/x.png}"></button>
 					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><b>Total</b></td>
+					<td></td>
+					<td></td>
+					<td th:utext="'€' + ${#numbers.formatDecimal(totalPrice,2,2)}" />
+					<td></td>
 				</tr>
 			</table>
 			<form method="POST" action="/order/checkout">
 				<input style="display:none;" type="text" id="checkoutItems" name="checkoutItems">
 				<input class="my-button" type="submit" value="Proceed to Payment">
 			</form>
-			<button onclick="updateCheckout()">Click Me!</button>
 		</div>
 
 		<div th:if="${unavailable}">
@@ -92,6 +99,7 @@
 				location.assign("/order/cart"); // Refresh the page to update values
 			}
 
+			// Create a JSON array from cart items to be POSTed to /order/checkout
 			function updateCheckout() {
 				const items = document.getElementsByClassName("cart-item");
 				const checkoutItems = document.getElementById("checkoutItems");
@@ -106,10 +114,6 @@
 				output = output.substring(0, output.length - 1);
 				output += "]"
 				checkoutItems.value = output;
-			}
-
-			function checkout() {
-				location.assign("/order/checkout");
 			}
 
 			document.onload = updateCheckout();

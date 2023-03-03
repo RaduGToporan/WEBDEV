@@ -7,8 +7,67 @@
 
 		<h1 th:text="${page}"></h1>
 
-		<ul>
-			<li th:each="item: ${items}" th:text="${item.name}" />
-		</ul>
+		<div class="row container-fluid">
+            <div class="col-md-2 d-flex order-0"></div>
+            <div class="col-md-auto d-flex justify-content-center order-3 order-lg-1">
+                <div class="text-start" style="width:fit-content;">
+                <form style="">
+                    <label><b>Payment Method</b></label><br>
+                    <span>
+                        <button id="card" class="payment selected" title="Credit/Debit Card">
+                            <i style="font-size: 20px;"  class="bi bi-credit-card"></i>
+                        </button>
+                        <button id="paypal" class="payment" title="PayPal">
+                            <img src="pp.png">
+                        </button>
+                    </span>
+                    <br><br>
+                    <label><b>Card Information</b></label><br>
+                    <input type="text" placeholder="1234 1234 1234 1234" style="width:200px;"><br>
+                    <input type="text" placeholder="MM/YY" style="width:110px">
+                    <input type="text" placeholder="CVV" style="width:85px;"><br><br>
+
+                    <label><b>Cardholder Name</b></label><br>
+                    <input type="text" placeholder="John Smith"> <br><br>
+
+                    <label><b>Billing Adress</b></label><br>
+                    <input type="text" placeholder="Address Line 1"><br>
+                    <input type="text" placeholder="Address Line 2"><br>
+                    <input type="text" placeholder="City"><br>
+                    <select style="width:200px;">
+                        <option>Co. Meath</option>
+                    </select>
+                    <br>
+                    <input type="text" placeholder="Eircode"><br><br>
+                    <input type="submit" value="Place Order"><br><br>
+                </form>
+                </div>
+            </div>
+            <div class="col-md-1 d-flex order-2" style="height:50px;"></div>
+            <div class="col-md-auto d-flex order-1 order-lg-3">
+                <table>
+                    <tr>
+                        <th colspan="2">Item</th>
+                        <th>Unit Price</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                    </tr>
+                    <tr th:each="item: ${items}">
+                        <td><img class="icon" src="blank.png"></td>
+                        <td th:text="${item.name}" />
+                        <td th:text="${item.unitPrice}" />
+                        <td th:text="${item.quantity}">
+                        <td th:text="${item.totalPrice}" />
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><b>Total</b></td>
+                        <td></td>
+                        <td></td>
+                        <td>€165.00</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
 	</body>
 </html>
