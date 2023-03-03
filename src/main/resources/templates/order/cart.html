@@ -31,8 +31,8 @@
 		</div>
 
 		<!-- If the cart is not empty show a table of cart items -->
-		<div th:if="!${getRequest} and !${cartEmpty}">
-			<table>
+		<div th:if="!${getRequest} and !${cartEmpty}" class="d-block px-5">
+			<table class="table">
 				<tr>
 					<th colspan="2">Item</th>
 					<th>Unit Price</th>
@@ -64,6 +64,7 @@
 			</table>
 			<form method="POST" action="/order/checkout">
 				<input style="display:none;" type="text" id="checkoutItems" name="checkoutItems">
+				<input style="display:none" type="number" id="total" name="total" th:value="${totalPrice}">
 				<input class="my-button" type="submit" value="Proceed to Payment">
 			</form>
 		</div>
