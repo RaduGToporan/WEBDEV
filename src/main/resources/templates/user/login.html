@@ -5,9 +5,9 @@
 		<nav th:replace="~{fragments/nav}"></nav>
 		<form id="credentials" action="/profile" method="post">
 			<label for="username">Username</label>
-			<input name="username" type="text" id="username" class="spacing">
+			<input name="username" type="text" id="username" class="spacing required">
 			<label for="password">Password</label>
-			<input name="password" type="password" id="password" class="spacing">
+			<input name="password" type="password" id="password" class="spacing" required>
 			<input type="submit" value="Login">
 			<a id="close" href="/">
 				<img alt="close_icon" th:src="@{images/close.svg}">

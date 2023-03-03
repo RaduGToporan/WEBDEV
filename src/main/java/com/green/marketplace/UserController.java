@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.sql.*;
 import java.util.UUID;
@@ -91,6 +92,31 @@ public class UserController {
 			return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/marketplace", "webdev", "ai_marketplace");
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
+		}
+	}
+
+	@GetMapping("validateUsername")
+	@ResponseBody
+	public String validateUsername(@RequestParam String username) {
+		if (username.equals("admin")) {
+			return "false";
+		}
+		else {
+			Connection conn = connectDatabase();
+			try {
+				ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
+
+				while (rs.next()) {
+					if (rs.getString("username").equals(username)) {
+						return "false";
+					}
+				}
+
+				conn.close();
+				return "true";
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }
