@@ -111,12 +111,13 @@ public class OrderController {
 	}
 
 	@PostMapping("/order/checkout")
-	public String checkout(@RequestParam String checkoutItems, Model model) {
+	public String checkout(@RequestParam String checkoutItems, @RequestParam String total, Model model) {
 		ObjectMapper objectMapper = new ObjectMapper();
 		
 		try {
 			List<CheckoutItem> x = objectMapper.readValue(checkoutItems, new TypeReference<List<CheckoutItem>>(){});
 			model.addAttribute("items", x);
+			model.addAttribute("total", total);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
