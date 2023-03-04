@@ -39,10 +39,9 @@
   .search-container{
     float: left;
     margin-left: max(40px,4%);
-  
+    height: 6000px;
     width: 20%;
     background-color: #DEDEDE;
-    height: 800px;
     min-width: 300px;
     box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) ;
   }
