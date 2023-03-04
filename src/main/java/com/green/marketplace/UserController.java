@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class UserController {
-
 	@GetMapping("/profile")
 	public String profile(@RequestParam(name="type", required=false, defaultValue="user") String name, Model model) {
         if (name.equals("admin")) {
@@ -20,17 +19,21 @@ public class UserController {
 		
 	}
 
+	// TODO delete when login done
+	@GetMapping("/dashboard")
+	public String dashboard() {
+		return "user/dashboard";
+	}
+
     @GetMapping("/login")
 	public String login(Model model) {
 		model.addAttribute("page", "Log In");
 		return "user/login";
 	}
-    
 
     @GetMapping("/signup")
 	public String home(Model model) {
 		model.addAttribute("page", "Sign Up");
 		return "user/signup";
 	}
-
 }
