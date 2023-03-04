@@ -1,4 +1,4 @@
-.header{
+.header-container{
     height: 100px;
     background-color: white;
   }
@@ -27,7 +27,7 @@
     left: auto;
   }
   
-  .nav{
+  .nav-container{
     height: 30px;
     background-color: #4a4a4a;
   }
@@ -36,7 +36,7 @@
     margin-left: 23%;
     margin-top: 3px;
   }
-  .search{
+  .search-container{
     float: left;
     margin-left: max(40px,4%);
   
@@ -58,14 +58,14 @@
   .filter-button{
     padding: 10px;
   }
-  .filter{
+  .filter-container{
     margin-top: 20px;
     text-align: center;
     width: 100%;
   
   
   }
-  .filter tr{
+  .filter-container tr{
     height: 40px;
     background-color: #FBFBFB;
   }
