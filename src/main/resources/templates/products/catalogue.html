@@ -72,9 +72,9 @@
 		  <br>
 		  <br>
 	  
-		  <div class="product-container">
+		  <div class="product-container" th:each="model : ${models}" th:id="${model.id}">
 			<div class="product-half-container-des">
-			  <h3>NAME</h3>
+			  <h3 th:text="${model.name}">NAME</h3>
 			  <p>DESCRIPTION</p>
 			  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
 			</div>
@@ -85,96 +85,24 @@
 	  
 				<div class="check-box-container">
 				  <div class="form-check">
-					<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-					<label class="form-check-label" for="flexRadioDefault1">
+					<input class="form-check-input" type="radio" th:name="${model.id}" th:id="${model.id} + a" checked>
+					<label class="form-check-label" th:for="${model.id} + a">
 					  Trained
 					</label>
 				  </div>
 				  <div class="form-check">
-					<input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-					<label class="form-check-label" for="flexRadioDefault2">
+					<input class="form-check-input" type="radio" th:name="${model.id}" th:id="${model.id} + b">
+					<label class="form-check-label" th:for="${model.id} + b">
 					  Untrained
 					</label>
 				  </div>
 				</div>
-				<div class="price-box">
-				  $$$$$
-				</div>
+				<div class="price-box" th:text="${model.untrainedPrice}" style="display: none;"></div>
+				<div class="price-box" th:text="${model.trainedPrice}" ></div>
 			  <button type="button" class="btn btn-danger btn-lg">Add to Cart</button>
 			</div>
 		  </div>
-		  <br>
-		  <br>
-	  
-	  
-			<div class="product-container">
-			  <div class="product-half-container-des">
-				<h3>NAME</h3>
-				<p>DESCRIPTION</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
-			  </div>
-			  <br>
-			  <br>
-				<div class="product-half-container-price">
-				  <br>
-	  
-				  <div class="check-box-container">
-					<div class="form-check">
-					  <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault11">
-					  <label class="form-check-label" for="flexRadioDefault11">
-						Trained
-					  </label>
-					</div>
-					<div class="form-check">
-					  <input class="form-check-input" type="radio" name="flexRadioDefault1" id="flexRadioDefault21" checked>
-					  <label class="form-check-label" for="flexRadioDefault21">
-						Untrained
-					  </label>
-					</div>
-				  </div>
-				  <div class="price-box">
-					$$$$$
-				  </div>
-				<button type="button" class="btn btn-danger btn-lg">Add to Cart</button>
-			  </div>
-			</div>
-			<br>
-			<br>
-	  
-	  
-			  <div class="product-container">
-				<div class="product-half-container-des">
-				  <h3>NAME</h3>
-				  <p>DESCRIPTION</p>
-				  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
-				</div>
-				<br>
-				<br>
-				  <div class="product-half-container-price">
-					<br>
-	  
-					<div class="check-box-container">
-					  <div class="form-check">
-						<input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault12">
-						<label class="form-check-label" for="flexRadioDefault12">
-						  Trained
-						</label>
-					  </div>
-					  <div class="form-check">
-						<input class="form-check-input" type="radio" name="flexRadioDefault2" id="flexRadioDefault22" checked>
-						<label class="form-check-label" for="flexRadioDefault22">
-						  Untrained
-						</label>
-					  </div>
-					</div>
-					<div class="price-box">
-					  $$$$$
-					</div>
-				  <button type="button" class="btn btn-danger btn-lg">Add to Cart</button>
-				</div>
-			  </div>
-			  <br>
-			  <br>
+
 	  
 	</body>
 </html>
