@@ -7,25 +7,7 @@
         <link rel="stylesheet" th:href="@{/cataloguestyle.css}">
 	</head>
 	<body>
-
-		<div class="header">
-			<img src="logo.png" alt="logo" class="logo">
-			<h1 class="name">Green</h1>
-			<a href="#">  <img class="icon" src="profile.png" alt="profile"></a>
-			<a href="#"><img class="icon" src="cart.png" alt="shopping"></a>
-	  
-		  </div>
-		  <nav class="nav-container">
-			<div class="nav-icon">
-			  <a href="#">Home</a>
-			</div>
-			<div class="nav-icon">
-			  <a href="#">Market</a>
-			</div>
-			<div class="nav-icon">
-			  <a href="#">FAQ</a>
-			</div>
-		  </nav>
+		<nav th:replace="~{fragments/nav}"></nav>
 	  
 		  <div class="search-container">
 			<br>
