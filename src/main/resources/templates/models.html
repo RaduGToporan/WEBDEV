@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head}"></head>
+
+<body>
+<nav th:replace="~{fragments/nav}"></nav>
+
+<div th:if="${modelList}">
+
+    <form action="/addmodel" method="post">
+        <label for="name">name:</label><br>
+        <input type="text" id="name" name="name" value="NewName"><br>
+
+        <label for="trainedPrice">Trained price:</label><br>
+        <input type="number" id="trainedPrice" name="trainedPrice" value="123"><br>
+
+        <label for="untrainedPrice">Untrained price:</label><br>
+        <input type="number" id="untrainedPrice" name="untrainedPrice" value="121"><br>
+
+        <label for="tags">Tags: (Choose between image,generation,art,animated)</label><br>
+        <input type="text" id="tags" name="tags" value="image,generation,art,animated"><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Trained</th>
+            <th>Untrained</th>
+            <th>Tags</th>
+        </tr>
+        <tr th:each="item: ${modelList}" >
+            <td th:text="${item.modelId}"></td>
+            <td th:text="${item.name}" style="min-width: 350px;"/>
+            <td th:text="${item.trainedPrice}" />
+            <td th:text="${item.untrainedPrice}" />
+            <td th:text="${item.tags}" />
+        </tr>
+    </table>
+</div>
+</body>
+</html>

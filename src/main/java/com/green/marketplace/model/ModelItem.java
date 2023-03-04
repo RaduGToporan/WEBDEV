@@ -1,6 +1,6 @@
 package com.green.marketplace.model;
 
-public class Model {
+public class ModelItem {
     private long modelId;
     private String name;
     private double trainedPrice;
