@@ -38,7 +38,15 @@ public class ProductController {
 		modelDB = readDB();
 		model.addAttribute("page", "Product");
 		model.addAttribute("id", id);
-		model.addAttribute("product", modelDB.get(id));
+		int productID = -1;
+		for(int i = 0; i<modelDB.size();i++){
+			if(modelDB.get(i).getId() == id){
+				productID = i;
+				break;
+			}
+		}
+
+		model.addAttribute("product", modelDB.get(productID));
 
 		return "products/product";
 	}

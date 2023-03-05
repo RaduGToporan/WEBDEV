@@ -1,41 +1,4 @@
-.header-container{
-    height: 100px;
-    background-color: white;
-  }
-  img.logo{
-    float: left;
-      left: 0px;
-      margin-left: 3%;
-  
-  }
-  .name{
-    float: left;
-    width: 100px;
-    height: 50px;
-    text-align: center;
-    margin: 0;
-    margin-top: 30px;
-    margin-left: 2%;
-  
-  }
-  img.icon{
-    float: right;
-    height: 100px;
-    width: 100px;
-    right: 0px;
-    margin-right: 10px;
-    left: auto;
-  }
-  
-  .nav-container{
-    height: 30px;
-    background-color: #4a4a4a;
-  }
-  .nav-icon{
-    float: left;
-    margin-left: 23%;
-    margin-top: 3px;
-  }
+
   .search-container{
     float: left;
     margin-left: max(40px,4%);
@@ -70,10 +33,6 @@
     background-color: #FBFBFB;
   }
   
-  a{
-    text-decoration: none;
-    color: white;
-  }
   .ad-image{
     margin-left: 240px;
     height: 200px;
