@@ -4,6 +4,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Connection;
@@ -28,6 +30,34 @@ public class ProductController {
 		modelDB = readDB();
 		model.addAttribute("page", "Catalogue");
 		model.addAttribute("models", modelDB);
+		model.addAttribute("tags", new ArrayList<String>(tagMap.keySet()));
+		return "products/catalogue";
+	}
+
+	@PostMapping("/catalogue")
+	public String cataloguePost(Model model, @RequestBody String data) {
+		
+		modelDB = readDB();
+
+		System.out.println(data);
+
+		model.addAttribute("page", "Catalogue");
+
+		ArrayList<String> filterTags = new ArrayList<>();
+
+		filterTags.add("plant");
+		filterTags.add("other");
+		filterTags.add("image");
+
+		ArrayList<ModelBean> filtered = filterModels(modelDB, filterTags);
+
+
+		model.addAttribute("models", filtered);
+
+
+
+
+
 		model.addAttribute("tags", new ArrayList<String>(tagMap.keySet()));
 		return "products/catalogue";
 	}
@@ -100,6 +130,24 @@ public class ProductController {
 			count++;
 		}
 		return list;
+	}
+
+	private ArrayList<ModelBean> filterModels(ArrayList<ModelBean> list, ArrayList<String> tags){
+		if(tags.isEmpty()){
+			return list;
+		} else{
+			ArrayList<ModelBean> filtered = new ArrayList<>();
+
+			for(int i = 0; i<list.size();i++){
+				for(int j =0;j<tags.size();j++){
+					if(list.get(i).getTags().contains(tags.get(j)) && !filtered.contains(list.get(i))){
+						filtered.add(list.get(i));
+					}
+				}
+			}
+
+			return filtered;
+		}
 	}
 	
 }
