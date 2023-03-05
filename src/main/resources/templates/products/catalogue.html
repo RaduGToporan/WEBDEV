@@ -14,10 +14,11 @@
 	  
 		  <div class="search-container">
 			<br>
-	  
-			<div class="filter-button">
-			  <button style="background-color: #b0b0b0" type="button" class="btn btn-secondary btn-block">Clear Filters</button>
-			</div>
+			<form action="/catalogue">
+				<div class="filter-button">
+				<button style="background-color: #b0b0b0" type="button" class="btn btn-secondary btn-block">Clear Filters</button>
+				</div>
+			</form>	
 			<table class="filter-container">
 			  <tr>
 				<td>
@@ -31,22 +32,10 @@
 				  <label class="form-check-label" for="flexCheckDefault1">Default checkbox</label>
 				</td>
 			  </tr>
-			  <tr>
+			  <tr th:each="tag : ${tags}">
 				<td>
-				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault2">
-				  <label class="form-check-label" for="flexCheckDefault2">Default checkbox</label>
-				</td>
-			  </tr>
-			  <tr style="background-color: #DEDEDE">
-				<td>
-				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault3">
-				  <label class="form-check-label" for="flexCheckDefault3">Default checkbox</label>
-				</td>
-			  </tr>
-			  <tr>
-				<td>
-				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault4">
-				  <label class="form-check-label" for="flexCheckDefault4">Default checkbox</label>
+				  <input class="form-check-input" type="checkbox" value="" th:d="${tag}">
+				  <label class="form-check-label" th:for="${tag}" th:text="${tag}">Default checkbox</label>
 				</td>
 			  </tr>
 			</table>
@@ -71,35 +60,36 @@
 		  <br>
 		  <br>
 		  <br>
-	  
 		  <div class="product-container" th:each="model : ${models}" th:id="${model.id}">
 			<div class="product-half-container-des">
 			  <h3 th:text="${model.name}">NAME</h3>
-			  <p>DESCRIPTION</p>
+			  <p th:text="${'Tags = ' + model.unprocessedtags}">DESCRIPTION</p>
 			  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
 			</div>
 			<br>
 			<br>
 			  <div class="product-half-container-price">
 				<br>
-	  
+				<form action="">
 				<div class="check-box-container">
 				  <div class="form-check">
 					<input class="form-check-input" type="radio" th:name="${model.id}" th:id="${model.id} + a" checked>
-					<label class="form-check-label" th:for="${model.id} + a">
+					<label class="form-check-label" th:for="${model.id} + a" th:text="${'Trained = ' + model.trainedPrice}">
 					  Trained
 					</label>
 				  </div>
 				  <div class="form-check">
 					<input class="form-check-input" type="radio" th:name="${model.id}" th:id="${model.id} + b">
-					<label class="form-check-label" th:for="${model.id} + b">
+					<label class="form-check-label" th:for="${model.id} + b" th:text="${'Untrained = ' + model.untrainedPrice}" >
 					  Untrained
 					</label>
 				  </div>
 				</div>
-				<div class="price-box" th:text="${model.untrainedPrice}" style="display: none;"></div>
-				<div class="price-box" th:text="${model.trainedPrice}" ></div>
-			  <button type="button" class="btn btn-danger btn-lg">Add to Cart</button>
+				<div class="quantity-box">  
+					<input type="number" placeholder="Quantity" style="width:100%" min="0"><br>
+				</div>
+			  <button type="submit" class="btn btn-danger btn-lg">Add to Cart</button>
+			</form>
 			</div>
 		  </div>
 

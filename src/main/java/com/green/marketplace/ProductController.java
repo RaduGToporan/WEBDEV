@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -16,6 +17,9 @@ import java.sql.ResultSet;
 public class ProductController {
 
 	ArrayList<ModelBean> modelDB = readDB();
+	HashMap<String,Integer> tagMap = new HashMap<>();
+	int count = 0;
+	
 
 
     @GetMapping("/catalogue")
@@ -23,6 +27,7 @@ public class ProductController {
 		modelDB = readDB();
 		model.addAttribute("page", "Catalogue");
 		model.addAttribute("models", modelDB);
+		model.addAttribute("tags", new ArrayList<String>(tagMap.keySet()));
 		return "products/catalogue";
 	}
     
@@ -54,12 +59,12 @@ public class ProductController {
     				String name = resultSet.getString("name");
     				int trainedPrice = resultSet.getInt("trainedprice");
     				int untrainedPrice = resultSet.getInt("untrainedprice");
-    				ArrayList<String> tags = formatTags(resultSet.getString("tags"));
+					String unprocessedtags = resultSet.getString("tags");
+    				ArrayList<String> tags = formatTags(unprocessedtags);
 					boolean available = resultSet.getBoolean("available");
 
-					list.add(new ModelBean(id,name,trainedPrice,untrainedPrice,tags,available));
+					list.add(new ModelBean(id,name,trainedPrice,untrainedPrice,unprocessedtags,tags,available));
 					
-                    
                 }
 			return list;	
             } else {
@@ -77,8 +82,13 @@ public class ProductController {
 
 	private ArrayList<String> formatTags(String s){
 		ArrayList<String> list = new ArrayList<>();
+		String[] res = s.split(",");
 
-
+		for(int i = 0; i<res.length;i++){
+			list.add(res[i]);
+			tagMap.put(res[i], count%2);
+			count++;
+		}
 		return list;
 	}
 	
