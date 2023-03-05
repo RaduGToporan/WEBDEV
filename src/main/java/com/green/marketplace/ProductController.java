@@ -40,6 +40,7 @@ public class ProductController {
 		modelDB = readDB();
 
 		System.out.println(data);
+		System.out.println(formatFilterTags(data));
 
 		model.addAttribute("page", "Catalogue");
 
@@ -49,7 +50,7 @@ public class ProductController {
 		filterTags.add("other");
 		filterTags.add("image");
 
-		ArrayList<ModelBean> filtered = filterModels(modelDB, filterTags);
+		ArrayList<ModelBean> filtered = filterModels(modelDB, formatFilterTags(data));
 
 
 		model.addAttribute("models", filtered);
@@ -123,6 +124,18 @@ public class ProductController {
 	private ArrayList<String> formatTags(String s){
 		ArrayList<String> list = new ArrayList<>();
 		String[] res = s.split(",");
+
+		for(int i = 0; i<res.length;i++){
+			list.add(res[i]);
+			tagMap.put(res[i], count%2);
+			count++;
+		}
+		return list;
+	}
+
+	private ArrayList<String> formatFilterTags(String s){
+		ArrayList<String> list = new ArrayList<>();
+		String[] res = s.split("&|\\=");
 
 		for(int i = 0; i<res.length;i++){
 			list.add(res[i]);
