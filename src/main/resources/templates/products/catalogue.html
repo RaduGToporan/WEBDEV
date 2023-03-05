@@ -16,36 +16,31 @@
 			<br>
 			<form action="/catalogue">
 				<div class="filter-button">
-				<button style="background-color: #b0b0b0" type="button" class="btn btn-secondary btn-block">Clear Filters</button>
+				<button style="background-color: #b0b0b0" type="submit" class="btn btn-secondary btn-block">Clear Filters</button>
 				</div>
 			</form>	
-			<table class="filter-container">
-			  <tr>
-				<td>
-				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-				  <label class="form-check-label" for="flexCheckDefault">Default checkbox</label>
-				</td>
-			  </tr>
-			  <tr style="background-color: #DEDEDE">
-				<td>
-				  <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1">
-				  <label class="form-check-label" for="flexCheckDefault1">Default checkbox</label>
-				</td>
-			  </tr>
-			  <tr th:each="tag : ${tags}">
-				<td>
-				  <input class="form-check-input" type="checkbox" value="" th:d="${tag}">
-				  <label class="form-check-label" th:for="${tag}" th:text="${tag}">Default checkbox</label>
-				</td>
-			  </tr>
-			</table>
+			<form action="">
+				<table class="filter-container">
+				<tr th:each="tag : ${tags}" style="border: 1px solid #b0b0b0">
+					<td>
+					<input class="form-check-input" type="checkbox" value="" th:d="${tag}">
+					<label class="form-check-label" th:for="${tag}" th:text="${tag}">Default checkbox</label>
+					</td>
+				</tr>
+				</table>
+				<br>
+				<br>
+				<div class="filter-button">
+					<button style="background-color: #b0b0b0" type="submit" class="btn btn-secondary btn-block">Apply Filters</button>
+				</div>
+			</form>
 		  </div>
 	  
 		  <div class="ad-image">
 			  <h2 style="color:white">Insert Image/ Ad here</h2>
 		  </div>
 	  
-		  <div class="order-by-container">
+		  <!--<div class="order-by-container">
 			<form action="/action_page.php">
 			  <label for="cars">Sort By</label>
 			  <select name="cars" id="cars">
@@ -56,7 +51,7 @@
 				<option value="audi">$$$ -> $</option>
 			  </select>
 			</form>
-		  </div>
+		  </div>-->
 		  <br>
 		  <br>
 		  <br>
