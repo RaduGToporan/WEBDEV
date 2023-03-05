@@ -11,12 +11,7 @@
 
             <li th:switch="${page}">
                 <a th:case="'Catalogue'" th:href="'#'">Catalogue</a>
-                <a th:case="*" th:href="@{/catalogue}">Catalogue</a>
-            </li>
-
-            <li th:switch="${page}">
-                <a th:case="'Models'" th:href="'#'">Models</a>
-                <a th:case="*" th:href="@{/models}">Models</a>
+                <a th:case="*" th:href="@{/models}">Catalogue</a>
             </li>
 
             <li th:switch="${page}">
