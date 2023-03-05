@@ -9,27 +9,57 @@
 
 		<div class="row container-fluid">
             <div class="col-lg-4 order-last order-lg-first">
-                <form class="mx-auto checkout-form">
-                    <!-- <div class="form-row align-items-center"> -->
+                <form class="mx-auto checkout-form" method="POST" action="/order/place">
                             <label><b>Card Information</b></label><br>
-                            <input type="text" placeholder="1234 1234 1234 1234" style="width:200px;"><br>
-                            <input type="text" placeholder="MM/YY" style="width:110px">
-                            <input type="text" placeholder="CVV" style="width:85px;"><br><br>
+                            <input required type="text" placeholder="1234 1234 1234 1234" style="width:200px;"><br>
+                            <input required type="text" placeholder="MM/YY" style="width:110px" pattern="[0-9]{2}/[0-9]{2}" title="Card expiry month (MM/YY)">
+                            <input required type="text" placeholder="CVV" style="width:85px;" pattern="[0-9]{3}" title="CVV"><br><br>
 
                         <label><b>Cardholder Name</b></label><br>
-                        <input type="text" placeholder="John Smith"> <br><br>
+                        <input required type="text" placeholder="John Smith"> <br><br>
 
                         <label><b>Billing Adress</b></label><br>
-                        <input type="text" placeholder="Address Line 1"><br>
-                        <input type="text" placeholder="Address Line 2"><br>
-                        <input type="text" placeholder="City"><br>
-                        <select style="width:200px;">
-                            <option>Co. Meath</option>
+                        <input required type="text" placeholder="Address Line 1"><br>
+                        <input required type="text" placeholder="Address Line 2"><br>
+                        <input required type="text" placeholder="City"><br>
+                        <select required style="width:200px;">
+                            <option value="Co. Antrim">Co. Antrim</option>
+                            <option value="Co. Armagh">Co. Armagh</option>
+                            <option value="Co. Carlow">Co. Carlow</option>
+                            <option value="Co. Cavan">Co. Cavan</option>
+                            <option value="Co. Clare">Co. Clare</option>
+                            <option value="Co. Cork">Co. Cork</option>
+                            <option value="Co. Derry">Co. Derry</option>
+                            <option value="Co. Donegal">Co. Donegal</option>
+                            <option value="Co. Down">Co. Down</option>
+                            <option value="Co. Dublin">Co. Dublin</option>
+                            <option value="Co. Fermanagh">Co. Fermanagh</option>
+                            <option value="Co. Galway">Co. Galway</option>
+                            <option value="Co. Kerry">Co. Kerry</option>
+                            <option value="Co. Kildare">Co. Kildare</option>
+                            <option value="Co. Kilkenny">Co. Kilkenny</option>
+                            <option value="Co. Laois">Co. Laois</option>
+                            <option value="Co. Leitrim">Co. Leitrim</option>
+                            <option value="Co. Limerick">Co. Limerick</option>
+                            <option value="Co. Longford">Co. Longford</option>
+                            <option value="Co. Louth">Co. Louth</option>
+                            <option value="Co. Mayo">Co. mayo</option>
+                            <option value="Co. Meath">Co. Meath</option>
+                            <option value="Co. Monaghan">Co. Monaghan</option>
+                            <option value="Co. Offaly">Co. Offaly</option>
+                            <option value="Co. Roscommon">Co. Roscommon</option>
+                            <option value="Co. Sligo">Co. Sligo</option>
+                            <option value="Co. Tpperary">Co. Tipperary</option>
+                            <option value="Co. Tyrone">Co. Tyrone</option>
+                            <option value="Co. Waterford">Co. Waterford</option>
+                            <option value="Co. Westmeath">Co. Westmeath</option>
+                            <option value="Co. Wexford">Co. Wexford</option>
+                            <option value="Co. Wicklow">Co. Wicklow</option>
                         </select>
                         <br>
                         <input type="text" placeholder="Eircode"><br><br>
+                        <input type="text" style="display:none;">
                         <input type="submit" value="Place Order"><br><br>
-                    <!-- </div> -->
                 </form>
             </div>
             <div class="col-lg-8 order-first order-lg-last">
