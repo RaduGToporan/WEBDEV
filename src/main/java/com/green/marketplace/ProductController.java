@@ -39,25 +39,11 @@ public class ProductController {
 		
 		modelDB = readDB();
 
-		System.out.println(data);
-		System.out.println(formatFilterTags(data));
-
 		model.addAttribute("page", "Catalogue");
-
-		ArrayList<String> filterTags = new ArrayList<>();
-
-		filterTags.add("plant");
-		filterTags.add("other");
-		filterTags.add("image");
 
 		ArrayList<ModelBean> filtered = filterModels(modelDB, formatFilterTags(data));
 
-
 		model.addAttribute("models", filtered);
-
-
-
-
 
 		model.addAttribute("tags", new ArrayList<String>(tagMap.keySet()));
 		return "products/catalogue";
