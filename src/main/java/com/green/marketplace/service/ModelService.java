@@ -56,5 +56,26 @@ public class ModelService {
         }
         return result;
     }
-}
 
+    public void saveModel(ModelItem modelItem) {
+        String query = "update models set " +
+                "name=?, " +
+                "trainedprice=?, " +
+                "untrainedprice=?, " +
+                "tags=? " +
+                "where modelid=?; ";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword)) {
+            PreparedStatement preparedStatement;
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, modelItem.getName());
+            preparedStatement.setDouble(2, modelItem.getTrainedPrice());
+            preparedStatement.setDouble(3, modelItem.getUntrainedPrice());
+            preparedStatement.setString(4, modelItem.getTags());
+            preparedStatement.setLong(5, modelItem.getModelId());
+            preparedStatement.execute();
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+    }
+}

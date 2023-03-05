@@ -1,45 +1,50 @@
 <nav th:fragment="navbar">
-            <div>
-                <div>
-                    <h2>Green AI Model Shop</h2>
-                </div>
-                <ul>
-                    <li th:switch="${page}">
-                        <a th:case="'Home'" th:href="'#'">Home</a>
-                        <a th:case="*"  th:href="@{/}">Home</a>
-                    </li>
-        
-                    <li th:switch="${page}">
-                        <a th:case="'Catalogue'" th:href="'#'">Catalogue</a>
-                        <a th:case="*" th:href="@{/catalogue}">Catalogue</a>
-                    </li>
-        
-                    <li th:switch="${page}">
-                        <a th:case="'About'" th:href="'#'">About</a>
-                        <a th:case="*" th:href="@{/about}">About</a>
-                    </li>    
-        
-                    <li th:switch="${page}">
-                        <a th:case="'FAQ'" th:href="'#'">FAQ</a>
-                        <a th:case="*" th:href="@{/faq}">FAQ</a>
-                    </li>         
-        
-                    <li th:switch="${page}">
-                        <a th:case="'Contact'" th:href="'#'">Contact</a>
-                        <a th:case="*" th:href="@{/contact}">Contact</a>
-                    </li>       
-                </ul>
-            </div>    
+    <div>
+        <div>
+            <h2>Green AI Model Shop</h2>
+        </div>
+        <ul>
+            <li th:switch="${page}">
+                <a th:case="'Home'" th:href="'#'">Home</a>
+                <a th:case="*" th:href="@{/}">Home</a>
+            </li>
 
-            <div th:switch="${loggedIn}">
+            <li th:switch="${page}">
+                <a th:case="'Catalogue'" th:href="'#'">Catalogue</a>
+                <a th:case="*" th:href="@{/catalogue}">Catalogue</a>
+            </li>
+
+            <li th:switch="${page}">
+                <a th:case="'Models'" th:href="'#'">Models</a>
+                <a th:case="*" th:href="@{/models}">Models</a>
+            </li>
+
+            <li th:switch="${page}">
+                <a th:case="'About'" th:href="'#'">About</a>
+                <a th:case="*" th:href="@{/about}">About</a>
+            </li>
+
+            <li th:switch="${page}">
+                <a th:case="'FAQ'" th:href="'#'">FAQ</a>
+                <a th:case="*" th:href="@{/faq}">FAQ</a>
+            </li>
+
+            <li th:switch="${page}">
+                <a th:case="'Contact'" th:href="'#'">Contact</a>
+                <a th:case="*" th:href="@{/contact}">Contact</a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:switch="${loggedIn}">
                 <span th:case="true">
                     <a th:href="@{/profile}">Your Account</a>
                 </span>
-                
-                <span th:case="*">
+
+        <span th:case="*">
                     <a th:href="@{/login}">Login</a>
                     <a th:href="@{/signup}">Sign Up</a>
                 </span>
-            </div>
+    </div>
 
-        </nav>
+</nav>
