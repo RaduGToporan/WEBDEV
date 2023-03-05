@@ -3,6 +3,7 @@ package com.green.marketplace;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Connection;
@@ -31,12 +32,13 @@ public class ProductController {
 		return "products/catalogue";
 	}
     
-    @GetMapping("/product")
-	public String product(@RequestParam(name="id", required=false, defaultValue="0") String name, Model model) {
+    @GetMapping("/product/{id}")
+	public String product(@PathVariable int id, Model model) {
 
-        var id = Integer.parseInt(name);
+		modelDB = readDB();
 		model.addAttribute("page", "Product");
 		model.addAttribute("id", id);
+		model.addAttribute("product", modelDB.get(id));
 
 		return "products/product";
 	}
