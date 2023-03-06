@@ -1,0 +1,43 @@
+.header-container{
+    height: 100px;
+    background-color: white;
+  }
+  img.logo{
+    float: left;
+      left: 0px;
+      margin-left: 3%;
+  
+  }
+  .name{
+    float: left;
+    width: 100px;
+    height: 50px;
+    text-align: center;
+    margin: 0;
+    margin-top: 30px;
+    margin-left: 2%;
+  
+  }
+  img.icon{
+    float: right;
+    height: 100px;
+    width: 100px;
+    right: 0px;
+    margin-right: 10px;
+    left: auto;
+  }
+  
+  .nav-container{
+    height: 30px;
+    background-color: #4a4a4a;
+  }
+  .nav-icon{
+    float: left;
+    margin-left: 14%;
+    margin-top: 3px;
+  }
+  
+  .nav-icon a{
+    text-decoration: none;
+    color: white;
+  }
