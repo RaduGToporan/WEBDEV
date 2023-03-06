@@ -1,5 +1,3 @@
-// TODO: Fix floating point bug with odd numbers of products
-
 // Retrieve the cart from cookies, initialize if undefined
 // https://stackoverflow.com/questions/28918232/how-do-i-persist-a-es6-map-in-localstorage-or-elsewhere
 function getCart() {
