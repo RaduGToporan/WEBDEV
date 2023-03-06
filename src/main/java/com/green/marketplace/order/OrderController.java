@@ -7,17 +7,23 @@ import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
+
+import com.green.marketplace.user.UserUtil;
 
 @Controller
 public class OrderController {
@@ -118,6 +124,8 @@ public class OrderController {
 			List<CheckoutItem> x = objectMapper.readValue(checkoutItems, new TypeReference<List<CheckoutItem>>(){});
 			model.addAttribute("items", x);
 			model.addAttribute("total", total);
+			// model.addAttribute("userID", getUserID);
+			model.addAttribute("userID", 1);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -125,4 +133,57 @@ public class OrderController {
 		return "order/checkout";
 	}
 
+	@PostMapping("/order/place")
+	public String placeOrder(
+		@RequestParam String deliveryName,
+		@RequestParam String address1,
+		@RequestParam String address2,
+		@RequestParam String city,
+		@RequestParam String county,
+		@RequestParam String eircode,
+		@RequestParam int uid,
+		@RequestParam String productsString,
+		Model model
+		) {
+
+			// Construct Address
+			String address = deliveryName + ", " + address1;
+			if (!address2.equals("")) {
+				address += ", " + address2;
+			}
+			address += ", " + city;
+			address += ", " + county;
+			if (!eircode.equals("")) {
+				address += ", " + eircode;
+			}
+
+			System.out.println(address);
+			System.out.println(productsString);
+			
+			// Get time
+			SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			String orderTime = datetimeFormat.format(timestamp);
+			System.out.println(datetimeFormat.format(timestamp)); 
+			
+			// Place order
+			try {
+				Connection conn =  DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/marketplace", "webdev", "ai_marketplace");
+				ResultSet rs = conn.prepareStatement("SELECT COUNT(*) AS total FROM marketplace.orders").executeQuery();
+				int orderID;
+				if (rs.next()) {
+					orderID = rs.getInt("total") + 1;
+					model.addAttribute("orderId", orderID);
+					String query = "INSERT INTO `marketplace`.`orders` (`orderid`, `uid`, `time`, `products`, `adress`, `status`) VALUES ('" + orderID + "', '" + uid + "', '" + orderTime + "', '" +productsString + "', '" + address + "', 'ordered');";
+					System.out.println(query);
+					conn.prepareStatement(query).execute();
+				}
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
+			
+			
+
+			return "order/success";
+		}
 }

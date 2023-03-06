@@ -18,11 +18,12 @@
                         <label><b>Cardholder Name</b></label><br>
                         <input required type="text" placeholder="John Smith"> <br><br>
 
-                        <label><b>Billing Adress</b></label><br>
-                        <input required type="text" placeholder="Address Line 1"><br>
-                        <input required type="text" placeholder="Address Line 2"><br>
-                        <input required type="text" placeholder="City"><br>
-                        <select required style="width:200px;">
+                        <label><b>Delivery Adress</b></label><br>
+                        <input required id="deliveryName" name="deliveryName" type="test" placeholder="John Smith">
+                        <input required id="adress1" name="address1" type="text" placeholder="Address Line 1"><br>
+                        <input id="address2" name="address2" type="text" placeholder="Address Line 2"><br>
+                        <input id="city" name="city" required type="text" placeholder="City"><br>
+                        <select id="county", name="county" required style="width:200px;">
                             <option value="Co. Antrim">Co. Antrim</option>
                             <option value="Co. Armagh">Co. Armagh</option>
                             <option value="Co. Carlow">Co. Carlow</option>
@@ -57,25 +58,26 @@
                             <option value="Co. Wicklow">Co. Wicklow</option>
                         </select>
                         <br>
-                        <input type="text" placeholder="Eircode"><br><br>
-                        <input type="text" style="display:none;">
+                        <input id="eircode" name="eircode" type="text" placeholder="Eircode"><br><br>
+                        <input id="uid" name="uid" type="text" style="display:none" th:value="${userID}">
+                        <input id="productsString" name="productsString" type="text" style="display:none;">
                         <input type="submit" value="Place Order"><br><br>
                 </form>
             </div>
             <div class="col-lg-8 order-first order-lg-last">
-                <table class="table">
+                <table class="table" id="checkoutTable">
                     <tr>
                         <th colspan="2">Item</th>
                         <th>Unit Price</th>
                         <th>Quantity</th>
                         <th>Price</th>
                     </tr>
-                    <tr th:each="item: ${items}">
+                    <tr th:each="item: ${items}" class="checkoutRow" th:attr="data-key=|${item.id}|">
                         <td><img class="icon" th:src="@{/images/blank.png}"></td>
-                        <td th:text="${item.name}" />
-                        <td th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
-                        <td th:text="${item.quantity}">
-                        <td th:text="'€' + ${#numbers.formatDecimal(item.totalPrice,2,2)}" />
+                        <td class="item-name" th:text="${item.name}" />
+                        <td class="item-unit-price" th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
+                        <td class="item-quantity" th:text="${item.quantity}">
+                        <td class="item-price" th:text="'€' + ${#numbers.formatDecimal(item.totalPrice,2,2)}" />
                     </tr>
                     <tr>
                         <td></td>
@@ -87,5 +89,23 @@
                 </table>
             </div>
         </div>
+
+        <script>
+            const productsString = document.getElementById("productsString");
+            const checkoutTable = document.getElementById("checkoutTable");
+            const checkoutItems = checkoutTable.getElementsByClassName("checkoutRow");
+            var productsJSON = "[";
+            for (let item of checkoutItems) {
+                const itemName = item.getElementsByClassName('item-name')[0].textContent;
+                const itemUnitPrice = item.getElementsByClassName('item-unit-price')[0].textContent.substring(1);
+                const itemQuantity = item.getElementsByClassName('item-quantity')[0].textContent;
+                const itemPrice = item.getElementsByClassName('item-price')[0].textContent.substring(1);
+                productsJSON += "{name:\"" + itemName + "\",unitPrice:" + itemUnitPrice + ",quantity:" + itemQuantity + ",price:" + itemPrice + "},"
+            }
+            productsJSON = productsJSON.substring(0,productsJSON.length-1);
+            productsJSON += "]";
+            productsString.value = productsJSON;
+            console.log(productsJSON);
+        </script>
 	</body>
 </html>
