@@ -110,8 +110,10 @@ public class OrderController {
 
 	@GetMapping("/order/checkout")
 	public String checkout(Model model) {
-		model.addAttribute("page", "Checkout");
-		return "order/checkout";
+		// Send the user to the shopping cart
+		model.addAttribute("page", "Shopping Cart");
+		model.addAttribute("getRequest", true); // This is a GET request
+		return "order/cart";
 	}
 
 	@PostMapping("/order/checkout")
