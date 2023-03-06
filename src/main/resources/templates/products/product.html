@@ -1,11 +1,54 @@
 <!DOCTYPE html>    
 <html xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="~{fragments/head}"></head>
-
+	<head>
+		<meta charset="UTF-8">
+			<meta http-equiv="X-UA-Compatible" content="IE=edge">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title th:text="${page}"></title>
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+			<script type="text/javascript" src="http://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=2QujauwjWsg1tIqMCvTM3k5eK1EDRzHzzxkYofJNSGAS0Bp_vKOrWISv6lCJlNBzbiVxrMshOOwsXRIeBHYyss6NHpqVX2RjjXrxZj4jZec" charset="UTF-8"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+			<link rel="stylesheet" th:href="@{/cataloguestyle.css}">
+	</head>
 	<body>
 		<nav th:replace="~{fragments/nav}"></nav>
 
-		<h1 th:text="${page}"></h1>
-        <p th:text="'You are viewing product ' + ${id}"></p>
+		<br>
+		<br>
+		<br>
+
+		<div class="product-container" th:id="${product.id}" style="margin-left: 14%; width: 72%">
+			<div class="product-half-container-des">
+			<h3 th:text="${product.name}">NAME</h3>
+			<p th:text="${'Tags = ' + product.unprocessedtags}">DESCRIPTION</p>
+			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+			</div>
+		
+			<br>
+			<br>
+			  <div class="product-half-container-price">
+				<br>
+				<form action="">
+				<div class="check-box-container">
+				  <div class="form-check">
+					<input class="form-check-input" type="radio" th:name="${product.id}" th:id="${product.id} + a" checked>
+					<label class="form-check-label" th:for="${product.id} + a" th:text="${'Trained = ' + product.trainedPrice}">
+					  Trained
+					</label>
+				  </div>
+				  <div class="form-check">
+					<input class="form-check-input" type="radio" th:name="${product.id}" th:id="${product.id} + b">
+					<label class="form-check-label" th:for="${product.id} + b" th:text="${'Untrained = ' + product.untrainedPrice}" >
+					  Untrained
+					</label>
+				  </div>
+				</div>
+				<div class="quantity-box">  
+					<input type="number" placeholder="Quantity" style="width:100%" min="0"><br>
+				</div>
+			  <button type="submit" class="btn btn-danger btn-lg">Add to Cart</button>
+			</form>
+			</div>
+		  </div>
 	</body>
 </html>
