@@ -141,4 +141,26 @@ public class UserController {
             }
         }
     }
+
+    @GetMapping("id")
+    @ResponseBody
+    public int idOfSession(@CookieValue(required = false, defaultValue = "-1") String sessionID) {
+        if (sessionID.equals("-1")) {
+            return -1;
+        }
+        else {
+            try {
+                Connection conn = getConnection();
+                String query = String.format("SELECT uid FROM marketplace.users WHERE sessionID='%s'", sessionID);
+                ResultSet rs = conn.prepareStatement(query).executeQuery();
+                String uid = "-1";
+                while (rs.next()) {
+                    uid = rs.getString("uid");
+                }
+                return Integer.parseInt(uid);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
