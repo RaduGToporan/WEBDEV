@@ -2,12 +2,12 @@
     <link rel="stylesheet" th:href="@{/navstyle.css}">
 </head>
 
+
 <div class="header-container">
     <img th:src="@{/media/logo.png}" alt="logo" class="logo">
     <h1 class="name">Green</h1>
     <a th:href="@{/}">  <img class="icon" th:src="@{/media/profile.png}" alt="profile"></a>
     <a th:href="@{/order/cart}"><img class="icon" th:src="@{/media/cart.png}" alt="shopping"></a>
-
   </div>
   <nav class="nav-container">
     <div class="nav-icon">
@@ -25,4 +25,17 @@
     <div class="nav-icon">
         <a th:href="@{/contact}">Contact</a>
     </div>
+    
+      <div th:switch="${loggedIn}">
+                <span th:case="true">
+                    <a th:href="@{/profile}">Your Account</a>
+                </span>
+                
+                <span th:case="*">
+                    <a th:href="@{/login}">Login</a>
+                    <a th:href="@{/signup}">Sign Up</a>
+                    <button id="logout">Logout</button>
+                    <span id="avatar">N/A</span>
+                </span>
+            </div>
   </nav>

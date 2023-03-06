@@ -110,16 +110,12 @@ table, input.quantity {
     width: 50px;
 }
 
+.checkout-form {
+    width: 200px;
+}
+
 h1 {
     text-align: center;
-}
-
-td, th {
-    padding-right: 35px;
-}
-
-tr {
-    border-bottom: 1px solid black;
 }
 
 .icon {

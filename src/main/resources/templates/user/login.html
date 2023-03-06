@@ -1,10 +1,17 @@
-<!DOCTYPE html>    
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
 	<head th:replace="~{fragments/head}"></head>
-
 	<body>
 		<nav th:replace="~{fragments/nav}"></nav>
-
-		<h1 th:text="${page}"></h1>
+		<form id="credentials" action="/login" method="post">
+			<label for="username">Username</label>
+			<input name="username" type="text" id="username" class="spacing" required>
+			<label for="password">Password</label>
+			<input name="password" type="password" id="password" class="spacing" required>
+			<input type="submit" value="Login">
+			<a id="close" href="/">
+				<img alt="close_icon" th:src="@{images/close.svg}">
+			</a>
+		</form>
 	</body>
 </html>
