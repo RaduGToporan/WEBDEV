@@ -31,8 +31,8 @@
 		</div>
 
 		<!-- If the cart is not empty show a table of cart items -->
-		<div th:if="!${getRequest} and !${cartEmpty}">
-			<table>
+		<div th:if="!${getRequest} and !${cartEmpty}" class="d-block px-5">
+			<table class="table">
 				<tr>
 					<th colspan="2">Item</th>
 					<th>Unit Price</th>
@@ -43,19 +43,37 @@
 				<!-- A row is only displayed if there is more than one of the product in the cart -->
 				<!-- The "data-key" attribute in each row refers to the key of the product in the shopping cart in the Map in cookies -->
 				<!-- The row index is used to form the row's id -->
-				<tr th:each="item, stat: ${items}" th:if="${item.quantity > 0}" th:id="|cart-item-${stat.index}|" th:attr="data-key=|${item.key}|">
+				<tr class="cart-item" th:each="item, stat: ${items}" th:if="${item.quantity > 0}" th:id="|cart-item-${stat.index}|" th:attr="data-key=|${item.key}|">
 					<td><img class="icon" th:src="@{/images/blank.png}"></td>
-					<td th:text="${item.name}" />
-					<td th:text="'€' + ${item.unitPrice}" />
+					<td class="item-name" th:text="${item.name}" />
+					<td class="unit-price" th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
 					<td><input class="quantity" th:attr="onfocusout=|update('cart-item-${stat.index}')|" type="number" th:value="${item.quantity}"></td>
-					<td th:text="'€' + ${item.price}" />
+					<td th:text="'€' + ${#numbers.formatDecimal(item.price,2,2)}" />
 					<td>
 						<button th:attr="onclick=|delItem('cart-item-${stat.index}')|"><img class="x" th:src="@{/images/x.png}"></button>
 					</td>
 				</tr>
+				<tr>
+					<td></td>
+					<td><b>Total</b></td>
+					<td></td>
+					<td></td>
+					<td th:utext="'€' + ${#numbers.formatDecimal(totalPrice,2,2)}" />
+					<td></td>
+				</tr>
 			</table>
-			
-			<input class="my-button" type="button" onclick="checkout()" value="Proceed to Payment">
+			<form method="POST" action="/order/checkout">
+				<input style="display:none;" type="text" id="checkoutItems" name="checkoutItems">
+				<input style="display:none" type="number" id="total" name="total" th:value="${totalPrice}">
+				<input class="my-button" type="submit" value="Proceed to Payment">
+			</form>
+		</div>
+
+		<div th:if="${unavailable}">
+			<h5>Unfortunately, the following items are currently unavailable:</h5>
+			<ul>
+				<li th:each="item: ${unavailable}" th:text="${item}" />
+			</ul>
 		</div>
 
 		
@@ -82,9 +100,24 @@
 				location.assign("/order/cart"); // Refresh the page to update values
 			}
 
-			function checkout() {
-				location.assign("/order/checkout");
+			// Create a JSON array from cart items to be POSTed to /order/checkout
+			function updateCheckout() {
+				const items = document.getElementsByClassName("cart-item");
+				const checkoutItems = document.getElementById("checkoutItems");
+				var output = "[";
+				for (let item of items) {
+					const productId = item.getAttribute("data-key");
+					const productName = item.getElementsByClassName("item-name")[0].textContent;
+					const quantity = parseInt(item.getElementsByClassName("quantity")[0].value);
+					const unitPrice = parseFloat(item.getElementsByClassName("unit-price")[0].textContent.substring(1));
+					output += '{"id":"' + productId + '", "name": "' + productName + '", "quantity":' + quantity + ', "unitPrice":' + unitPrice + '},';
+				}
+				output = output.substring(0, output.length - 1);
+				output += "]"
+				checkoutItems.value = output;
 			}
+
+			document.onload = updateCheckout();
 		</script>
 	</body>
 </html>
