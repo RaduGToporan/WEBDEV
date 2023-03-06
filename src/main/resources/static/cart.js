@@ -55,6 +55,7 @@ function mapStringify(map) {
     return res;
 }
 
+// Remove all items from cart
 function clearCart() {
     localStorage.cart.value = null;
 }

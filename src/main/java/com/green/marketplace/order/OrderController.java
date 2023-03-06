@@ -156,15 +156,11 @@ public class OrderController {
 			if (!eircode.equals("")) {
 				address += ", " + eircode;
 			}
-
-			System.out.println(address);
-			System.out.println(productsString);
 			
 			// Get time
 			SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 			String orderTime = datetimeFormat.format(timestamp);
-			System.out.println(datetimeFormat.format(timestamp)); 
 			
 			// Place order
 			try {
@@ -175,7 +171,6 @@ public class OrderController {
 					orderID = rs.getInt("total") + 1;
 					model.addAttribute("orderId", orderID);
 					String query = "INSERT INTO `marketplace`.`orders` (`orderid`, `uid`, `time`, `products`, `adress`, `status`) VALUES ('" + orderID + "', '" + uid + "', '" + orderTime + "', '" +productsString + "', '" + address + "', 'ordered');";
-					System.out.println(query);
 					conn.prepareStatement(query).execute();
 				}
 			} catch (SQLException e) {
