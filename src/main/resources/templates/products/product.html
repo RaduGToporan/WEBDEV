@@ -46,7 +46,9 @@
 				<div class="quantity-box">  
 					<input type="number" placeholder="Quantity" style="width:100%" min="0"><br>
 				</div>
-			  <button type="submit" class="btn btn-danger btn-lg">Add to Cart</button>
+				<button class="btn btn-danger btn-lg" 
+				th:onclick="'addToCart(' + ${model.id} + ', document.getElementById(\'' + ${model.id} + 'a\').checked, document.getElementById(\'' + ${model.id} + 'q\').value)'"
+				>Add to Cart</button>
 			</form>
 			</div>
 		  </div>
