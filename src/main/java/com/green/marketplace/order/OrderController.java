@@ -124,8 +124,9 @@ public class OrderController {
 			List<CheckoutItem> x = objectMapper.readValue(checkoutItems, new TypeReference<List<CheckoutItem>>(){});
 			model.addAttribute("items", x);
 			model.addAttribute("total", total);
+			int uid = 1;
 			// model.addAttribute("userID", getUserID);
-			model.addAttribute("userID", 1);
+			model.addAttribute("userID", uid);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -170,7 +171,7 @@ public class OrderController {
 				if (rs.next()) {
 					orderID = rs.getInt("total") + 1;
 					model.addAttribute("orderId", orderID);
-					String query = "INSERT INTO `marketplace`.`orders` (`orderid`, `uid`, `time`, `products`, `adress`, `status`) VALUES ('" + orderID + "', '" + uid + "', '" + orderTime + "', '" +productsString + "', '" + address + "', 'ordered');";
+					String query = "INSERT INTO `marketplace`.`orders` (`orderid`, `uid`, `time`, `products`, `address`, `status`) VALUES ('" + orderID + "', '" + uid + "', '" + orderTime + "', '" +productsString + "', '" + address + "', 'ordered');";
 					conn.prepareStatement(query).execute();
 				}
 			} catch (SQLException e) {
