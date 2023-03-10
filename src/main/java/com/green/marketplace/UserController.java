@@ -1,5 +1,6 @@
-package com.green.marketplace.user;
+package com.green.marketplace;
 
+import com.green.marketplace.user.Codec;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,28 +13,12 @@ import java.util.UUID;
 
 @Controller
 public class UserController {
-
     @Autowired
     private Codec codec;
 
     @GetMapping("login")
     public String login() {
         return "user/login";
-    }
-
-    @GetMapping("profile")
-    public String profile(@CookieValue(value = "sessionID", required = false, defaultValue="-1") String sessionIDCookie, Model model) {
-        int uid = idOfSession(sessionIDCookie);
-
-		// If not logged in, go back to login
-		if (uid == -1) {
-            return login();
-        }
-
-        // Get user's orders
-
-        model.addAttribute("page", "Profile");
-        return "user/profile";
     }
 
     @PostMapping("login")
@@ -58,7 +43,8 @@ public class UserController {
                         conn.prepareStatement(query).execute();
                         res.addCookie(cookie);
 
-                        return profile(cookie.getValue(), model);
+                        model.addAttribute("page", "User");
+                        return "user/profile";
                     }
                 }
 
