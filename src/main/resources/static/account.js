@@ -18,11 +18,6 @@ document.getElementById('logout').addEventListener('click', async (e) => {
     window.location = "/";
 })
 
-/* If tab or browser closes, delete session from database */
-// window.addEventListener("beforeunload", async () => {
-//     await fetch(`http://localhost:8080/deleteSession`)
-// })
-
 /* Avatar, on load */
 let cookies = document.cookie.split(';');
 let sessionID = "";
