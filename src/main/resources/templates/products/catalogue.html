@@ -6,8 +6,10 @@
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<title th:text="${page}"></title>
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-			<script type="text/javascript" src="http://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=2QujauwjWsg1tIqMCvTM3k5eK1EDRzHzzxkYofJNSGAS0Bp_vKOrWISv6lCJlNBzbiVxrMshOOwsXRIeBHYyss6NHpqVX2RjjXrxZj4jZec" charset="UTF-8"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			<!-- <script type="text/javascript" src="http://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=2QujauwjWsg1tIqMCvTM3k5eK1EDRzHzzxkYofJNSGAS0Bp_vKOrWISv6lCJlNBzbiVxrMshOOwsXRIeBHYyss6NHpqVX2RjjXrxZj4jZec" charset="UTF-8"></script> -->
+				<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+			<script th:src="@{/cart.js}"></script>
 			<link rel="stylesheet" th:href="@{/cataloguestyle.css}">
 	</head>
 	<body>
@@ -68,7 +70,6 @@
 			<br>
 			  <div class="product-half-container-price">
 				<br>
-				<form action="">
 				<div class="check-box-container">
 				  <div class="form-check">
 					<input class="form-check-input" type="radio" th:name="${model.id}" th:id="${model.id} + a" checked>
@@ -84,10 +85,11 @@
 				  </div>
 				</div>
 				<div class="quantity-box">  
-					<input type="number" placeholder="Quantity" style="width:100%" min="0"><br>
+					<input type="number" placeholder="Quantity" style="width:100%" min="0" th:id="${model.id} + q"><br>
 				</div>
-			  <button type="submit" class="btn btn-danger btn-lg">Add to Cart</button>
-			</form>
+			  <button class="btn btn-danger btn-lg" 
+			  th:onclick="'addToCart(' + ${model.id} + ', document.getElementById(\'' + ${model.id} + 'a\').checked, document.getElementById(\'' + ${model.id} + 'q\').value)'"
+			  >Add to Cart</button>
 			</div>
 		  </div>
 	</body>

@@ -55,6 +55,11 @@ function mapStringify(map) {
     return res;
 }
 
+// Remove all items from cart
+function clearCart() {
+    localStorage.cart.value = null;
+}
+
 // Print the entire cart to the console (testing purposes only)
 function showCart() {
     const cart = getCart();
