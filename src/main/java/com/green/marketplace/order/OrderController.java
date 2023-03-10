@@ -21,10 +21,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.green.marketplace.user.UserController;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 @Controller
 public class OrderController {
+
+	// Used to get user id from sesion id
+	UserController uc = new UserController();
 
 	// Go to an empty shopping cart page so that JS can POST shopping cart data back
 	@GetMapping("/order/cart")
@@ -117,15 +121,18 @@ public class OrderController {
 	}
 
 	@PostMapping("/order/checkout")
-	public String checkout(@RequestParam String checkoutItems, @RequestParam String total, Model model) {
+	public String checkout(@RequestParam String checkoutItems, @RequestParam String total, @CookieValue(required = false, defaultValue = "-1") String sessionID, Model model) {
 		ObjectMapper objectMapper = new ObjectMapper();
-		
+		int uid = uc.idOfSession(sessionID);
+
+		// If not logged in, go back to cart
+		if (uid == -1) {return cart(model);}
+
 		try {
 			List<CheckoutItem> x = objectMapper.readValue(checkoutItems, new TypeReference<List<CheckoutItem>>(){});
 			model.addAttribute("items", x);
 			model.addAttribute("total", total);
-			int uid = 1;
-			// model.addAttribute("userID", getUserID);
+			
 			model.addAttribute("userID", uid);
 		} catch (IOException e) {
 			e.printStackTrace();
