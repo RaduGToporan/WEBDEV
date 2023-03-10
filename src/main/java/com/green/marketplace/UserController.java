@@ -1,10 +1,12 @@
 package com.green.marketplace;
 
 import com.green.marketplace.user.Codec;
+import com.green.marketplace.user.User;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -18,7 +20,7 @@ public class UserController {
     private final String sessionID = "sessionID";
 
     @GetMapping("login")
-    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie) {
+    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, Model model) {
         if (sessionIDCookie == null) {
             return "user/login";
         }
@@ -30,6 +32,7 @@ public class UserController {
                 while (rs.next()) {
                     String sessionID = rs.getString("sessionID");
                     if (sessionID != null && sessionID.equals(sessionIDCookie)) {
+                        model.addAttribute("user", new User(rs.getString("username"), rs.getString("password"), rs.getString("email")));
                         if (rs.getString("username").equals("admin")) {
                             return "user/dashboard";
                         }
@@ -48,7 +51,7 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, HttpServletResponse res, @RequestParam(defaultValue = "user") String username, @RequestParam String password) {
+    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, HttpServletResponse res, @RequestParam(defaultValue = "user") String username, @RequestParam String password, Model model) {
         try {
             Connection conn = getConnection();
             ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
@@ -60,8 +63,8 @@ public class UserController {
                     deleteSession(sessionIDCookie, res);
                     Cookie cookie = createCookie(res, sessionID, "");
                     conn.prepareStatement(String.format("UPDATE marketplace.users SET sessionID='%s' WHERE username='%s' AND password='%s'", cookie.getValue(), rsName, rsPass)).execute();
+                    model.addAttribute("user", new User(rsName, password, rs.getString("email")));
                     conn.close();
-
                     if (username.equals("admin")) {
                         return "user/dashboard";
                     }

@@ -1,0 +1,63 @@
+#flexColumn {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    align-items: center;
+}
+
+.relativeCenter {
+    position: relative;
+    top: 50%;
+    transform: translateY(50%);
+}
+
+#flexColumn a {
+    text-decoration: none;
+    color: #7f7fee;
+    font-weight: 600;
+}
+
+#flexColumn button {
+    background-color: inherit;
+    border: none;
+}
+
+#flexColumn input[type="submit"] {
+    border: none;
+    background-color: inherit;
+    color: #7f7fee;
+    font-weight: 600;
+}
+
+#options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 1rem 0 2rem 0;
+    width: 40vw;
+}
+
+#flexColumn button {
+    width: 3rem;
+    font-size: 1rem;
+    color: #7f7fee;
+    font-weight: 600;
+}
+
+.divider {
+    margin-bottom: 1rem;
+}
+
+#flexColumn table {
+    border-collapse: collapse;
+}
+
+#flexColumn th, #flexColumn td {
+    border: 0.2rem solid black;
+    text-align: center;
+    padding: 0.4rem;
+}
+
+#flexColumn h5 {
+    text-decoration: underline;
+}
