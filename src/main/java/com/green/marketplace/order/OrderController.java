@@ -200,7 +200,7 @@ public class OrderController {
 			Connection conn =  DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/marketplace", "webdev", "ai_marketplace");
 			ResultSet rs = conn.prepareStatement("SELECT * FROM  marketplace.orders WHERE orders.orderid = " + id + ";").executeQuery();
 			if (rs.next()) {
-				if (uid == rs.getInt("uid")) {
+				if (uid == rs.getInt("uid") || uc.isAdmin(sessionID)) {
 					List<OrderItem> items = objectMapper.readValue(rs.getString("products"), new TypeReference<List<OrderItem>>(){});
 					double totalCost = 0;
 					for (OrderItem item : items) {

@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
+
+import javax.management.RuntimeOperationsException;
+
 import java.util.List;
 import java.util.ArrayList;
 import java.text.SimpleDateFormat;
@@ -234,5 +237,22 @@ public class UserController {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public boolean isAdmin(String sessionID) {
+        Connection conn = getConnection();
+        int uid = idOfSession(sessionID);
+
+        try {
+            ResultSet rs = conn.prepareStatement("SELECT username FROM  marketplace.users WHERE users.uid = " + uid  + ";").executeQuery();
+            if (rs.next()) {
+                if (rs.getString("username").equals("admin")) {
+                    return true;
+                }
+            }
+        } catch(SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 }
