@@ -140,7 +140,7 @@ public class OrderController {
 		model.addAttribute("page", "Checkout");
 		return "order/checkout";
 	}
-
+	
 	@PostMapping("/order/place")
 	public String placeOrder(
 		@RequestParam String deliveryName,

@@ -12,12 +12,63 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
+import java.util.List;
+import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+
+import com.green.marketplace.order.PastOrder;
+import com.green.marketplace.order.OrderItem;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @Controller
 public class UserController {
     @Autowired
     private Codec codec;
     private final String sessionID = "sessionID";
+
+    public String profile(Model model, String sessionId) {
+        model.addAttribute("page", "Profile");
+        int uid = idOfSession(sessionId);
+        List<PastOrder> pastOrders = new ArrayList<>();
+
+
+        try {
+            Connection conn = getConnection();
+            // Read user's orders
+            ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.orders WHERE orders.uid = "  + uid + ";").executeQuery();
+
+            // Package as List
+            while (rs.next()) {
+                PastOrder newOrder = new PastOrder();
+                newOrder.setOrderNum(rs.getInt("orderid"));
+
+                SimpleDateFormat mmddyyyy = new SimpleDateFormat("dd/MM/yyyy");
+                newOrder.setDate(mmddyyyy.format(rs.getDate("time")));
+
+                newOrder.setTo(rs.getString("address"));
+                newOrder.setStatus(rs.getString("status"));
+
+                ObjectMapper objectMapper = new ObjectMapper(); // Utility to read a JSON-formatted Map
+
+                List<OrderItem> items = objectMapper.readValue(rs.getString("products"), new TypeReference<List<OrderItem>>(){});
+                newOrder.setItems(items);
+
+                pastOrders.add(newOrder);
+            }
+
+            model.addAttribute("pastOrders", pastOrders);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch(IOException e) { // For ObjectMapper
+            e.printStackTrace();
+        }
+       
+        
+        // Pass List to Model
+
+        return "user/profile";
+    }
 
     @GetMapping("login")
     public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, Model model) {
@@ -37,12 +88,12 @@ public class UserController {
                             return "user/dashboard";
                         }
                         else {
-                            return "user/profile";
+                            return profile(model, sessionIDCookie);
                         }
                     }
                 }
 
-                return "user/profile";
+                return profile(model, sessionIDCookie);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -69,7 +120,7 @@ public class UserController {
                         return "user/dashboard";
                     }
                     else {
-                        return "user/profile";
+                        return profile(model, sessionIDCookie);
                     }
                 }
             }

@@ -40,12 +40,12 @@
 			<th>Status</th>
 			<th></th>
         </tr>
-        <tr>
-            <td>1</td>
-            <td>01/01/2023</td>
-            <td>John Smith, 3 Yellowbrick Rd., Bray, Co. Wicklow</td>
-			<td>Ordered</td>
-			<td><a href="#">View details</a></td>
+        <tr th:each="order : ${pastOrders}">
+            <td th:text="${order.orderNum}" />
+            <td th:text="${order.date}" />
+            <td th:text="${order.to}" />
+            <td th:text="${order.status}" />
+            <td><a th:href="'order/view/' + ${order.orderNum}">View details</a></td>
         </tr>
     </table>
     <br/>
