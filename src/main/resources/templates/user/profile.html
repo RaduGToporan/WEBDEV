@@ -32,16 +32,20 @@
             <p th:text="${user.email}"></p>
         </div>
     </form>
-    <table style="display: none" id="order_history" class="stretch_height">
+    <table style="display: none" id="order_history" class="stretch_height table">
         <tr>
-            <th>Order Number</th>
-            <th>Name</th>
+            <th>Order No.</th>
             <th>Date</th>
+            <th>To</th>
+			<th>Status</th>
+			<th></th>
         </tr>
         <tr>
-            <td>666</td>
-            <td>ChatGPT</td>
-            <td>12/12/22</td>
+            <td>1</td>
+            <td>01/01/2023</td>
+            <td>John Smith, 3 Yellowbrick Rd., Bray, Co. Wicklow</td>
+			<td>Ordered</td>
+			<td><a href="#">View details</a></td>
         </tr>
     </table>
     <br/>
