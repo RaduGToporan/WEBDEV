@@ -206,6 +206,7 @@ public class OrderController {
 					for (OrderItem item : items) {
 						totalCost += item.getPrice();
 					}
+					model.addAttribute("page", "Order #"+id);
 					model.addAttribute("orderNum", id);
 					model.addAttribute("total", totalCost);
 					model.addAttribute("items", items);
