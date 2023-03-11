@@ -69,6 +69,42 @@ public class UserController {
         return "user/profile";
     }
 
+    public String dashboard(Model model) {
+        model.addAttribute("page", "Dashboard");
+        List<PastOrder> pastOrders = new ArrayList<>();
+
+        try {
+            Connection conn = getConnection();
+            // Read user's orders
+            ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.orders;").executeQuery();
+
+            // Package as List
+            while (rs.next()) {
+                PastOrder newOrder = new PastOrder();
+                newOrder.setOrderNum(rs.getInt("orderid"));
+
+                SimpleDateFormat mmddyyyy = new SimpleDateFormat("dd/MM/yyyy");
+                newOrder.setDate(mmddyyyy.format(rs.getDate("time")));
+
+                newOrder.setTo(rs.getString("address"));
+                newOrder.setStatus(rs.getString("status"));
+
+                List<OrderItem> items = objectMapper.readValue(rs.getString("products"), new TypeReference<List<OrderItem>>(){});
+                newOrder.setItems(items);
+
+                pastOrders.add(newOrder);
+            }
+
+            model.addAttribute("pastOrders", pastOrders);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch(IOException e) { // For ObjectMapper
+            e.printStackTrace();
+        }
+
+        return "user/dashboard";
+    }
+
     @GetMapping("login")
     public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, Model model) {
         if (sessionIDCookie == null) {
@@ -84,7 +120,7 @@ public class UserController {
                     if (sessionID != null && sessionID.equals(sessionIDCookie)) {
                         model.addAttribute("user", new User(rs.getString("username"), rs.getString("password"), rs.getString("email")));
                         if (rs.getString("username").equals("admin")) {
-                            return "user/dashboard";
+                            return dashboard(model);
                         }
                         else {
                             return profile(model, sessionID);
@@ -116,7 +152,7 @@ public class UserController {
                     model.addAttribute("user", new User(rsName, password, rs.getString("email")));
                     conn.close();
                     if (username.equals("admin")) {
-                        return "user/dashboard";
+                        return dashboard(model);
                     }
                     else {
                         return profile(model, cookie.getValue());
