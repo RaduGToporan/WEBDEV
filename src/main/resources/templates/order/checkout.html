@@ -9,78 +9,43 @@
 
 		<div class="row container-fluid">
             <div class="col-lg-4 order-last order-lg-first">
-                <form class="mx-auto checkout-form" method="POST" action="/order/place">
+                <form class="mx-auto checkout-form">
+                    <!-- <div class="form-row align-items-center"> -->
                             <label><b>Card Information</b></label><br>
-                            <input required type="text" placeholder="1234 1234 1234 1234" style="width:200px;" title="Mastercard, Visa or AmEx Card"
-                            pattern="5[1-5][0-9]{14}$|^2(?:2(?:2[1-9]|[3-9][0-9])|[3-6][0-9][0-9]|7(?:[01][0-9]|20))[0-9]{12}|3[47][0-9]{13}|4[0-9]{12}(?:[0-9]{3})?"
-                            ><br>
-                            <!-- | (3[47][0-9]{13}) | (4[0-9]{12}(?:[0-9]{3})?) -->
-                            <input required type="text" placeholder="MM/YY" style="width:110px" pattern="[0-9]{2}/[0-9]{2}" title="Card expiry month (MM/YY)">
-                            <input required type="text" placeholder="CVV" style="width:85px;" pattern="[0-9]{3}" title="CVV"><br><br>
+                            <input type="text" placeholder="1234 1234 1234 1234" style="width:200px;"><br>
+                            <input type="text" placeholder="MM/YY" style="width:110px">
+                            <input type="text" placeholder="CVV" style="width:85px;"><br><br>
 
                         <label><b>Cardholder Name</b></label><br>
-                        <input required type="text" placeholder="John Smith"> <br><br>
+                        <input type="text" placeholder="John Smith"> <br><br>
 
-                        <label><b>Delivery Adress</b></label><br>
-                        <input required id="deliveryName" name="deliveryName" type="test" placeholder="John Smith">
-                        <input required id="adress1" name="address1" type="text" placeholder="Address Line 1"><br>
-                        <input id="address2" name="address2" type="text" placeholder="Address Line 2"><br>
-                        <input id="city" name="city" required type="text" placeholder="City"><br>
-                        <select id="county", name="county" required style="width:200px;">
-                            <option value="Co. Antrim">Co. Antrim</option>
-                            <option value="Co. Armagh">Co. Armagh</option>
-                            <option value="Co. Carlow">Co. Carlow</option>
-                            <option value="Co. Cavan">Co. Cavan</option>
-                            <option value="Co. Clare">Co. Clare</option>
-                            <option value="Co. Cork">Co. Cork</option>
-                            <option value="Co. Derry">Co. Derry</option>
-                            <option value="Co. Donegal">Co. Donegal</option>
-                            <option value="Co. Down">Co. Down</option>
-                            <option value="Co. Dublin">Co. Dublin</option>
-                            <option value="Co. Fermanagh">Co. Fermanagh</option>
-                            <option value="Co. Galway">Co. Galway</option>
-                            <option value="Co. Kerry">Co. Kerry</option>
-                            <option value="Co. Kildare">Co. Kildare</option>
-                            <option value="Co. Kilkenny">Co. Kilkenny</option>
-                            <option value="Co. Laois">Co. Laois</option>
-                            <option value="Co. Leitrim">Co. Leitrim</option>
-                            <option value="Co. Limerick">Co. Limerick</option>
-                            <option value="Co. Longford">Co. Longford</option>
-                            <option value="Co. Louth">Co. Louth</option>
-                            <option value="Co. Mayo">Co. mayo</option>
-                            <option value="Co. Meath">Co. Meath</option>
-                            <option value="Co. Monaghan">Co. Monaghan</option>
-                            <option value="Co. Offaly">Co. Offaly</option>
-                            <option value="Co. Roscommon">Co. Roscommon</option>
-                            <option value="Co. Sligo">Co. Sligo</option>
-                            <option value="Co. Tpperary">Co. Tipperary</option>
-                            <option value="Co. Tyrone">Co. Tyrone</option>
-                            <option value="Co. Waterford">Co. Waterford</option>
-                            <option value="Co. Westmeath">Co. Westmeath</option>
-                            <option value="Co. Wexford">Co. Wexford</option>
-                            <option value="Co. Wicklow">Co. Wicklow</option>
+                        <label><b>Billing Adress</b></label><br>
+                        <input type="text" placeholder="Address Line 1"><br>
+                        <input type="text" placeholder="Address Line 2"><br>
+                        <input type="text" placeholder="City"><br>
+                        <select style="width:200px;">
+                            <option>Co. Meath</option>
                         </select>
                         <br>
-                        <input id="eircode" name="eircode" type="text" placeholder="Eircode"><br><br>
-                        <input id="uid" name="uid" type="text" style="display:none" th:value="${userID}">
-                        <input id="productsString" name="productsString" type="text" style="display:none;">
+                        <input type="text" placeholder="Eircode"><br><br>
                         <input type="submit" value="Place Order"><br><br>
+                    <!-- </div> -->
                 </form>
             </div>
             <div class="col-lg-8 order-first order-lg-last">
-                <table class="table" id="checkoutTable">
+                <table class="table">
                     <tr>
                         <th colspan="2">Item</th>
                         <th>Unit Price</th>
                         <th>Quantity</th>
                         <th>Price</th>
                     </tr>
-                    <tr th:each="item: ${items}" class="checkoutRow" th:attr="data-key=|${item.id}|">
+                    <tr th:each="item: ${items}">
                         <td><img class="icon" th:src="@{/images/blank.png}"></td>
-                        <td class="item-name" th:text="${item.name}" />
-                        <td class="item-unit-price" th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
-                        <td class="item-quantity" th:text="${item.quantity}">
-                        <td class="item-price" th:text="'€' + ${#numbers.formatDecimal(item.totalPrice,2,2)}" />
+                        <td th:text="${item.name}" />
+                        <td th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
+                        <td th:text="${item.quantity}">
+                        <td th:text="'€' + ${#numbers.formatDecimal(item.totalPrice,2,2)}" />
                     </tr>
                     <tr>
                         <td></td>
@@ -92,23 +57,5 @@
                 </table>
             </div>
         </div>
-
-        <script>
-            const productsString = document.getElementById("productsString");
-            const checkoutTable = document.getElementById("checkoutTable");
-            const checkoutItems = checkoutTable.getElementsByClassName("checkoutRow");
-            var productsJSON = "[";
-            for (let item of checkoutItems) {
-                const itemName = item.getElementsByClassName('item-name')[0].textContent;
-                const itemUnitPrice = item.getElementsByClassName('item-unit-price')[0].textContent.substring(1);
-                const itemQuantity = item.getElementsByClassName('item-quantity')[0].textContent;
-                const itemPrice = item.getElementsByClassName('item-price')[0].textContent.substring(1);
-                productsJSON += "{name:\"" + itemName + "\",unitPrice:" + itemUnitPrice + ",quantity:" + itemQuantity + ",price:" + itemPrice + "},"
-            }
-            productsJSON = productsJSON.substring(0,productsJSON.length-1);
-            productsJSON += "]";
-            productsString.value = productsJSON;
-            console.log(productsJSON);
-        </script>
 	</body>
 </html>

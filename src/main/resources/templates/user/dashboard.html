@@ -1,114 +1,117 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="">
-	<head th:replace="~{fragments/head}">
-	</head>
-	<body>
-		<nav th:replace="~{fragments/nav}"></nav>
-		<main>
-			<div id="options">
-				<button id="show_models">
-					<img alt="models_icon" th:src="@{/images/models.svg}"/>
-					<br/>
-					Models
-				</button>
-				<button id="show_orders">
-					<img alt="orders_icon" th:src="@{/images/orders.svg}"/>
-					<br/>
-					Orders
-				</button>
-			</div>
-			<table id="models" class="stretch_height">
-				<tr>
-					<th>ID</th>
-					<th>Name</th>
-					<th>Price $</th>
-					<th>Status</th>
-					<th>Edit</th>
-				</tr>
-				<tr>
-					<td>0</td>
-					<td>ChatGPT</td>
-					<td>61,973,723.99</td>
-					<td>Discontinued</td>
-					<td>
-						<button>Edit</button>
-					</td>
-				</tr>
-				<tr>
-					<td colspan="5">
-						<button class="stretch_width">+ Add model</button>
-					</td>
-				</tr>
-			</table>
-			<table id="orders" style="display: none" class="stretch_height">
-				<tr>
-					<th>Order Number</th>
-					<th>Items</th>
-					<th>Date</th>
-					<th>State</th>
-					<th>Change State</th>
-				</tr>
-				<tr id="0">
-					<td>0</td>
-					<td>ChatGPT</td>
-					<td>12/12/22</td>
-					<td>Delivered</td>
-					<td>
-						<button id="edit_model" class="stretch_width">Edit</button>
-					</td>
-				</tr>
-			</table>
-			<br/>
-		</main>
-		<script>
-			models = document.getElementById("models");
-			orders = document.getElementById("orders");
+<head th:replace="~{fragments/head}">
+</head>
+<body>
+<nav th:replace="~{fragments/nav}"></nav>
+<main id="flexColumn">
+    <div id="options">
+        <button id="show_models">
+            <img alt="models_icon" th:src="@{/images/models.svg}"/>
+            <br/>
+            Models
+        </button>
+        <button id="show_orders">
+            <img alt="orders_icon" th:src="@{/images/orders.svg}"/>
+            <br/>
+            Orders
+        </button>
+        <button id="logout"><img alt="order_icon" th:src="@{/images/logout.svg}"/>
+            <br/>Logout
+        </button>
+    </div>
+    <table id="models" class="stretch_height">
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Price $</th>
+            <th>Status</th>
+            <th>Edit</th>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>ChatGPT</td>
+            <td>61,973,723.99</td>
+            <td>Discontinued</td>
+            <td>
+                <button>Edit</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="5">
+                <button>+ Add model</button>
+            </td>
+        </tr>
+    </table>
+    <table id="orders" style="display: none" >
+        <tr>
+            <th>Order Number</th>
+            <th>Items</th>
+            <th>Date</th>
+            <th>State</th>
+            <th>Change State</th>
+        </tr>
+        <tr id="0">
+            <td>0</td>
+            <td>ChatGPT</td>
+            <td>12/12/22</td>
+            <td>Delivered</td>
+            <td>
+                <button id="edit_model">Edit</button>
+            </td>
+        </tr>
+    </table>
+    <br/>
+</main>
+<script>
+    models = document.getElementById("models");
+    orders = document.getElementById("orders");
 
-			document.getElementById("show_models").addEventListener("click", () => {
-				models.style.display = "";
-				orders.style.display = "none";
-			})
+    document.getElementById("show_models").addEventListener("click", () => {
+        models.style.display = "";
+        orders.style.display = "none";
+    })
 
-			document.getElementById("show_orders").addEventListener("click", () => {
-				models.style.display = "none";
-				orders.style.display = "";
-			})
+    document.getElementById("show_orders").addEventListener("click", () => {
+        models.style.display = "none";
+        orders.style.display = "";
+    })
 
-			document.getElementById("edit_model").addEventListener("click", e => {
-				row = document.createElement("tr");
+    document.getElementById("edit_model").addEventListener("click", e => {
+        row = document.createElement("tr");
 
-				id = document.createElement("td");
-				rowID = e.target.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
-				id.textContent = rowID;
+        id = document.createElement("td");
+        rowID = e.target.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+        id.textContent = rowID;
 
-				items = document.createElement("td");
-				items.textContent = e.target.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
+        items = document.createElement("td");
+        items.textContent = e.target.parentNode.previousElementSibling.previousElementSibling.previousElementSibling.textContent;
 
-				time = document.createElement("td");
-				time.textContent = e.target.parentNode.previousElementSibling.previousElementSibling.textContent;
+        time = document.createElement("td");
+        time.textContent = e.target.parentNode.previousElementSibling.previousElementSibling.textContent;
 
-				td1 = document.createElement("td")
-				state = document.createElement("select");
-				value1 = document.createElement("option")
-				value1.value = "Discontinued";
-				value1.textContent = "Discontinued"
-				state.replaceChildren(value1)
-				td1.replaceChildren(state)
+        td1 = document.createElement("td")
+        state = document.createElement("select");
+        value1 = document.createElement("option")
+        value1.value = "Discontinued";
+        value1.textContent = "Discontinued"
+        state.replaceChildren(value1)
+        td1.replaceChildren(state)
 
-				td2 = document.createElement("td");
-				agree = document.createElement("input");
-				agree.type = "submit";
-				agree.value = "Save"
-				agree.classList.add("stretch_width");
-				agree.addEventListener("click", () => {
-					row.style.display = "none";
-				})
-				td2.replaceChildren(agree)
+        td2 = document.createElement("td");
+        agree = document.createElement("input");
+        agree.type = "submit";
+        agree.value = "Save"
+        agree.classList.add("stretch_width");
+        agree.addEventListener("click", () => {
+            row.style.display = "none";
+        })
+        td2.replaceChildren(agree)
 
-				row.replaceChildren(id, items, time, td1, td2)
+        row.replaceChildren(id, items, time, td1, td2)
 
-				document.getElementById(rowID).after(row)
-			})
-		</script>
-	</body>
+        document.getElementById(rowID).after(row)
+    })
+</script>
+</body>
 </html>

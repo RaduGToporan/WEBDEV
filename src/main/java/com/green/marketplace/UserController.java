@@ -1,6 +1,7 @@
 package com.green.marketplace;
 
 import com.green.marketplace.user.Codec;
+import com.green.marketplace.user.User;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
 
@@ -15,46 +17,69 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private Codec codec;
+    private final String sessionID = "sessionID";
 
     @GetMapping("login")
-    public String login() {
-        return "user/login";
-    }
-
-    @PostMapping("login")
-    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, HttpServletResponse res, @RequestParam(defaultValue = "user") String username, @RequestParam String password, Model model) {
-        if (username.equals("admin") && password.equals("ai_marketplace")) {
-            deleteSession(sessionIDCookie, res);
-            model.addAttribute("page", "Dashboard");
-            return "user/dashboard";
-        } else if (!username.equals("user")) {
+    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, Model model) {
+        if (sessionIDCookie == null) {
+            return "user/login";
+        }
+        else {
             try {
                 Connection conn = getConnection();
                 ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
 
                 while (rs.next()) {
-                    String rsName = rs.getString("username");
-                    String rsPass = rs.getString("password");
-
-                    if (username.equals(rsName) && codec.getEncoder().matches(password, rsPass)) {
-                        deleteSession(sessionIDCookie, res);
-                        Cookie cookie = createSessionCookie(res);
-                        String query = String.format("UPDATE marketplace.users SET sessionID='%s' WHERE username='%s' AND password='%s'", cookie.getValue(), rsName, rsPass);
-                        conn.prepareStatement(query).execute();
-                        res.addCookie(cookie);
-
-                        model.addAttribute("page", "User");
-                        return "user/profile";
+                    String sessionID = rs.getString("sessionID");
+                    if (sessionID != null && sessionID.equals(sessionIDCookie)) {
+                        model.addAttribute("user", new User(rs.getString("username"), rs.getString("password"), rs.getString("email")));
+                        if (rs.getString("username").equals("admin")) {
+                            return "user/dashboard";
+                        }
+                        else {
+                            return "user/profile";
+                        }
                     }
                 }
 
-                conn.close();
-            } catch (SQLException e) {
+                return "user/profile";
+            }
+            catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
+    }
 
-        return "user/login";
+    @PostMapping("login")
+    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, HttpServletResponse res, @RequestParam(defaultValue = "user") String username, @RequestParam String password, Model model) {
+        try {
+            Connection conn = getConnection();
+            ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
+
+            while (rs.next()) {
+                String rsName = rs.getString("username");
+                String rsPass = rs.getString("password");
+                if (username.equals(rsName) && codec.getEncoder().matches(password, rsPass)) {
+                    deleteSession(sessionIDCookie, res);
+                    Cookie cookie = createCookie(res, sessionID, "");
+                    conn.prepareStatement(String.format("UPDATE marketplace.users SET sessionID='%s' WHERE username='%s' AND password='%s'", cookie.getValue(), rsName, rsPass)).execute();
+                    model.addAttribute("user", new User(rsName, password, rs.getString("email")));
+                    conn.close();
+                    if (username.equals("admin")) {
+                        return "user/dashboard";
+                    }
+                    else {
+                        return "user/profile";
+                    }
+                }
+            }
+
+            createCookie(res, "valid_credentials", "false");
+            conn.close();
+            return "redirect:login";
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @GetMapping("signup")
@@ -62,16 +87,14 @@ public class UserController {
         return "user/signup";
     }
 
-    /*
-     * Unique ID is prone to error if we allow deletion of accounts but isn't a requirement, so it's fine
-     * */
+    /* Unique ID is prone to error if we allow deletion of accounts but isn't a requirement, so it's fine */
     @PostMapping("signup")
-    public String signupPost(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, HttpServletResponse res, @RequestParam String username, @RequestParam String email, @RequestParam String password) {
+    public void signupPost(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, HttpServletResponse res, @RequestParam String username, @RequestParam String email, @RequestParam String password) {
         try {
             deleteSession(sessionIDCookie, res);
             Connection conn = getConnection();
             ResultSet rs = conn.prepareStatement("SELECT COUNT(*) AS total FROM marketplace.users").executeQuery();
-            Cookie cookie = createSessionCookie(res);
+            Cookie cookie = createCookie(res, sessionID, "");
 
             if (rs.next()) {
                 String query = String.format("INSERT INTO users VALUES (%d, '%s', '%s', '%s', '%s', '%s', '%s')", rs.getInt("total") + 1, username, codec.getEncoder().encode(password), email, "N/A", "2020-04-07", cookie.getValue());
@@ -79,12 +102,13 @@ public class UserController {
             }
 
             conn.close();
-            return "redirect:";
-        } catch (SQLException e) {
+            res.sendRedirect("/login");
+        } catch (SQLException | IOException e) {
             throw new RuntimeException(e);
         }
     }
 
+    /* Utility */
     public Connection getConnection() {
         try {
             return DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/marketplace", "webdev", "ai_marketplace");
@@ -93,46 +117,47 @@ public class UserController {
         }
     }
 
-    public Cookie createSessionCookie(HttpServletResponse res) {
-        Cookie cookie = new Cookie("sessionID", UUID.randomUUID().toString());
+    public Cookie createCookie(HttpServletResponse res, String key, String value) {
+        Cookie cookie = new Cookie(key, value);
+
+        if (key.equals(sessionID)) {
+            cookie.setValue(UUID.randomUUID().toString());
+        }
+
         res.addCookie(cookie);
         return cookie;
     }
 
+    /* Client-side utility */
     @GetMapping("isUsernameAvailable")
     @ResponseBody
     public Boolean isUsernameAvailable(@RequestParam String username) {
-        if (username.equals("admin")) {
-            return false;
-        } else {
-            try {
-                Connection conn = getConnection();
-                ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
+        try {
+            Connection conn = getConnection();
+            ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
 
-                while (rs.next()) {
-                    if (rs.getString("username").equals(username)) {
-                        return false;
-                    }
+            while (rs.next()) {
+                if (rs.getString("username").equals(username)) {
+                    return false;
                 }
-
-                conn.close();
-                return true;
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
             }
+
+            conn.close();
+            return true;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
 
     @GetMapping("deleteSession")
     @ResponseBody
-    public void deleteSession(@CookieValue(required = false) String sessionID, HttpServletResponse res) {
+    public void deleteSession(@CookieValue(value="sessionID", required = false) String sessionID, HttpServletResponse res) {
         if (sessionID != null) {
             try {
                 Connection conn = getConnection();
                 String query = String.format("UPDATE marketplace.users SET sessionID = NULL WHERE sessionID = '%s'", sessionID);
                 conn.prepareStatement(query).execute();
-
-                Cookie cookie = new Cookie("sessionID", "ignored");
+                Cookie cookie = new Cookie("sessionID", "");
                 cookie.setMaxAge(0);
                 res.addCookie(cookie);
                 conn.close();

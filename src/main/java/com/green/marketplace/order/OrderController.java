@@ -7,28 +7,20 @@ import java.util.List;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.green.marketplace.user.UserController;
 import com.fasterxml.jackson.core.type.TypeReference;
 
 @Controller
 public class OrderController {
-
-	// Used to get user id from sesion id
-	UserController uc = new UserController();
 
 	// Go to an empty shopping cart page so that JS can POST shopping cart data back
 	@GetMapping("/order/cart")
@@ -114,26 +106,18 @@ public class OrderController {
 
 	@GetMapping("/order/checkout")
 	public String checkout(Model model) {
-		// Send the user to the shopping cart
-		model.addAttribute("page", "Shopping Cart");
-		model.addAttribute("getRequest", true); // This is a GET request
-		return "order/cart";
+		model.addAttribute("page", "Checkout");
+		return "order/checkout";
 	}
 
 	@PostMapping("/order/checkout")
-	public String checkout(@RequestParam String checkoutItems, @RequestParam String total, @CookieValue(required = false, defaultValue = "-1") String sessionID, Model model) {
+	public String checkout(@RequestParam String checkoutItems, @RequestParam String total, Model model) {
 		ObjectMapper objectMapper = new ObjectMapper();
-		int uid = uc.idOfSession(sessionID);
-
-		// If not logged in, go back to cart
-		if (uid == -1) {return cart(model);}
-
+		
 		try {
 			List<CheckoutItem> x = objectMapper.readValue(checkoutItems, new TypeReference<List<CheckoutItem>>(){});
 			model.addAttribute("items", x);
 			model.addAttribute("total", total);
-			
-			model.addAttribute("userID", uid);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -141,52 +125,4 @@ public class OrderController {
 		return "order/checkout";
 	}
 
-	@PostMapping("/order/place")
-	public String placeOrder(
-		@RequestParam String deliveryName,
-		@RequestParam String address1,
-		@RequestParam String address2,
-		@RequestParam String city,
-		@RequestParam String county,
-		@RequestParam String eircode,
-		@RequestParam int uid,
-		@RequestParam String productsString,
-		Model model
-		) {
-
-			// Construct Address
-			String address = deliveryName + ", " + address1;
-			if (!address2.equals("")) {
-				address += ", " + address2;
-			}
-			address += ", " + city;
-			address += ", " + county;
-			if (!eircode.equals("")) {
-				address += ", " + eircode;
-			}
-			
-			// Get time
-			SimpleDateFormat datetimeFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-			String orderTime = datetimeFormat.format(timestamp);
-			
-			// Place order
-			try {
-				Connection conn =  DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/marketplace", "webdev", "ai_marketplace");
-				ResultSet rs = conn.prepareStatement("SELECT COUNT(*) AS total FROM marketplace.orders").executeQuery();
-				int orderID;
-				if (rs.next()) {
-					orderID = rs.getInt("total") + 1;
-					model.addAttribute("orderId", orderID);
-					String query = "INSERT INTO `marketplace`.`orders` (`orderid`, `uid`, `time`, `products`, `address`, `status`) VALUES ('" + orderID + "', '" + uid + "', '" + orderTime + "', '" +productsString + "', '" + address + "', 'ordered');";
-					conn.prepareStatement(query).execute();
-				}
-			} catch (SQLException e) {
-				throw new RuntimeException(e);
-			}
-			
-			
-
-			return "order/success";
-		}
 }

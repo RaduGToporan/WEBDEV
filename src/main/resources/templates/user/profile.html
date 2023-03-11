@@ -1,86 +1,74 @@
-<!DOCTYPE html>    
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="~{fragments/head}">
-	</head>
-	<body style="display: flex; flex-direction: column">
-		<nav th:replace="~{fragments/nav}"></nav>
-		<main style="flex-grow: 1">
-			<h1 id="options">
-				<button id="show_settings">
-					<img alt="gear_icon" th:src="@{/images/settings.svg}"/>
-					<br/>
-					Settings
-				</button>
-				<button id="show_order_history">
-					<img alt="order_icon" th:src="@{/images/orders.svg}"/>
-					<br/>
-					Orders
-					<br/>
-					History
-				</button>
-			</h1>
-			<form id="settings" action="" class="stretch_height">
-				<div>
-					<label for="username">Username</label>
-					<div>
-						<input type="text" value="Default" id="username">
-						<input type="submit" value="Save">
-					</div>
-				</div>
-				<div>
-					<label for="email">Email</label>
-					<div>
-						<input type="email" value="Default" id="email">
-						<input type="submit" value="Save">
-					</div>
-				</div>
-				<div>
-					<label for="password">Password</label>
-					<div>
-						<input type="password" value="Default" id="password">
-						<input type="button" id="show_password" value="Show">
-						<input type="submit" value="Save">
-					</div>
-				</div>
-			</form>
-			<table style="display: none" id="order_history" class="stretch_height">
-				<tr>
-					<th>Order Number</th>
-					<th>Name</th>
-					<th>Date</th>
-				</tr>
-				<tr>
-					<td>666</td>
-					<td>ChatGPT</td>
-					<td>12/12/22</td>
-				</tr>
-			</table>
-			<br/>
-		</main>
-		<script>
-			settings = document.getElementById("settings");
-			order_history = document.getElementById("order_history");
+<head th:replace="~{fragments/head}">
+</head>
+<body style="display: flex; flex-direction: column">
+<nav th:replace="~{fragments/nav}"></nav>
+<main id="flexColumn">
+    <h1 id="options">
+        <button id="show_settings">
+            <img alt="gear_icon" th:src="@{/images/settings.svg}"/>
+            <br/>
+            Settings
+        </button>
+        <button id="show_order_history">
+            <img alt="order_icon" th:src="@{/images/orders.svg}"/>
+            <br/>
+            Orders
+            <br/>
+            History
+        </button>
+        <button id="logout"><img alt="order_icon" th:src="@{/images/logout.svg}"/>
+            <br/>Logout
+        </button>
+    </h1>
+    <form id="settings" action="" class="stretch_height">
+        <div class="divider">
+            <h5>Username</h5>
+            <p th:text="${user.username}"></p>
+        </div>
+        <div class="divider">
+            <h5>Email</h5>
+            <p th:text="${user.email}"></p>
+        </div>
+    </form>
+    <table style="display: none" id="order_history" class="stretch_height">
+        <tr>
+            <th>Order Number</th>
+            <th>Name</th>
+            <th>Date</th>
+        </tr>
+        <tr>
+            <td>666</td>
+            <td>ChatGPT</td>
+            <td>12/12/22</td>
+        </tr>
+    </table>
+    <br/>
+</main>
+<script>
+    settings = document.getElementById("settings");
+    order_history = document.getElementById("order_history");
 
-			document.getElementById("show_settings").addEventListener("click", () => {
-				settings.style.display = "";
-				order_history.style.display = "none";
-			})
+    document.getElementById("show_settings").addEventListener("click", () => {
+        settings.style.display = "";
+        order_history.style.display = "none";
+    })
 
-			document.getElementById("show_order_history").addEventListener("click", () => {
-				settings.style.display = "none";
-				order_history.style.display = "";
-			})
+    document.getElementById("show_order_history").addEventListener("click", () => {
+        settings.style.display = "none";
+        order_history.style.display = "";
+    })
 
-			password = document.getElementById("password");
+    password = document.getElementById("password");
 
-			document.getElementById("show_password").addEventListener("click", () => {
-				if (password.getAttribute("type") === "password") {
-					password.setAttribute("type", "text")
-				}
-				else {
-					password.setAttribute("type", "password")
-				}
-			})
-		</script>
-	</body>
+    document.getElementById("show_password").addEventListener("click", () => {
+        if (password.getAttribute("type") === "password") {
+            password.setAttribute("type", "text")
+        } else {
+            password.setAttribute("type", "password")
+        }
+    })
+</script>
+</body>
 </html>

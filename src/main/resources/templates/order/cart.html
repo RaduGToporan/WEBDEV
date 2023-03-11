@@ -62,7 +62,7 @@
 					<td></td>
 				</tr>
 			</table>
-			<form method="POST" action="/order/checkout">
+			<form id="pay" method="POST" action="/order/checkout">
 				<input style="display:none;" type="text" id="checkoutItems" name="checkoutItems">
 				<input style="display:none" type="number" id="total" name="total" th:value="${totalPrice}">
 				<input class="my-button" type="submit" value="Proceed to Payment">
