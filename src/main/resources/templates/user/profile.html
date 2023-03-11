@@ -44,7 +44,9 @@
             <td th:text="${order.orderNum}" />
             <td th:text="${order.date}" />
             <td th:text="${order.to}" />
-            <td th:text="${order.status}" />
+            <td th:if="${order.status} eq 'ordered'">Ordered</td>
+            <td th:if="${order.status} eq 'dipatched'">Dispatched</td>
+            <td th:if="${order.status} eq 'delivered'">Delivered</td>
             <td><a th:href="'order/view/' + ${order.orderNum}">View product(s)</a></td>
         </tr>
     </table>

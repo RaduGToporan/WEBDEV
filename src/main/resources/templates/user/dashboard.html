@@ -61,9 +61,9 @@
                 <form method="POST" action="/order/update">
                     <input type="number" name="orderNum" th:value="${order.orderNum}" style="display:none;"/>
                     <select name="status" onchange="this.form.submit()">
-                        <option th:selected="${order.status} eq 'ordered'">ordered</option>
-                        <option th:selected="${order.status} eq 'dispatched'">dispatched</option>
-                        <option th:selected="${order.status} eq 'delivered'">delivered</option>
+                        <option value="ordered" th:selected="${order.status} eq 'ordered'">ordered</option>
+                        <option value="dipatched" th:selected="${order.status} eq 'dipatched'">dispatched</option>
+                        <option value="delivered" th:selected="${order.status} eq 'delivered'">delivered</option>
                     </select>
                 </form>
             </td>
