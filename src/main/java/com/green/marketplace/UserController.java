@@ -40,12 +40,13 @@ public class UserController {
         try {
             Connection conn = getConnection();
             // Read user's orders
-            ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.orders WHERE orders.uid = "  + uid + ";").executeQuery();
+            ResultSet rs = conn.prepareStatement("SELECT orderid, username, time, address, status, products FROM marketplace.orders INNER JOIN marketplace.users ON orders.uid = users.uid WHERE orders.uid = "  + uid + ";").executeQuery();
 
             // Package as List
             while (rs.next()) {
                 PastOrder newOrder = new PastOrder();
                 newOrder.setOrderNum(rs.getInt("orderid"));
+                newOrder.setUser(rs.getString("username"));
 
                 SimpleDateFormat mmddyyyy = new SimpleDateFormat("dd/MM/yyyy");
                 newOrder.setDate(mmddyyyy.format(rs.getDate("time")));
@@ -76,12 +77,13 @@ public class UserController {
         try {
             Connection conn = getConnection();
             // Read user's orders
-            ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.orders;").executeQuery();
+            ResultSet rs = conn.prepareStatement("SELECT orderid, username, time, address, status, products FROM marketplace.orders INNER JOIN marketplace.users ON orders.uid = users.uid;").executeQuery();
 
             // Package as List
             while (rs.next()) {
                 PastOrder newOrder = new PastOrder();
                 newOrder.setOrderNum(rs.getInt("orderid"));
+                newOrder.setUser(rs.getString("username"));
 
                 SimpleDateFormat mmddyyyy = new SimpleDateFormat("dd/MM/yyyy");
                 newOrder.setDate(mmddyyyy.format(rs.getDate("time")));
@@ -290,5 +292,9 @@ public class UserController {
             throw new RuntimeException(e);
         }
         return false;
+    }
+
+    public String getUsername(int uid) {
+        return "Bob";
     }
 }

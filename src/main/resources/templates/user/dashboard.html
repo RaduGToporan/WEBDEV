@@ -54,7 +54,7 @@
         </tr>
         <tr th:each="order : ${pastOrders}">
             <td th:text="${order.orderNum}" />
-            <td>Bob</td>
+            <td th:text="${order.user}">
             <td th:text="${order.date}" />
             <td th:text="${order.to}" />
             <td>
