@@ -46,6 +46,7 @@
     <table id="orders" style="display: none" class="table">
         <tr>
             <th>Order No.</th>
+            <th>User</th>
             <th>Date</th>
             <th>To</th>
 			<th>Status</th>
@@ -53,9 +54,19 @@
         </tr>
         <tr th:each="order : ${pastOrders}">
             <td th:text="${order.orderNum}" />
+            <td>Bob</td>
             <td th:text="${order.date}" />
             <td th:text="${order.to}" />
-            <td th:text="${order.status}" />
+            <td>
+                <form method="POST" action="/order/update">
+                    <input type="number" name="orderNum" th:value="${order.orderNum}" style="display:none;"/>
+                    <select name="status" onchange="this.form.submit()">
+                        <option th:selected="${order.status} eq 'ordered'">ordered</option>
+                        <option th:selected="${order.status} eq 'dispatched'">dispatched</option>
+                        <option th:selected="${order.status} eq 'delivered'">delivered</option>
+                    </select>
+                </form>
+            </td>
             <td><a th:href="'order/view/' + ${order.orderNum}">View product(s)</a></td>
         </tr>
     </table>
