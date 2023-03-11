@@ -1,0 +1,31 @@
+<!DOCTYPE html>    
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{fragments/head}"></head>
+
+	<body>
+		<nav th:replace="~{fragments/nav}"></nav>
+
+		<h1 th:text="'Order #' + ${orderNum}"></h1>
+
+		<div class="row container-fluid">
+            <table class="table">
+                <tr>
+                    <th>Item</th>
+                    <th>Unit Price</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                </tr>
+                <tr th:each="item : ${items}">
+                    <td th:text="${item.name}" />
+                    <td th:text="'€' + ${item.unitPrice}" />
+                    <td th:text="${item.quantity}" />
+                    <td th:text="'€' + ${item.price}" />
+                </tr>
+                <tr>
+                    <td colspan="3">Total</td>
+                    <td th:text="'€' + ${total}" />
+                </tr>
+            </table>
+        </div>
+	</body>
+</html>

@@ -26,6 +26,7 @@ public class UserController {
     @Autowired
     private Codec codec;
     private final String sessionID = "sessionID";
+    ObjectMapper objectMapper = new ObjectMapper(); // Utility to read a JSON-formatted List
 
     public String profile(Model model, String sessionId) {
         model.addAttribute("page", "Profile");
@@ -49,8 +50,6 @@ public class UserController {
                 newOrder.setTo(rs.getString("address"));
                 newOrder.setStatus(rs.getString("status"));
 
-                ObjectMapper objectMapper = new ObjectMapper(); // Utility to read a JSON-formatted Map
-
                 List<OrderItem> items = objectMapper.readValue(rs.getString("products"), new TypeReference<List<OrderItem>>(){});
                 newOrder.setItems(items);
 
@@ -63,9 +62,6 @@ public class UserController {
         } catch(IOException e) { // For ObjectMapper
             e.printStackTrace();
         }
-       
-        
-        // Pass List to Model
 
         return "user/profile";
     }
@@ -88,12 +84,12 @@ public class UserController {
                             return "user/dashboard";
                         }
                         else {
-                            return profile(model, sessionIDCookie);
+                            return profile(model, sessionID);
                         }
                     }
                 }
 
-                return profile(model, sessionIDCookie);
+                return profile(model, sessionID);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -120,7 +116,7 @@ public class UserController {
                         return "user/dashboard";
                     }
                     else {
-                        return profile(model, sessionIDCookie);
+                        return profile(model, cookie.getValue());
                     }
                 }
             }

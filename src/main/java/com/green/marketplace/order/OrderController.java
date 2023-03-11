@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -140,7 +141,7 @@ public class OrderController {
 		model.addAttribute("page", "Checkout");
 		return "order/checkout";
 	}
-	
+
 	@PostMapping("/order/place")
 	public String placeOrder(
 		@RequestParam String deliveryName,
@@ -189,4 +190,33 @@ public class OrderController {
 
 			return "order/success";
 		}
+
+	@GetMapping("/order/view/{id}")
+	public String viewOrder(@PathVariable int id, @CookieValue(required = false, defaultValue = "-1") String sessionID, Model model) {
+		int uid = uc.idOfSession(sessionID);
+		ObjectMapper objectMapper = new ObjectMapper(); // Utility to read a JSON-formatted List
+
+		try {
+			Connection conn =  DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/marketplace", "webdev", "ai_marketplace");
+			ResultSet rs = conn.prepareStatement("SELECT * FROM  marketplace.orders WHERE orders.orderid = " + id + ";").executeQuery();
+			if (rs.next()) {
+				if (uid == rs.getInt("uid")) {
+					List<OrderItem> items = objectMapper.readValue(rs.getString("products"), new TypeReference<List<OrderItem>>(){});
+					double totalCost = 0;
+					for (OrderItem item : items) {
+						totalCost += item.getPrice();
+					}
+					model.addAttribute("orderNum", id);
+					model.addAttribute("total", totalCost);
+					model.addAttribute("items", items);
+					return "/order/view";
+				}
+			}
+		} catch(SQLException e) {
+			throw new RuntimeException(e);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return "redirect:/login";
+	}
 }
