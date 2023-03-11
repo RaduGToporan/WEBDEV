@@ -5,8 +5,9 @@
 			<meta http-equiv="X-UA-Compatible" content="IE=edge">
 			<meta name="viewport" content="width=device-width, initial-scale=1.0">
 			<title th:text="${page}"></title>
+			<script th:src="@{/cart.js}"></script>
 			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-			<script type="text/javascript" src="http://me.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=2QujauwjWsg1tIqMCvTM3k5eK1EDRzHzzxkYofJNSGAS0Bp_vKOrWISv6lCJlNBzbiVxrMshOOwsXRIeBHYyss6NHpqVX2RjjXrxZj4jZec" charset="UTF-8"></script><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 			<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 			<link rel="stylesheet" th:href="@{/cataloguestyle.css}">
 	</head>
@@ -44,9 +45,11 @@
 				  </div>
 				</div>
 				<div class="quantity-box">  
-					<input type="number" placeholder="Quantity" style="width:100%" min="0"><br>
+					<input type="number" placeholder="Quantity" style="width:100%" min="0" th:id="${product.id} + q"><br>
 				</div>
-			  <button type="submit" class="btn btn-danger btn-lg">Add to Cart</button>
+				<button class="btn btn-danger btn-lg" 
+				th:onclick="'addToCart(' + ${product.id} + ', document.getElementById(\'' + ${product.id} + 'a\').checked, document.getElementById(\'' + ${product.id} + 'q\').value)'"
+				>Add to Cart</button>
 			</form>
 			</div>
 		  </div>
