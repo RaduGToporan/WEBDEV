@@ -1,5 +1,6 @@
 package com.green.marketplace;
 
+import com.green.marketplace.service.ModelService;
 import com.green.marketplace.user.Codec;
 import com.green.marketplace.user.User;
 import jakarta.servlet.http.Cookie;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 import java.util.UUID;
 
 @Controller
@@ -18,33 +20,33 @@ public class UserController {
     @Autowired
     private Codec codec;
     private final String sessionID = "sessionID";
+    private ModelService modelService = new ModelService();
 
     @GetMapping("login")
     public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, Model model) {
         if (sessionIDCookie == null) {
             return "user/login";
-        }
-        else {
+        } else {
             try {
                 Connection conn = getConnection();
                 ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
 
                 while (rs.next()) {
                     String sessionID = rs.getString("sessionID");
-                    if (sessionID != null && sessionID.equals(sessionIDCookie)) {
+                    if (sessionID != null && sessionIDCookie.equals(sessionID)) {
                         model.addAttribute("user", new User(rs.getString("username"), rs.getString("password"), rs.getString("email")));
                         if (rs.getString("username").equals("admin")) {
+                            List<ModelBean> modelList = modelService.getAllModels();
+                            model.addAttribute("modelList", modelList);
                             return "user/dashboard";
-                        }
-                        else {
+                        } else {
                             return "user/profile";
                         }
                     }
                 }
 
                 return "user/profile";
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -67,8 +69,7 @@ public class UserController {
                     conn.close();
                     if (username.equals("admin")) {
                         return "user/dashboard";
-                    }
-                    else {
+                    } else {
                         return "user/profile";
                     }
                 }
@@ -151,7 +152,7 @@ public class UserController {
 
     @GetMapping("deleteSession")
     @ResponseBody
-    public void deleteSession(@CookieValue(value="sessionID", required = false) String sessionID, HttpServletResponse res) {
+    public void deleteSession(@CookieValue(value = "sessionID", required = false) String sessionID, HttpServletResponse res) {
         if (sessionID != null) {
             try {
                 Connection conn = getConnection();
@@ -172,8 +173,7 @@ public class UserController {
     public int idOfSession(@CookieValue(required = false, defaultValue = "-1") String sessionID) {
         if (sessionID.equals("-1")) {
             return -1;
-        }
-        else {
+        } else {
             try {
                 Connection conn = getConnection();
                 String query = String.format("SELECT uid FROM marketplace.users WHERE sessionID='%s'", sessionID);

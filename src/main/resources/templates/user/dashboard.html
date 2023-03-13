@@ -21,28 +21,76 @@
         </button>
     </div>
     <table id="models" class="stretch_height">
+
         <tr>
             <th>ID</th>
             <th>Name</th>
-            <th>Price $</th>
-            <th>Status</th>
-            <th>Edit</th>
+            <th>Trained</th>
+            <th>Untrained</th>
+            <th>Tags</th>
+            <th></th>
         </tr>
-        <tr>
-            <td>0</td>
-            <td>ChatGPT</td>
-            <td>61,973,723.99</td>
-            <td>Discontinued</td>
+        <tr th:each="item: ${modelList}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.name}" style="min-width: 350px;"/>
+            <td th:text="${item.trainedPrice}"/>
+            <td th:text="${item.untrainedPrice}"/>
             <td>
-                <button>Edit</button>
+                <span th:each="tag: ${item.tags}" th:text="${tag}" class="tag"></span>
+            </td>
+            <td>
+                <button name="Edit" th:onclick="startEditing([[${item}]])">Edit</button>
             </td>
         </tr>
+
         <tr>
             <td colspan="5">
-                <button>+ Add model</button>
+                <button id="add_model">+ Add model</button>
             </td>
         </tr>
     </table>
+
+    <script>
+
+    </script>
+
+    <form action="/addmodel" method="post" id="add_model_form" style="display: none;">
+        <div>Add new model</div>
+        <label for="name">name:</label><br>
+        <input type="text" id="name" name="name" value="NewName"><br>
+
+        <label for="trainedPrice">Trained price:</label><br>
+        <input type="number" id="trainedPrice" name="trainedPrice" value="123"><br>
+
+        <label for="untrainedPrice">Untrained price:</label><br>
+        <input type="number" id="untrainedPrice" name="untrainedPrice" value="121"><br>
+
+        <label for="tags">Tags: (Choose between image,generation,art,animated)</label><br>
+        <input type="text" id="tags" name="tags" value="image,generation,art,animated"><br><br>
+        <input type="submit" value="Submit">
+        <button id="back_from_add" style="min-width: fit-content">Back to list</button>
+    </form>
+
+    <form action="/savemodel" method="post" id="edit_model_form" style="display: none;">
+        <div>Save changes on the model</div>
+        <input type="hidden" id="e_id" name="id" value="0"><br>
+
+        <label for="e_name">name:</label><br>
+        <input type="text" id="e_name" name="name" value=""><br>
+
+        <label for="e_trainedPrice">Trained price:</label><br>
+        <input type="number" id="e_trainedPrice" name="trainedPrice" value=""><br>
+
+        <label for="e_untrainedPrice">Untrained price:</label><br>
+        <input type="number" id="e_untrainedPrice" name="untrainedPrice" value=""><br>
+
+        <label for="e_tags">Tags: (Choose between image,generation,art,animated)</label><br>
+        <input type="text" id="e_tags" name="tags" value="" style="width: 400px;"><br><br>
+        <input type="submit" value="Submit">
+        <button id="back_from_edit" style="min-width: fit-content">Back to list</button>
+    </form>
+
+
     <table id="orders" style="display: none" >
         <tr>
             <th>Order Number</th>
@@ -66,18 +114,48 @@
 <script>
     models = document.getElementById("models");
     orders = document.getElementById("orders");
+    addModel = document.getElementById("add_model_form");
+    editModel = document.getElementById("edit_model_form");
+
+    function startEditing(model) {
+        console.log(model);
+        document.getElementById('e_id').value = model['id'];
+        document.getElementById('e_name').value = model['name'];
+        document.getElementById('e_trainedPrice').value = model['trainedPrice'];
+        document.getElementById('e_untrainedPrice').value = model['untrainedPrice'];
+        document.getElementById('e_tags').value = model['tags'];
+        models.style.display = "none";
+        editModel.style.display = "";
+        addModel.style.display = "none";
+    }
 
     document.getElementById("show_models").addEventListener("click", () => {
         models.style.display = "";
         orders.style.display = "none";
-    })
+    });
 
     document.getElementById("show_orders").addEventListener("click", () => {
         models.style.display = "none";
         orders.style.display = "";
-    })
+    });
 
-    document.getElementById("edit_model").addEventListener("click", e => {
+    document.getElementById("add_model").addEventListener("click", () => {
+        models.style.display = "none";
+        addModel.style.display = "";
+        editModel.style.display = "none";
+    });
+
+    document.getElementById('back_from_add').addEventListener("click", () => {
+        models.style.display = "";
+        addModel.style.display = "none";
+    });
+
+    document.getElementById('back_from_edit').addEventListener("click", () => {
+        models.style.display = "";
+        editModel.style.display = "none";
+    });
+
+    /*document.getElementById("edit_model").addEventListener("click", e => {
         row = document.createElement("tr");
 
         id = document.createElement("td");
@@ -111,7 +189,7 @@
         row.replaceChildren(id, items, time, td1, td2)
 
         document.getElementById(rowID).after(row)
-    })
+    })*/
 </script>
 </body>
 </html>

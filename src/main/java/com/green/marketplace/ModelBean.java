@@ -2,6 +2,7 @@ package com.green.marketplace;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 //java bean
 public class ModelBean implements Serializable {
@@ -11,7 +12,7 @@ public class ModelBean implements Serializable {
     private double trainedPrice;
     private double untrainedPrice;
     private String unprocessedtags;
-    private ArrayList<String> tags;
+    private List<String> tags;
     private boolean available;
 
 
@@ -58,10 +59,10 @@ public class ModelBean implements Serializable {
     public void setUnprocessedtags(String unprocessedtags) {
         this.unprocessedtags = unprocessedtags;
     }
-    public ArrayList<String> getTags() {
+    public List<String> getTags() {
         return tags;
     }
-    public void setTags(ArrayList<String> tags) {
+    public void setTags(List<String> tags) {
         this.tags = tags;
     }
     public boolean isAvailable() {
