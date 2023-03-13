@@ -17,13 +17,13 @@
                 </tr>
                 <tr th:each="item : ${items}">
                     <td th:text="${item.name}" />
-                    <td th:text="'€' + ${item.unitPrice}" />
+                    <td th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
                     <td th:text="${item.quantity}" />
-                    <td th:text="'€' + ${item.price}" />
+                    <td th:text="'€' + ${#numbers.formatDecimal(item.price,2,2)}" />
                 </tr>
                 <tr>
                     <td colspan="3">Total</td>
-                    <td th:text="'€' + ${total}" />
+                    <td th:text="'€' + ${#numbers.formatDecimal(total,2,2)}" />
                 </tr>
             </table>
         </div>
