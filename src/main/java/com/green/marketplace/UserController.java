@@ -277,24 +277,26 @@ public class UserController {
         }
     }
 
-    public boolean isAdmin(String sessionID) {
-        Connection conn = getConnection();
-        int uid = idOfSession(sessionID);
-
-        try {
-            ResultSet rs = conn.prepareStatement("SELECT username FROM  marketplace.users WHERE users.uid = " + uid  + ";").executeQuery();
-            if (rs.next()) {
-                if (rs.getString("username").equals("admin")) {
-                    return true;
-                }
-            }
-        } catch(SQLException e) {
-            throw new RuntimeException(e);
+    @GetMapping("isAdmin")
+    @ResponseBody
+    public boolean isAdmin(@CookieValue(required = false, defaultValue = "-1") String sessionID) {
+        if (sessionID.equals("-1")) {
+            return false;
         }
-        return false;
-    }
-
-    public String getUsername(int uid) {
-        return "Bob";
+        else {
+            Connection conn = getConnection();
+            ResultSet rs = null;
+            try {
+                rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
+                while (rs.next()) {
+                    if (rs.getString("sessionID") != null && rs.getString("sessionID").equals(sessionID) && rs.getString("username").equals("admin")) {
+                        return true;
+                    }
+                }
+                return false;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 }
