@@ -188,4 +188,27 @@ public class UserController {
             }
         }
     }
+
+    @GetMapping("isAdmin")
+    @ResponseBody
+    public boolean isAdmin(@CookieValue(required = false, defaultValue = "-1") String sessionID) {
+        if (sessionID.equals("-1")) {
+            return false;
+        }
+        else {
+            Connection conn = getConnection();
+            ResultSet rs = null;
+            try {
+                rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
+                while (rs.next()) {
+                    if (rs.getString("sessionID") != null && rs.getString("sessionID").equals(sessionID) && rs.getString("username").equals("admin")) {
+                        return true;
+                    }
+                }
+                return false;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
 }
