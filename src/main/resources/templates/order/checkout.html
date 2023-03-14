@@ -103,7 +103,7 @@
                 const itemUnitPrice = item.getElementsByClassName('item-unit-price')[0].textContent.substring(1);
                 const itemQuantity = item.getElementsByClassName('item-quantity')[0].textContent;
                 const itemPrice = item.getElementsByClassName('item-price')[0].textContent.substring(1);
-                productsJSON += "{name:\"" + itemName + "\",unitPrice:" + itemUnitPrice + ",quantity:" + itemQuantity + ",price:" + itemPrice + "},"
+                productsJSON += "{\"name\":\"" + itemName + "\",\"unitPrice\":" + itemUnitPrice + ",\"quantity\":" + itemQuantity + ",\"price\":" + itemPrice + "},"
             }
             productsJSON = productsJSON.substring(0,productsJSON.length-1);
             productsJSON += "]";

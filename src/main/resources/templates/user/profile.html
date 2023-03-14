@@ -32,16 +32,22 @@
             <p th:text="${user.email}"></p>
         </div>
     </form>
-    <table style="display: none" id="order_history" class="stretch_height">
+    <table style="display: none" id="order_history" class="stretch_height table">
         <tr>
-            <th>Order Number</th>
-            <th>Name</th>
+            <th>Order No.</th>
             <th>Date</th>
+            <th>To</th>
+			<th>Status</th>
+			<th></th>
         </tr>
-        <tr>
-            <td>666</td>
-            <td>ChatGPT</td>
-            <td>12/12/22</td>
+        <tr th:each="order : ${pastOrders}">
+            <td th:text="${order.orderNum}" />
+            <td th:text="${order.date}" />
+            <td th:text="${order.to}" />
+            <td th:if="${order.status} eq 'ordered'">Ordered</td>
+            <td th:if="${order.status} eq 'dipatched'">Dispatched</td>
+            <td th:if="${order.status} eq 'delivered'">Delivered</td>
+            <td><a th:href="'order/view/' + ${order.orderNum}">View product(s)</a></td>
         </tr>
     </table>
     <br/>

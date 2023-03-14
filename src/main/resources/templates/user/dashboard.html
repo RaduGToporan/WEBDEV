@@ -43,22 +43,31 @@
             </td>
         </tr>
     </table>
-    <table id="orders" style="display: none" >
+    <table id="orders" style="display: none" class="table">
         <tr>
-            <th>Order Number</th>
-            <th>Items</th>
+            <th>Order No.</th>
+            <th>User</th>
             <th>Date</th>
-            <th>State</th>
-            <th>Change State</th>
+            <th>To</th>
+			<th>Status</th>
+			<th></th>
         </tr>
-        <tr id="0">
-            <td>0</td>
-            <td>ChatGPT</td>
-            <td>12/12/22</td>
-            <td>Delivered</td>
+        <tr th:each="order : ${pastOrders}">
+            <td th:text="${order.orderNum}" />
+            <td th:text="${order.user}">
+            <td th:text="${order.date}" />
+            <td th:text="${order.to}" />
             <td>
-                <button id="edit_model">Edit</button>
+                <form method="POST" action="/order/update">
+                    <input type="number" name="orderNum" th:value="${order.orderNum}" style="display:none;"/>
+                    <select name="status" onchange="this.form.submit()">
+                        <option value="ordered" th:selected="${order.status} eq 'ordered'">ordered</option>
+                        <option value="dipatched" th:selected="${order.status} eq 'dipatched'">dispatched</option>
+                        <option value="delivered" th:selected="${order.status} eq 'delivered'">delivered</option>
+                    </select>
+                </form>
             </td>
+            <td><a th:href="'order/view/' + ${order.orderNum}">View product(s)</a></td>
         </tr>
     </table>
     <br/>
