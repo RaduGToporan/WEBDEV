@@ -36,9 +36,13 @@ public class ModelService {
         }
     }
 
-    public List<ModelBean> getAllModels() {
+    public List<ModelBean> getAllModels(String sortColumn, String sortOrder) {
         List<ModelBean> result = new ArrayList<>();
-        String query = "select modelid, name, trainedprice, untrainedprice, tags from models;";
+        String sortString = "";
+        if ((sortColumn != null) && (sortOrder != null)) {
+            sortString = String.format("order by %s %s", sortColumn, sortOrder);
+        }
+        String query = String.format("select modelid, name, trainedprice, untrainedprice, tags from models %s;", sortString);
         try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword)) {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
 

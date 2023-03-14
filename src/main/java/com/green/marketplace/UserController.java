@@ -23,7 +23,9 @@ public class UserController {
     private ModelService modelService = new ModelService();
 
     @GetMapping("login")
-    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, Model model) {
+    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie,
+                        Model model, @RequestParam(value = "sort", required = false) String sortColumn,
+                        @RequestParam(value = "order", required = false) String sortOrder) {
         if (sessionIDCookie == null) {
             return "user/login";
         } else {
@@ -36,8 +38,10 @@ public class UserController {
                     if (sessionID != null && sessionIDCookie.equals(sessionID)) {
                         model.addAttribute("user", new User(rs.getString("username"), rs.getString("password"), rs.getString("email")));
                         if (rs.getString("username").equals("admin")) {
-                            List<ModelBean> modelList = modelService.getAllModels();
+                            List<ModelBean> modelList = modelService.getAllModels(sortColumn, sortOrder);
                             model.addAttribute("modelList", modelList);
+                            model.addAttribute("sort", sortColumn);
+                            model.addAttribute("order", sortOrder);
                             return "user/dashboard";
                         } else {
                             return "user/profile";
@@ -53,7 +57,9 @@ public class UserController {
     }
 
     @PostMapping("login")
-    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, HttpServletResponse res, @RequestParam(defaultValue = "user") String username, @RequestParam String password, Model model) {
+    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie,
+                        HttpServletResponse res, @RequestParam(defaultValue = "user") String username,
+                        @RequestParam String password, Model model) {
         try {
             Connection conn = getConnection();
             ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
@@ -194,8 +200,7 @@ public class UserController {
     public boolean isAdmin(@CookieValue(required = false, defaultValue = "-1") String sessionID) {
         if (sessionID.equals("-1")) {
             return false;
-        }
-        else {
+        } else {
             Connection conn = getConnection();
             ResultSet rs = null;
             try {

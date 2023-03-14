@@ -28,7 +28,13 @@
         </tr>
         <tr>
             <th>ID</th>
-            <th>Name</th>
+            <th>Name
+                <button id="sort_name">
+                    <span th:text="${(sort!='name') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='name') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='name') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
             <th>Trained</th>
             <th>Untrained</th>
             <th>Tags</th>
@@ -129,6 +135,19 @@
     editModel = document.getElementById("edit_model_form");
     deleteModel = document.getElementById("delete_model_form");
 
+    let url = window.location.href;
+    let parts = url.split('?');
+    let sortOrderName = 'desc';
+    if (parts.length > 1) {
+        let params = parts[1].split('&');
+        for (let i = 0; i < params.length; i++) {
+            if (params[i].startsWith('order')) {
+                let pair = params[i].split("=");
+                sortOrderName = pair[1];
+            }
+        }
+    }
+
     function startEditing(model) {
         console.log(model);
         document.getElementById('e_id').value = model['id'];
@@ -148,6 +167,15 @@
         deleteModel.style.display = "";
         addModel.style.display = "none";
     }
+
+    document.getElementById("sort_name").addEventListener("click", () => {
+        if (sortOrderName === 'desc') {
+            sortOrderName = 'asc';
+        } else {
+            sortOrderName = 'desc';
+        }
+        window.location.href = window.location.href.split("?")[0] + "?sort=name&order=" + sortOrderName;
+    });
 
     document.getElementById("show_models").addEventListener("click", () => {
         models.style.display = "";
