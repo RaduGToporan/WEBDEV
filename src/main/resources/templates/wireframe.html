@@ -3,20 +3,26 @@
 	<head th:replace="~{fragments/head}"></head>
 	<body>
 		<nav th:replace="~{fragments/nav}"></nav>
+        <br/>
         <div id="gallery">
-            <div id="jamie">
+            <div class="0" id="jamie">
                 <img class="checkout_desktop" alt="checkout desktop wireframe" th:src="@{/wireframes/checkout_desktop.png}">
                 <img class="shopping_cart" alt="shopping cart wireframe" th:src="@{/wireframes/shopping_cart.png}">
                 <img class="checkout_mobile" alt="checkout mobile wireframe" th:src="@{/wireframes/checkout_mobile.png}">
             </div>
-            <div style="display: none">
+            <div class="1" style="display: none">
                 Nicky Danilov
             </div>
-            <div style="display: none">
+            <div class="2" style="display: none">
                 Radu Toporan
             </div>
-            <div style="display: none">
-                Loid Tayag
+            <div class="3" id="loid" style="display: none">
+                <img class="profile_settings" alt="profile_settings wireframe" th:src="@{/wireframes/profile_settings.jpg}">
+                <img class="profile_orders" alt="profile_orders wireframe" th:src="@{/wireframes/profile_orders.jpg}">
+                <img class="dashboard_models" alt="dashboard_models wireframe" th:src="@{/wireframes/dashboard_models.jpg}">
+                <img class="dashboard_orders" alt="dashboard_orders wireframe" th:src="@{/wireframes/dashboard_orders.jpg}">
+                <img class="login" alt="login wireframe" th:src="@{/wireframes/login.jpg}">
+                <img class="signup" alt="signup wireframe" th:src="@{/wireframes/signup.jpg}">
             </div>
         </div>
         <p id="credits">
@@ -31,12 +37,51 @@
             <img class="icon_wf" alt="next wireframe" th:src="@{/images/next.svg}"/>
         </button>
         <script>
-            document.getElementById("prev_wf").addEventListener("click", () => {
+            credits = document.getElementById("credits")
+            names = ["Jamie Cronin", "Nicky Danilov", "Radu Toporan", "Loid Tayag"]
 
+            document.getElementById("prev_wf").addEventListener("click", () => {
+                if (!credits.textContent.includes("Jamie Cronin")) {
+                    let i = 1
+                    let visible = null
+
+                    while (i < names.length) {
+                        let curr = document.getElementsByClassName(i)[0]
+
+                        if (curr.style.display !== "none") {
+                            visible = curr
+                            break
+                        }
+
+                        i += 1
+                    }
+
+                    document.getElementsByClassName((i-1).toString())[0].style.display = "flex"
+                    visible.style.display = "none"
+                    credits.innerText = "Credits:\n" + names[i-1]
+                }
             })
 
             document.getElementById("next_wf").addEventListener("click", () => {
+                if (!credits.textContent.includes("Loid Tayag")) {
+                    let i = 0
+                    let visible = null
 
+                    while (i < names.length-1) {
+                        let curr = document.getElementsByClassName(i)[0]
+
+                        if (curr.style.display !== "none") {
+                            visible = curr
+                            break
+                        }
+
+                        i += 1
+                    }
+
+                    document.getElementsByClassName((i+1).toString())[0].style.display = "flex"
+                    visible.style.display = "none"
+                    credits.innerText = "Credits:\n" + names[i+1]
+                }
             })
         </script>
 	</body>

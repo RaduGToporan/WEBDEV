@@ -37,22 +37,18 @@
     margin-right: auto;
 }
 
-#jamie {
+#gallery img{
+    border: 2px solid black;
+    margin-bottom: 2rem;
+    border-radius: 0.5rem;
+}
+
+#jamie, #loid {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-#jamie img{
-    border: 2px solid black;
-    margin-bottom: 3rem;
-    border-radius: 1rem;
-}
-
-#jamie :nth-child(1) {
-    margin-top: 1rem;
 }
 
 #jamie :nth-child(1), #jamie :nth-child(2) {
@@ -61,4 +57,9 @@
 
 #jamie :nth-child(3) {
     width: 25vw;
+}
+
+#loid img {
+    height: 30vh;
+    width: auto;
 }
