@@ -43,7 +43,7 @@
     border-radius: 0.5rem;
 }
 
-#jamie, #loid {
+#jamie, #loid, #nicky, #radu {
     width: 100%;
     height: 100%;
     display: flex;
@@ -51,7 +51,7 @@
     align-items: center;
 }
 
-#jamie :nth-child(1), #jamie :nth-child(2) {
+#jamie :nth-child(1), #jamie :nth-child(2), .home {
     width: 50vw;
 }
 
@@ -59,7 +59,7 @@
     width: 25vw;
 }
 
-#loid img {
+#radu img {
     height: 30vh;
     width: auto;
 }
