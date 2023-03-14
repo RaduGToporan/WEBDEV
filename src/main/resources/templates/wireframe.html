@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{fragments/head}"></head>
+	<body>
+		<nav th:replace="~{fragments/nav}"></nav>
+        <div id="gallery">
+            <div id="jamie">
+                <img class="checkout_desktop" alt="checkout desktop wireframe" th:src="@{/wireframes/checkout_desktop.png}">
+                <img class="shopping_cart" alt="shopping cart wireframe" th:src="@{/wireframes/shopping_cart.png}">
+                <img class="checkout_mobile" alt="checkout mobile wireframe" th:src="@{/wireframes/checkout_mobile.png}">
+            </div>
+            <div style="display: none">
+                Nicky Danilov
+            </div>
+            <div style="display: none">
+                Radu Toporan
+            </div>
+            <div style="display: none">
+                Loid Tayag
+            </div>
+        </div>
+        <p id="credits">
+            Credits:
+            <br/>
+            Jamie Cronin
+        </p>
+        <button id="prev_wf">
+            <img class="icon_wf" alt="previous wireframe" th:src="@{/images/prev.svg}"/>
+        </button>
+        <button id="next_wf">
+            <img class="icon_wf" alt="next wireframe" th:src="@{/images/next.svg}"/>
+        </button>
+        <script>
+            document.getElementById("prev_wf").addEventListener("click", () => {
+
+            })
+
+            document.getElementById("next_wf").addEventListener("click", () => {
+
+            })
+        </script>
+	</body>
+</html>
