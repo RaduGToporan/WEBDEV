@@ -141,7 +141,8 @@ h1 {
 
 .tag {
     border-radius: 7px;
-    background-color: bisque;
+    /*background-color: #22B14C; logo color*/
+    background-color: lightgreen;
     padding-left: 3px;
     padding-right: 3px;
     margin: 2px;

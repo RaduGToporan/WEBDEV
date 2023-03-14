@@ -4,6 +4,7 @@ import com.green.marketplace.service.ModelService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -42,6 +43,19 @@ public class ModelBeanController {
         modelItem.setUntrainedPrice(Double.parseDouble(paramMap.get("untrainedPrice")[0]));
         modelItem.setTags(Arrays.asList(paramMap.get("tags")[0].split(",")));
         modelService.saveModel(modelItem);
+        try {
+            response.sendRedirect("/login");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @PostMapping("deletemodel")
+    public void deleteModel(HttpServletRequest request, HttpServletResponse response) {
+        ModelBean modelItem = new ModelBean();
+        Map<String, String[]> paramMap = request.getParameterMap();
+        modelItem.setId(Integer.parseInt(paramMap.get("id")[0]));
+        modelService.deleteModel(modelItem);
         try {
             response.sendRedirect("/login");
         } catch (IOException e) {

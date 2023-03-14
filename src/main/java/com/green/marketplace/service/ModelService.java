@@ -79,4 +79,18 @@ public class ModelService {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
         }
     }
+
+    public void deleteModel(ModelBean modelItem) {
+        String query = "delete from models " +
+                "where modelid=?; ";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword)) {
+            PreparedStatement preparedStatement;
+            preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setLong(1, modelItem.getId());
+            preparedStatement.execute();
+        } catch (SQLException ex) {
+            System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
+        }
+    }
 }

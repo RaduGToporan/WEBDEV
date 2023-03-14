@@ -21,14 +21,18 @@
         </button>
     </div>
     <table id="models" class="stretch_height">
-
+        <tr>
+            <td colspan="5">
+                <button id="add_model" style="min-width: fit-content">+ Add model</button>
+            </td>
+        </tr>
         <tr>
             <th>ID</th>
             <th>Name</th>
             <th>Trained</th>
             <th>Untrained</th>
             <th>Tags</th>
-            <th></th>
+            <th colspan="2"></th>
         </tr>
         <tr th:each="item: ${modelList}">
             <td th:text="${item.id}"></td>
@@ -41,13 +45,12 @@
             <td>
                 <button name="Edit" th:onclick="startEditing([[${item}]])">Edit</button>
             </td>
-        </tr>
-
-        <tr>
-            <td colspan="5">
-                <button id="add_model">+ Add model</button>
+            <td>
+                <button name="Delete" th:onclick="startDeleting([[${item}]])">Delete</button>
             </td>
         </tr>
+
+
     </table>
 
     <script>
@@ -90,8 +93,16 @@
         <button id="back_from_edit" style="min-width: fit-content">Back to list</button>
     </form>
 
+    <form action="/deletemodel" method="post" id="delete_model_form" style="display: none;">
+        <div>Are you sure you want to delete the model</div>
+        <input type="hidden" id="d_id" name="id" value="0"><br>
 
-    <table id="orders" style="display: none" >
+        <input type="submit" value="Delete">
+        <button id="back_from_delete" style="min-width: fit-content">Back to list</button>
+    </form>
+
+
+    <table id="orders" style="display: none">
         <tr>
             <th>Order Number</th>
             <th>Items</th>
@@ -116,6 +127,7 @@
     orders = document.getElementById("orders");
     addModel = document.getElementById("add_model_form");
     editModel = document.getElementById("edit_model_form");
+    deleteModel = document.getElementById("delete_model_form");
 
     function startEditing(model) {
         console.log(model);
@@ -126,6 +138,14 @@
         document.getElementById('e_tags').value = model['tags'];
         models.style.display = "none";
         editModel.style.display = "";
+        addModel.style.display = "none";
+    }
+
+    function startDeleting(model) {
+        console.log(model);
+        document.getElementById('d_id').value = model['id'];
+        models.style.display = "none";
+        deleteModel.style.display = "";
         addModel.style.display = "none";
     }
 
@@ -153,6 +173,11 @@
     document.getElementById('back_from_edit').addEventListener("click", () => {
         models.style.display = "";
         editModel.style.display = "none";
+    });
+
+    document.getElementById('back_from_delete').addEventListener("click", () => {
+        models.style.display = "";
+        deleteModel.style.display = "none";
     });
 
     /*document.getElementById("edit_model").addEventListener("click", e => {
