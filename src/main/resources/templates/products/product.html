@@ -22,7 +22,7 @@
 			<div class="product-half-container-des">
 			<h3 th:text="${product.name}">NAME</h3>
 			<p th:text="${'Tags = ' + product.unprocessedtags}">DESCRIPTION</p>
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+			<p th:text="${product.description}" />
 			</div>
 		
 			<br>
