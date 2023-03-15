@@ -25,10 +25,10 @@ public class HomeController {
 		return "contact";
 	}
 
-	@GetMapping("/about")
+	@GetMapping("/report")
 	public String about(Model model) {
-		model.addAttribute("page", "About");
-		return "about";
+		model.addAttribute("page", "Report");
+		return "report";
 	}
 
 }
