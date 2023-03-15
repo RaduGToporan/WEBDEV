@@ -70,20 +70,18 @@
             <div class="col-lg-8 order-first order-lg-last">
                 <table class="table" id="checkoutTable">
                     <tr>
-                        <th colspan="2">Item</th>
+                        <th>Item</th>
                         <th>Unit Price</th>
                         <th>Quantity</th>
                         <th>Price</th>
                     </tr>
                     <tr th:each="item: ${items}" class="checkoutRow" th:attr="data-key=|${item.id}|">
-                        <td><img class="icon" th:src="@{/images/blank.png}"></td>
                         <td class="item-name" th:text="${item.name}" />
                         <td class="item-unit-price" th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
                         <td class="item-quantity" th:text="${item.quantity}">
                         <td class="item-price" th:text="'€' + ${#numbers.formatDecimal(item.totalPrice,2,2)}" />
                     </tr>
                     <tr>
-                        <td></td>
                         <td><b>Total</b></td>
                         <td></td>
                         <td></td>
