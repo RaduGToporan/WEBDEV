@@ -13,11 +13,99 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.UUID;
 
+import javax.management.RuntimeOperationsException;
+
+import java.util.List;
+import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+
+import com.green.marketplace.order.PastOrder;
+import com.green.marketplace.order.OrderItem;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+
 @Controller
 public class UserController {
     @Autowired
     private Codec codec;
     private final String sessionID = "sessionID";
+    ObjectMapper objectMapper = new ObjectMapper(); // Utility to read a JSON-formatted List
+
+    public String profile(Model model, String sessionId) {
+        model.addAttribute("page", "Profile");
+        int uid = idOfSession(sessionId);
+        List<PastOrder> pastOrders = new ArrayList<>();
+
+
+        try {
+            Connection conn = getConnection();
+            // Read user's orders
+            ResultSet rs = conn.prepareStatement("SELECT orderid, username, time, address, status, products FROM marketplace.orders INNER JOIN marketplace.users ON orders.uid = users.uid WHERE orders.uid = "  + uid + ";").executeQuery();
+
+            // Package as List
+            while (rs.next()) {
+                PastOrder newOrder = new PastOrder();
+                newOrder.setOrderNum(rs.getInt("orderid"));
+                newOrder.setUser(rs.getString("username"));
+
+                SimpleDateFormat mmddyyyy = new SimpleDateFormat("dd/MM/yyyy");
+                newOrder.setDate(mmddyyyy.format(rs.getDate("time")));
+
+                newOrder.setTo(rs.getString("address"));
+                newOrder.setStatus(rs.getString("status"));
+
+                List<OrderItem> items = objectMapper.readValue(rs.getString("products"), new TypeReference<List<OrderItem>>(){});
+                newOrder.setItems(items);
+
+                pastOrders.add(newOrder);
+            }
+
+            model.addAttribute("pastOrders", pastOrders);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch(IOException e) { // For ObjectMapper
+            e.printStackTrace();
+        }
+
+        return "user/profile";
+    }
+
+    public String dashboard(Model model) {
+        model.addAttribute("page", "Dashboard");
+        List<PastOrder> pastOrders = new ArrayList<>();
+
+        try {
+            Connection conn = getConnection();
+            // Read user's orders
+            ResultSet rs = conn.prepareStatement("SELECT orderid, username, time, address, status, products FROM marketplace.orders INNER JOIN marketplace.users ON orders.uid = users.uid;").executeQuery();
+
+            // Package as List
+            while (rs.next()) {
+                PastOrder newOrder = new PastOrder();
+                newOrder.setOrderNum(rs.getInt("orderid"));
+                newOrder.setUser(rs.getString("username"));
+
+                SimpleDateFormat mmddyyyy = new SimpleDateFormat("dd/MM/yyyy");
+                newOrder.setDate(mmddyyyy.format(rs.getDate("time")));
+
+                newOrder.setTo(rs.getString("address"));
+                newOrder.setStatus(rs.getString("status"));
+
+                List<OrderItem> items = objectMapper.readValue(rs.getString("products"), new TypeReference<List<OrderItem>>(){});
+                newOrder.setItems(items);
+
+                pastOrders.add(newOrder);
+            }
+
+            model.addAttribute("pastOrders", pastOrders);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch(IOException e) { // For ObjectMapper
+            e.printStackTrace();
+        }
+
+        return "user/dashboard";
+    }
 
     @GetMapping("login")
     public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, Model model) {
@@ -34,15 +122,15 @@ public class UserController {
                     if (sessionID != null && sessionID.equals(sessionIDCookie)) {
                         model.addAttribute("user", new User(rs.getString("username"), rs.getString("password"), rs.getString("email")));
                         if (rs.getString("username").equals("admin")) {
-                            return "user/dashboard";
+                            return dashboard(model);
                         }
                         else {
-                            return "user/profile";
+                            return profile(model, sessionID);
                         }
                     }
                 }
 
-                return "user/profile";
+                return profile(model, sessionID);
             }
             catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -66,10 +154,10 @@ public class UserController {
                     model.addAttribute("user", new User(rsName, password, rs.getString("email")));
                     conn.close();
                     if (username.equals("admin")) {
-                        return "user/dashboard";
+                        return dashboard(model);
                     }
                     else {
-                        return "user/profile";
+                        return profile(model, cookie.getValue());
                     }
                 }
             }
