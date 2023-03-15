@@ -89,8 +89,9 @@ public class ProductController {
                     String unprocessedtags = resultSet.getString("tags");
                     ArrayList<String> tags = formatTags(unprocessedtags);
                     boolean available = resultSet.getBoolean("available");
+                    String description = resultSet.getString("description");
 
-                    list.add(new ModelBean(id, name, trainedPrice, untrainedPrice, unprocessedtags, tags, available));
+                    list.add(new ModelBean(id, name, trainedPrice, untrainedPrice, unprocessedtags, tags, available, description));
 
                 }
                 return list;

@@ -25,6 +25,8 @@ public class ModelBeanController {
         modelItem.setTrainedPrice(Double.parseDouble(paramMap.get("trainedPrice")[0]));
         modelItem.setUntrainedPrice(Double.parseDouble(paramMap.get("untrainedPrice")[0]));
         modelItem.setTags(Arrays.asList(paramMap.get("tags")[0].split(",")));
+        modelItem.setAvailable(Boolean.parseBoolean(paramMap.get("available")[0]));
+        modelItem.setDescription(paramMap.get("description")[0]);
         modelService.addModel(modelItem);
         try {
             response.sendRedirect("/login");
@@ -42,6 +44,8 @@ public class ModelBeanController {
         modelItem.setTrainedPrice(Double.parseDouble(paramMap.get("trainedPrice")[0]));
         modelItem.setUntrainedPrice(Double.parseDouble(paramMap.get("untrainedPrice")[0]));
         modelItem.setTags(Arrays.asList(paramMap.get("tags")[0].split(",")));
+        modelItem.setAvailable(Boolean.parseBoolean(paramMap.get("available")[0]));
+        modelItem.setDescription(paramMap.get("description")[0]);
         modelService.saveModel(modelItem);
         try {
             response.sendRedirect("/login");

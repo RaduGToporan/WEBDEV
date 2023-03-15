@@ -38,6 +38,8 @@
             <th>Trained</th>
             <th>Untrained</th>
             <th>Tags</th>
+            <th>Available</th>
+            <th>Description</th>
             <th colspan="2"></th>
         </tr>
         <tr th:each="item: ${modelList}">
@@ -48,6 +50,8 @@
             <td>
                 <span th:each="tag: ${item.tags}" th:text="${tag}" class="tag"></span>
             </td>
+            <td th:text="${item.available}"/>
+            <td th:text="${item.description}" style="max-width: 400px; white-space: nowrap; overflow: hidden;"/>
             <td>
                 <button name="Edit" th:onclick="startEditing([[${item}]])">Edit</button>
             </td>
@@ -76,6 +80,17 @@
 
         <label for="tags">Tags: (Choose between image,generation,art,animated)</label><br>
         <input type="text" id="tags" name="tags" value="image,generation,art,animated"><br><br>
+
+        <label for="available">Available:</label><br>
+        <select type="boolean" id="available" name="available" value="true">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select><br>
+
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description" value="NewDescription"><br>
+
+
         <input type="submit" value="Submit">
         <button id="back_from_add" style="min-width: fit-content">Back to list</button>
     </form>
@@ -95,6 +110,16 @@
 
         <label for="e_tags">Tags: (Choose between image,generation,art,animated)</label><br>
         <input type="text" id="e_tags" name="tags" value="" style="width: 400px;"><br><br>
+
+        <label for="e_available">Available:</label><br>
+        <select type="boolean" id="e_available" name="available" value="">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select><br>
+
+        <label for="e_description">Description:</label><br>
+        <input type="text" id="e_description" name="description" value=""><br>
+
         <input type="submit" value="Submit">
         <button id="back_from_edit" style="min-width: fit-content">Back to list</button>
     </form>
@@ -155,6 +180,8 @@
         document.getElementById('e_trainedPrice').value = model['trainedPrice'];
         document.getElementById('e_untrainedPrice').value = model['untrainedPrice'];
         document.getElementById('e_tags').value = model['tags'];
+        document.getElementById('e_available').value = model['available'];
+        document.getElementById('e_description').value = model['description'];
         models.style.display = "none";
         editModel.style.display = "";
         addModel.style.display = "none";

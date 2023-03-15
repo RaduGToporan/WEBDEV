@@ -14,8 +14,8 @@ public class ModelService {
     private final String dbPassword = "ai_marketplace";
 
     public void addModel(ModelBean modelItem) {
-        String query = "insert into models (modelid, name, trainedprice, untrainedprice, tags)" +
-                " values (?, ?, ?, ?, ?); ";
+        String query = "insert into models (modelid, name, trainedprice, untrainedprice, tags, available, description)" +
+                " values (?, ?, ?, ?, ?, ?, ?); ";
         String idQuery = "select max(modelid) + 1 as id from models;";
         try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword)) {
             PreparedStatement preparedStatement = conn.prepareStatement(idQuery);
@@ -28,6 +28,8 @@ public class ModelService {
                 preparedStatement.setDouble(3, modelItem.getTrainedPrice());
                 preparedStatement.setDouble(4, modelItem.getUntrainedPrice());
                 preparedStatement.setString(5, String.join(",", modelItem.getTags()));
+                preparedStatement.setBoolean(6, modelItem.isAvailable());
+                preparedStatement.setString(7, modelItem.getDescription());
                 preparedStatement.execute();
                 modelItem.setId(newId);
             }
@@ -42,7 +44,7 @@ public class ModelService {
         if ((sortColumn != null) && (sortOrder != null)) {
             sortString = String.format("order by %s %s", sortColumn, sortOrder);
         }
-        String query = String.format("select modelid, name, trainedprice, untrainedprice, tags from models %s;", sortString);
+        String query = String.format("select modelid, name, trainedprice, untrainedprice, tags, available, description from models %s;", sortString);
         try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword)) {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
 
@@ -54,6 +56,8 @@ public class ModelService {
                 modelItem.setTrainedPrice(res.getDouble("trainedprice"));
                 modelItem.setUntrainedPrice(res.getDouble("untrainedprice"));
                 modelItem.setTags(Arrays.asList(res.getString("tags").split(",")));
+                modelItem.setAvailable(res.getBoolean("available"));
+                modelItem.setDescription(res.getString("description"));
                 result.add(modelItem);
             }
         } catch (SQLException ex) {
@@ -67,7 +71,9 @@ public class ModelService {
                 "name=?, " +
                 "trainedprice=?, " +
                 "untrainedprice=?, " +
-                "tags=? " +
+                "tags=?, " +
+                "available=?, " +
+                "description=? " +
                 "where modelid=?; ";
 
         try (Connection conn = DriverManager.getConnection(dbURL, dbUser, dbPassword)) {
@@ -77,7 +83,10 @@ public class ModelService {
             preparedStatement.setDouble(2, modelItem.getTrainedPrice());
             preparedStatement.setDouble(3, modelItem.getUntrainedPrice());
             preparedStatement.setString(4, String.join(",", modelItem.getTags()));
-            preparedStatement.setLong(5, modelItem.getId());
+            preparedStatement.setBoolean(5, modelItem.isAvailable());
+            preparedStatement.setString(6, modelItem.getDescription());
+            preparedStatement.setLong(7, modelItem.getId());
+
             preparedStatement.execute();
         } catch (SQLException ex) {
             System.err.format("SQL State: %s\n%s", ex.getSQLState(), ex.getMessage());
