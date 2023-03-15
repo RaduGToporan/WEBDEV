@@ -34,7 +34,7 @@
 		<div th:if="!${getRequest} and !${cartEmpty}" class="d-block px-5">
 			<table class="table">
 				<tr>
-					<th colspan="2">Item</th>
+					<th>Item</th>
 					<th>Unit Price</th>
 					<th>Quantity</th>
 					<th>Price</th>
@@ -44,7 +44,6 @@
 				<!-- The "data-key" attribute in each row refers to the key of the product in the shopping cart in the Map in cookies -->
 				<!-- The row index is used to form the row's id -->
 				<tr class="cart-item" th:each="item, stat: ${items}" th:if="${item.quantity > 0}" th:id="|cart-item-${stat.index}|" th:attr="data-key=|${item.key}|">
-					<td><img class="icon" th:src="@{/images/blank.png}"></td>
 					<td class="item-name" th:text="${item.name}" />
 					<td class="unit-price" th:text="'€' + ${#numbers.formatDecimal(item.unitPrice,2,2)}" />
 					<td><input class="quantity" th:attr="onfocusout=|update('cart-item-${stat.index}')|" type="number" th:value="${item.quantity}"></td>
@@ -54,7 +53,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td></td>
 					<td><b>Total</b></td>
 					<td></td>
 					<td></td>
