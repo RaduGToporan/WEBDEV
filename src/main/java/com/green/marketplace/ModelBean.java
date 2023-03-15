@@ -13,9 +13,10 @@ public class ModelBean implements Serializable {
     private String unprocessedtags;
     private ArrayList<String> tags;
     private boolean available;
+    private String description;
 
 
-    public ModelBean(int id, String name, double trainedPrice, double untrainedPrice, String unprocessedtags, ArrayList<String> tags, boolean available) {
+    public ModelBean(int id, String name, double trainedPrice, double untrainedPrice, String unprocessedtags, ArrayList<String> tags, boolean available, String description) {
         this.id = id;
         this.name = name;
         this.trainedPrice = trainedPrice/100;
@@ -23,6 +24,7 @@ public class ModelBean implements Serializable {
         this.unprocessedtags = unprocessedtags;
         this.tags = tags;
         this.available = available;
+        this.description = description;
     }
     
 
@@ -69,6 +71,14 @@ public class ModelBean implements Serializable {
     }
     public void setAvailable(boolean available) {
         this.available = available;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
 }

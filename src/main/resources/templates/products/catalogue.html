@@ -62,7 +62,7 @@
 				<div class="product-half-container-des">
 				<h3 th:text="${model.name}">NAME</h3>
 				<p th:text="${'Tags = ' + model.unprocessedtags}">DESCRIPTION</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vel accumsan lorem. Mauris congue tempor auctor. Morbi pretium arcu magna, a gravida eros malesuada vitae. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. </p>
+				<p th:text="${#strings.abbreviate(model.description,200)}" />
 				</div>
 			</a>
 			<br>
