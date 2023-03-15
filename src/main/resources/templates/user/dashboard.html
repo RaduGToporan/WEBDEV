@@ -22,12 +22,18 @@
     </div>
     <table id="models" class="stretch_height">
         <tr>
-            <td colspan="5">
+            <td colspan="7">
                 <button id="add_model" style="min-width: fit-content">+ Add model</button>
             </td>
         </tr>
         <tr>
-            <th>ID</th>
+            <th>ID
+                <button id="sort_id">
+                    <span th:text="${(sort!='modelid') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='modelid') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='modelid') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
             <th>Name
                 <button id="sort_name">
                     <span th:text="${(sort!='name') ? '&#9650;&#9660;' : ''}"></span>
@@ -35,10 +41,28 @@
                     <span th:text="${(sort=='name') && (order=='desc') ? '&#9660;' : ''}"></span>
                 </button>
             </th>
-            <th>Trained</th>
-            <th>Untrained</th>
+            <th>Trained
+                <button id="sort_trained">
+                    <span th:text="${(sort!='trainedprice') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='trainedprice') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='trainedprice') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
+            <th>Untrained
+                <button id="sort_untrained">
+                    <span th:text="${(sort!='untrainedprice') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='untrainedprice') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='untrainedprice') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
             <th>Tags</th>
-            <th>Available</th>
+            <th>Available
+                <button id="sort_available">
+                    <span th:text="${(sort!='available') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='available') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='available') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
             <th>Description</th>
             <th colspan="2"></th>
         </tr>
@@ -59,13 +83,7 @@
                 <button name="Delete" th:onclick="startDeleting([[${item}]])">Delete</button>
             </td>
         </tr>
-
-
     </table>
-
-    <script>
-
-    </script>
 
     <form action="/addmodel" method="post" id="add_model_form" style="display: none;">
         <div>Add new model</div>
@@ -89,7 +107,6 @@
 
         <label for="description">Description:</label><br>
         <input type="text" id="description" name="description" value="NewDescription"><br>
-
 
         <input type="submit" value="Submit">
         <button id="back_from_add" style="min-width: fit-content">Back to list</button>
@@ -132,7 +149,6 @@
         <button id="back_from_delete" style="min-width: fit-content">Back to list</button>
     </form>
 
-
     <table id="orders" style="display: none">
         <tr>
             <th>Order Number</th>
@@ -174,7 +190,6 @@
     }
 
     function startEditing(model) {
-        console.log(model);
         document.getElementById('e_id').value = model['id'];
         document.getElementById('e_name').value = model['name'];
         document.getElementById('e_trainedPrice').value = model['trainedPrice'];
@@ -188,20 +203,43 @@
     }
 
     function startDeleting(model) {
-        console.log(model);
         document.getElementById('d_id').value = model['id'];
         models.style.display = "none";
         deleteModel.style.display = "";
         addModel.style.display = "none";
     }
 
-    document.getElementById("sort_name").addEventListener("click", () => {
+    function changeOrder() {
         if (sortOrderName === 'desc') {
             sortOrderName = 'asc';
         } else {
             sortOrderName = 'desc';
         }
+    }
+
+    document.getElementById("sort_id").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=modelid&order=" + sortOrderName;
+    });
+
+    document.getElementById("sort_name").addEventListener("click", () => {
+        changeOrder();
         window.location.href = window.location.href.split("?")[0] + "?sort=name&order=" + sortOrderName;
+    });
+
+    document.getElementById("sort_trained").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=trainedprice&order=" + sortOrderName;
+    });
+
+    document.getElementById("sort_untrained").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=untrainedprice&order=" + sortOrderName;
+    });
+
+    document.getElementById("sort_available").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=available&order=" + sortOrderName;
     });
 
     document.getElementById("show_models").addEventListener("click", () => {
