@@ -19,9 +19,10 @@ import java.sql.ResultSet;
 @Controller
 public class ProductController {
 
-    ArrayList<ModelBean> modelDB = readDB();
-    HashMap<String, Integer> tagMap = new HashMap<>();
-    int count = 0;
+	HashMap<String,Integer> tagMap = new HashMap<>();
+	ArrayList<ModelBean> modelDB = readDB();
+	int count = 0;
+	
 
 
     @GetMapping("/catalogue")
