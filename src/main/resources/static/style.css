@@ -147,3 +147,8 @@ h1 {
     margin: 2px;
 }
 
+.center_seventy {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

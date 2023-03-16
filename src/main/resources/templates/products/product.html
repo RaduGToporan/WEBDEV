@@ -9,11 +9,11 @@
 		<br>
 		<br>
 
-		<div class="product-container" th:id="${product.id}" style="margin-left: 14%; width: 72%">
+		<div class="product-container" th:id="${product.id}" style="margin-left: 14%; width: 72%; height: 450px">
 			<div class="product-half-container-des">
 			<h3 th:text="${product.name}">NAME</h3>
 			<p th:text="${'Tags = ' + product.unprocessedtags}">DESCRIPTION</p>
-			<p th:text="${product.description}" />
+			<p th:text="${product.description}" class=""></p>
 			</div>
 		
 			<br>
