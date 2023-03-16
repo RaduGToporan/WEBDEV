@@ -76,7 +76,6 @@ public class ProductController {
                 "jdbc:mysql://127.0.0.1:3306/marketplace", "webdev", "ai_marketplace")) {
 
             if (conn != null) {
-                System.out.println("Connected to the database!");
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
