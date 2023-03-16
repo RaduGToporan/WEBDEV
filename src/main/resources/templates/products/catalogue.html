@@ -32,19 +32,7 @@
 		  <div class="ad-image">
 			  <h2 style="color:white">Insert Image/ Ad here</h2>
 		  </div>
-	  
-		  <!--<div class="order-by-container">
-			<form action="/action_page.php">
-			  <label for="cars">Sort By</label>
-			  <select name="cars" id="cars">
-				<option value="volvo">None</option>
-				<option value="saab">A -> Z</option>
-				<option value="opel">Z -> A</option>
-				<option value="audi">$ -> $$$</option>
-				<option value="audi">$$$ -> $</option>
-			  </select>
-			</form>
-		  </div>-->
+
 		  <br>
 		  <br>
 		  <br>
@@ -64,13 +52,13 @@
 				<div class="check-box-container">
 				  <div class="form-check">
 					<input class="form-check-input" type="radio" th:name="${model.id}" th:id="${model.id} + a" checked>
-					<label class="form-check-label" th:for="${model.id} + a" th:text="${'Trained = €' + model.trainedPrice}">
+					<label class="form-check-label" th:for="${model.id} + a" th:text="'Trained = €' + ${#numbers.formatDecimal(model.trainedPrice,2,2)}">
 					  Trained
 					</label>
 				  </div>
 				  <div class="form-check">
 					<input class="form-check-input" type="radio" th:name="${model.id}" th:id="${model.id} + b">
-					<label class="form-check-label" th:for="${model.id} + b" th:text="${'Untrained = €' + model.untrainedPrice}" >
+					<label class="form-check-label" th:for="${model.id} + b" th:text="'Trained = €' + ${#numbers.formatDecimal(model.untrainedPrice,2,2)}">
 					  Untrained
 					</label>
 				  </div>
