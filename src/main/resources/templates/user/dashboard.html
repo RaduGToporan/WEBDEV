@@ -22,28 +22,134 @@
     </div>
     <table id="models" class="stretch_height">
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Price $</th>
-            <th>Status</th>
-            <th>Edit</th>
-        </tr>
-        <tr>
-            <td>0</td>
-            <td>ChatGPT</td>
-            <td>61,973,723.99</td>
-            <td>Discontinued</td>
-            <td>
-                <button>Edit</button>
+            <td colspan="7">
+                <button id="add_model" style="min-width: fit-content">+ Add model</button>
             </td>
         </tr>
         <tr>
-            <td colspan="5">
-                <button>+ Add model</button>
+            <th>ID
+                <button id="sort_id">
+                    <span th:text="${(sort!='modelid') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='modelid') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='modelid') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
+            <th>Name
+                <button id="sort_name">
+                    <span th:text="${(sort!='name') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='name') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='name') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
+            <th>Trained
+                <button id="sort_trained">
+                    <span th:text="${(sort!='trainedprice') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='trainedprice') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='trainedprice') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
+            <th>Untrained
+                <button id="sort_untrained">
+                    <span th:text="${(sort!='untrainedprice') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='untrainedprice') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='untrainedprice') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
+            <th>Tags</th>
+            <th>Available
+                <button id="sort_available">
+                    <span th:text="${(sort!='available') ? '&#9650;&#9660;' : ''}"></span>
+                    <span th:text="${(sort=='available') && (order=='asc') ? '&#9650;' : ''}"></span>
+                    <span th:text="${(sort=='available') && (order=='desc') ? '&#9660;' : ''}"></span>
+                </button>
+            </th>
+            <th>Description</th>
+            <th colspan="2"></th>
+        </tr>
+        <tr th:each="item: ${modelList}">
+            <td th:text="${item.id}"></td>
+            <td th:text="${item.name}" style="min-width: 350px;"/>
+            <td th:text="'€' + ${#numbers.formatDecimal(item.trainedPrice,2,2)}"/>
+            <td th:text="'€' + ${#numbers.formatDecimal(item.untrainedPrice,2,2)}"/>
+            <td>
+                <span th:each="tag: ${item.tags}" th:text="${tag}" class="tag"></span>
+            </td>
+            <td th:text="${item.available}"/>
+            <td th:text="${item.description}" style="max-width: 400px; white-space: nowrap; overflow: hidden;"/>
+            <td>
+                <button name="Edit" th:onclick="startEditing([[${item}]])">Edit</button>
+            </td>
+            <td>
+                <button name="Delete" th:onclick="startDeleting([[${item}]])">Delete</button>
             </td>
         </tr>
     </table>
-    <table id="orders" style="display: none" class="table">
+
+    <form action="/addmodel" method="post" id="add_model_form" style="display: none;">
+        <div>Add new model</div>
+        <label for="name">name:</label><br>
+        <input type="text" id="name" name="name" value="NewName"><br>
+
+        <label for="trainedPrice">Trained price:</label><br>
+        <input type="number" id="trainedPrice" name="trainedPrice" value="123"><br>
+
+        <label for="untrainedPrice">Untrained price:</label><br>
+        <input type="number" id="untrainedPrice" name="untrainedPrice" value="121"><br>
+
+        <label for="tags">Tags: (Choose between image,generation,art,animated)</label><br>
+        <input type="text" id="tags" name="tags" value="image,generation,art,animated"><br><br>
+
+        <label for="available">Available:</label><br>
+        <select type="boolean" id="available" name="available" value="true">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select><br>
+
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description" value="NewDescription"><br>
+
+        <input type="submit" value="Submit">
+        <button id="back_from_add" style="min-width: fit-content">Back to list</button>
+    </form>
+
+    <form action="/savemodel" method="post" id="edit_model_form" style="display: none;">
+        <div>Save changes on the model</div>
+        <input type="hidden" id="e_id" name="id" value="0"><br>
+
+        <label for="e_name">name:</label><br>
+        <input type="text" id="e_name" name="name" value=""><br>
+
+        <label for="e_trainedPrice">Trained price:</label><br>
+        <input type="number" step="0.01" id="e_trainedPrice" name="trainedPrice" value=""><br>
+
+        <label for="e_untrainedPrice">Untrained price:</label><br>
+        <input type="number" step="0.01" id="e_untrainedPrice" name="untrainedPrice" value=""><br>
+
+        <label for="e_tags">Tags: (Choose between image,generation,art,animated)</label><br>
+        <input type="text" id="e_tags" name="tags" value="" style="width: 400px;"><br><br>
+
+        <label for="e_available">Available:</label><br>
+        <select type="boolean" id="e_available" name="available" value="">
+            <option value="true">true</option>
+            <option value="false">false</option>
+        </select><br>
+
+        <label for="e_description">Description:</label><br>
+        <textarea id="e_description" name="description" value="" rows="6" cols="70"></textarea><br>
+
+        <input type="submit" value="Submit">
+        <button id="back_from_edit" style="min-width: fit-content">Back to list</button>
+    </form>
+
+    <form action="/deletemodel" method="post" id="delete_model_form" style="display: none;">
+        <div>Are you sure you want to delete the model</div>
+        <input type="hidden" id="d_id" name="id" value="0"><br>
+
+        <input type="submit" value="Delete">
+        <button id="back_from_delete" style="min-width: fit-content">Back to list</button>
+    </form>
+
+    <table id="orders" style="display: none">
         <tr>
             <th>Order No.</th>
             <th>User</th>
@@ -75,18 +181,108 @@
 <script>
     models = document.getElementById("models");
     orders = document.getElementById("orders");
+    addModel = document.getElementById("add_model_form");
+    editModel = document.getElementById("edit_model_form");
+    deleteModel = document.getElementById("delete_model_form");
+
+    let url = window.location.href;
+    let parts = url.split('?');
+    let sortOrderName = 'desc';
+    if (parts.length > 1) {
+        let params = parts[1].split('&');
+        for (let i = 0; i < params.length; i++) {
+            if (params[i].startsWith('order')) {
+                let pair = params[i].split("=");
+                sortOrderName = pair[1];
+            }
+        }
+    }
+
+    function startEditing(model) {
+        document.getElementById('e_id').value = model['id'];
+        document.getElementById('e_name').value = model['name'];
+        document.getElementById('e_trainedPrice').value = model['trainedPrice'];
+        document.getElementById('e_untrainedPrice').value = model['untrainedPrice'];
+        document.getElementById('e_tags').value = model['tags'];
+        document.getElementById('e_available').value = model['available'];
+        document.getElementById('e_description').value = model['description'];
+        models.style.display = "none";
+        editModel.style.display = "";
+        addModel.style.display = "none";
+    }
+
+    function startDeleting(model) {
+        document.getElementById('d_id').value = model['id'];
+        models.style.display = "none";
+        deleteModel.style.display = "";
+        addModel.style.display = "none";
+    }
+
+    function changeOrder() {
+        if (sortOrderName === 'desc') {
+            sortOrderName = 'asc';
+        } else {
+            sortOrderName = 'desc';
+        }
+    }
+
+    document.getElementById("sort_id").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=modelid&order=" + sortOrderName;
+    });
+
+    document.getElementById("sort_name").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=name&order=" + sortOrderName;
+    });
+
+    document.getElementById("sort_trained").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=trainedprice&order=" + sortOrderName;
+    });
+
+    document.getElementById("sort_untrained").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=untrainedprice&order=" + sortOrderName;
+    });
+
+    document.getElementById("sort_available").addEventListener("click", () => {
+        changeOrder();
+        window.location.href = window.location.href.split("?")[0] + "?sort=available&order=" + sortOrderName;
+    });
 
     document.getElementById("show_models").addEventListener("click", () => {
         models.style.display = "";
         orders.style.display = "none";
-    })
+    });
 
     document.getElementById("show_orders").addEventListener("click", () => {
         models.style.display = "none";
         orders.style.display = "";
-    })
+    });
 
-    document.getElementById("edit_model").addEventListener("click", e => {
+    document.getElementById("add_model").addEventListener("click", () => {
+        models.style.display = "none";
+        addModel.style.display = "";
+        editModel.style.display = "none";
+    });
+
+    document.getElementById('back_from_add').addEventListener("click", () => {
+        models.style.display = "";
+        addModel.style.display = "none";
+    });
+
+    document.getElementById('back_from_edit').addEventListener("click", () => {
+        models.style.display = "";
+        editModel.style.display = "none";
+    });
+
+    document.getElementById('back_from_delete').addEventListener("click", () => {
+        models.style.display = "";
+        deleteModel.style.display = "none";
+    });
+
+    /*document.getElementById("edit_model").addEventListener("click", e => {
         row = document.createElement("tr");
 
         id = document.createElement("td");
@@ -120,7 +316,7 @@
         row.replaceChildren(id, items, time, td1, td2)
 
         document.getElementById(rowID).after(row)
-    })
+    })*/
 </script>
 </body>
 </html>

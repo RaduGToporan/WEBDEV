@@ -13,7 +13,7 @@ public class CartItem {
         this.name = name;
         this.unitPrice = unitPrice;
         this.quantity = quantity;
-        this.price = Math.floor(unitPrice * quantity * 100) / 100.0; // Extra step to avoid floating point error
+        this.price = unitPrice * quantity;
     }
 
     public String getKey() {return key;}

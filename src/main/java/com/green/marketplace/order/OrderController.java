@@ -72,7 +72,7 @@ public class OrderController {
 					// With the result from the SQL query
 					if (resultSet.next()) { 
 						String itemName = resultSet.getString("name");
-						int unitPrice;
+						double unitPrice;
 						int quantity = scMap.get(key);
 						boolean available = resultSet.getBoolean("available");
 
@@ -80,12 +80,12 @@ public class OrderController {
 							// Make appropriate changes depending on if model is trained
 							if (trained) {
 								itemName += " (Trained)";
-								unitPrice = resultSet.getInt("trainedprice");
+								unitPrice = resultSet.getDouble("trainedprice");
 							} else {
 								itemName += " (Untrained)";
-								unitPrice = resultSet.getInt("untrainedprice");
+								unitPrice = resultSet.getDouble("untrainedprice");
 							}
-							CartItem newItem = new CartItem(key, itemName, unitPrice/100.0, quantity);
+							CartItem newItem = new CartItem(key, itemName, unitPrice, quantity);
 							scList.add(newItem);
 							totalPrice += newItem.getPrice();
 						} else if (!available && quantity > 0) {
