@@ -1,0 +1,179 @@
+<!DOCTYPE html>    
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{fragments/head}"></head>
+
+	<body>
+		<nav th:replace="~{fragments/nav}"></nav>
+
+		<h1 th:text="${page}"></h1>
+
+		<h1>Team Name: Green</h1>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Student ID</th>
+        <th>email</th>
+      </tr>
+      <tr>
+        <td>Nikita</td>
+        <td>Danilov</td>
+        <td>20342583</td>
+        <td>nikita.danilov@ucdconnect.ie</td>
+      </tr>
+      <tr>
+        <td>Jamie</td>
+        <td>Cronin</td>
+        <td>20338271</td>
+        <td>jamie.cronin@ucdconnect.ie</td>
+      </tr>
+      <tr>
+        <td>Loid</td>
+        <td>Tayag</td>
+        <td>20357741</td>
+        <td>loid.tayag@ucdconnect.ie</td>
+	  </tr>
+        <td>Radu</td>
+        <td>Toporan</td>
+        <td>22206161</td>
+        <td>radu.toporan@ucdconnect.ie</td>
+      </tr>
+    </table>
+    <img th:src="@{/images/nicky_portrait.jpg}" alt="Nicky photo"  width="150" height="200">
+    <img th:src="@{/images/jamie_portrait.jpg}" alt="Jamie photo" width="150" height="200">
+    <img th:src="@{/images/loid_portrait.jpg}" alt="Loid photo" width="150" height="200">
+    <img th:src="@{/images/radu_portrait.jpg}" alt="Radu photo" width="150" height="200">
+
+    <br>
+    <table class="table table-striped">
+      <tr>
+        <th>ID</th>
+		<th style="max-width: 400px;">Description</th>
+        <th>Person</th>
+      </tr>
+      <tr>
+        <th>G0</th>
+		<td>View the models currently on sale.</td>
+        <td>Nicky</td>
+      </tr>
+      <tr>
+        <th>G1</th>
+		<td>View details about a particular model.</td>
+        <td>Nicky</td>
+      </tr>
+      <tr>
+        <th>G2</th>
+		<td>Add a model to a shopping cart.</td>
+        <td>Jamie</td>
+      </tr>
+      <tr>
+        <th>G3</th>
+		<td>Update the shopping cart.</td>
+        <td>Jamie</td>
+      </tr>
+      <tr>
+        <th>G4</th>
+		<td>Create a customer account.</td>
+        <td>Loid</td>
+      </tr>
+      <tr>
+        <th>G5</th>
+		<td>Log in to their account.</td>
+        <td>Loid</td>
+      </tr>
+      <tr>
+        <th>G6</th>
+		<td>Something extra. (Filtering out catalogue)</td>
+        <td>Nicky</td>
+      </tr>
+      <tr>
+		<th>C0</th>
+        <td>Go to the checkout to purchase orders in their shopping cart.</td>
+        <td>Jamie</td>
+      </tr>
+      <tr>
+        <th>C1</th>
+		<td>Use a (fake) payment portal to pay for their goods.</td>
+        <td>Jamie</td>
+      </tr>
+      <tr>
+        <th>C2</th>
+		<td>View their order history.</td>
+        <td>Jamie</td>
+      </tr>
+      <tr>
+        <th>C3</th>
+		<td>Something extra. (Dockerize)</td>
+        <td>Jamie<td>
+      </tr>
+      <tr>
+        <th>O0</th>
+		<td>Login to the marketplace.</td>
+        <td>Loid</td>
+      </tr>
+      <tr>
+        <th>O1</th>
+		<td>Add models to the marketplace.</td>
+        <td>Nicky+Radu</td>
+      </tr>
+      <tr>
+        <th>O2</th>
+		<td>Hide models to make them no longer available.</td>
+        <td>Nicky+Radu</td>
+      </tr>
+      <tr>
+        <th>O3</th>
+		<td>View all orders.</td>
+        <td>Radu+Nicky</td>
+      </tr>
+      <tr>
+        <th>O4</th>
+		<td>Change the state of orders.</td>
+        <td>Jamie</td>
+      </tr>
+      <tr>
+        <th>O5</th>
+		<td>Edit model details.</td>
+        <td>Radu</td>
+      </tr>
+      <tr>
+        <th>O6</th>
+		<td>Something extra. (Sort models in dashboard)</td>
+        <td>Radu</td>
+      </tr>
+      <tr>
+        <th>D0</th>
+		<td>Team registration</td>
+        <td>Nicky</td>
+      </tr>
+      <tr>
+        <th>D2</th>
+		<td>Video Demo</td>
+        <td>Loid</td>
+      </tr>
+      <tr>
+        <th>D3</th>
+		<td>Wireframe design of the project</td>
+        <td>Nicky</td>
+      </tr>
+      <tr>
+        <th>D4</th>
+		<td>Final report</td>
+        <td>Everyone</td>
+      </tr>
+      <tr>
+        <th>D5</th>
+		<td>Individual report</td>
+        <td>Everyone</td>
+      </tr>
+    </table>
+
+    <h4>Wireframes</h4>
+
+
+    <h4>Reflections</h4>
+
+
+    <h4>Installation Instructions</h4>
+	</body>
+</html>
