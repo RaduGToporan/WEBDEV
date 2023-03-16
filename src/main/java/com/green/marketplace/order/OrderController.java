@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CookieValue;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.green.marketplace.UserController;
@@ -52,7 +50,6 @@ public class OrderController {
 
 			model.addAttribute("page", "Shopping Cart");
 			model.addAttribute("getRequest", false); //This is not a GET request
-			model.addAttribute("cartEmpty", cartCount == 0);
 
 			try{ // try block required for ObjectMapper
 				Map<String, Integer> scMap = objectMapper.readValue(scJson, Map.class); // Parse the JSON-formatted Map
@@ -96,6 +93,7 @@ public class OrderController {
 						}
 					}
 				}
+				model.addAttribute("cartEmpty", scList.size() == 0);
 				model.addAttribute("totalPrice", totalPrice);
 				model.addAttribute("items", scList);
 				if (unavailableItems.size() > 0) {

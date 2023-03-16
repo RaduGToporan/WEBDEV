@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -77,7 +76,6 @@ public class ProductController {
                 "jdbc:mysql://127.0.0.1:3306/marketplace", "webdev", "ai_marketplace")) {
 
             if (conn != null) {
-                System.out.println("Connected to the database!");
                 PreparedStatement preparedStatement = conn.prepareStatement(SQL_SELECT);
 
                 ResultSet resultSet = preparedStatement.executeQuery();
