@@ -20,8 +20,8 @@ public class ModelBean implements Serializable {
     public ModelBean(int id, String name, double trainedPrice, double untrainedPrice, String unprocessedtags, ArrayList<String> tags, boolean available, String description) {
         this.id = id;
         this.name = name;
-        this.trainedPrice = trainedPrice / 100;
-        this.untrainedPrice = untrainedPrice / 100;
+        this.trainedPrice = trainedPrice;
+        this.untrainedPrice = untrainedPrice;
         this.unprocessedtags = unprocessedtags;
         this.tags = tags;
         this.available = available;

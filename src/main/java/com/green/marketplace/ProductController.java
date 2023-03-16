@@ -85,8 +85,8 @@ public class ProductController {
                 while (resultSet.next()) {
                     int id = resultSet.getInt("modelid");
                     String name = resultSet.getString("name");
-                    int trainedPrice = resultSet.getInt("trainedprice");
-                    int untrainedPrice = resultSet.getInt("untrainedprice");
+                    double trainedPrice = resultSet.getDouble("trainedprice");
+                    double untrainedPrice = resultSet.getDouble("untrainedprice");
                     String unprocessedtags = resultSet.getString("tags");
                     ArrayList<String> tags = formatTags(unprocessedtags);
                     boolean available = resultSet.getBoolean("available");
