@@ -194,7 +194,41 @@
       <li>Import the dump.sql file in the root of the project to you</li>
       <li>Create a user called "webdev", give it password "ai_marketplace" and assign it an admin role on the new marketplace database</li>
       <li>Clone the Github <a href="https://github.com/loidtayag/Web_Dev_AI_Marketplace">repository</a></li>
-      <li></li>
+      <li>From the root of the project, run <span style="font-family: 'Courier New', Courier, monospace;">mvn package</span> to build a JAR file</li>
+      <li>Run <span style="font-family: 'Courier New', Courier, monospace;">docker image build -t green/ai_marketplace:latest .</span> to build the docker image file</li>
+      <li>Run <span style="font-family: 'Courier New', Courier, monospace;">docker run -p 8080:8080 green/ai_marketplace:latest</span> to start the server in a Docker container</li>
+      <li>Browse, see below for usernames and passwords of existing users</li>
     </ol>
+
+    <table>
+      <tr>
+        <th>Username</th>
+        <th>Password</th>
+      </tr>
+      <tr>
+        <td>admin</td>
+        <td>mypassword</td>
+      </tr>
+      <tr>
+        <td>jamie</td>
+        <td>helloworld</td>
+      </tr>
+      <tr>
+        <td>nicky</td>
+        <td>pass123</td>
+      </tr>
+      <tr>
+        <td>loid</td>
+        <td>password</td>
+      </tr>
+      <tr>
+        <td>radu</td>
+        <td>marketplace</td>
+      </tr>
+      <tr>
+        <td>tom</td>
+        <td>models</td>
+      </tr>
+    </table>
 	</body>
 </html>
