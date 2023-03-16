@@ -114,17 +114,17 @@
       <tr>
         <th>O1</th>
 		<td>Add models to the marketplace.</td>
-        <td>Nicky+Radu</td>
+        <td>Radu</td>
       </tr>
       <tr>
         <th>O2</th>
 		<td>Hide models to make them no longer available.</td>
-        <td>Nicky+Radu</td>
+        <td>Radu</td>
       </tr>
       <tr>
         <th>O3</th>
 		<td>View all orders.</td>
-        <td>Radu+Nicky</td>
+        <td>Jamie</td>
       </tr>
       <tr>
         <th>O4</th>
@@ -154,7 +154,7 @@
       <tr>
         <th>D3</th>
 		<td>Wireframe design of the project</td>
-        <td>Nicky</td>
+        <td>Everyone</td>
       </tr>
       <tr>
         <th>D4</th>
@@ -168,12 +168,67 @@
       </tr>
     </table>
 
-    <h4>Wireframes</h4>
+    <h3><a href="/wireframe">Wireframe</a></h3>
 
 
-    <h4>Reflections</h4>
+    <h3>Reflections</h3>
+    <h5>What We Have Learned</h5>
+    <p>In completing this project, we learned how to create a basic web application using spring boot, including how to set up controllers for directing the user to different webpages, how to create beans for storing and passing information easily between front-end and back-end and how to produce a pom.xml file to track and organise the dependencies of our project along with other important meta-data. We also learned about thymeleaf and how it’s used to serve templates given various parameters and variables as well as how to incorporate logic into these templates. Along with this we learned how docker works to create a single image that can be run anywhere while dockerizing our application.</p>
+    <p>We learned how to interact with a SQL database via the built-in Java API, this was a crucial aspect of our project’s development given that the overarching goal of the project was to allow a user to access the database in a controlled and user-friendly manner, i.e to log in,. to find the price of items, read their titles and descriptions and to place orders. The admin also of course needed to be capable of accessing the database with a greater degree of privilege but in a similar vein to that of the user in that they are simply using the website as a means of interacting with the database neatly.</p>
+    <p>We learned how to work as a team utilising the scrum methodology, we analysed the assignment brief as though it were a specification from a customer , We held weekly standups where we discussed ideas, helped each other with issues we may have encountered and planned sprints. We also made use of a kanban board to track the assignment and progress of the various tasks. As well as this, we learned to use git as a team whereby whenever somebody began work on a set of features, a new branch was created from main and when they were happy with their work, a pull request was created and was only pulled into main when it had been reviewed and approved by at least one other team member.</p>
+    <p>On top of everything, we learned a lot about how we could have done things differently and how that could have had a positive overall impact on the project.</p>
 
+    <h5>How We Could Have Improved</h5>
+    <p>There are a number of areas where we could have improved upon our approach to the project, although some of the potential improvements are unfortunately only obvious with the benefit of hindsight.</p>
+    <p>It would have been better if we had worked more closely together on some aspects of the project, particularly where there was overlap between two or more people’s tasks. For instance, throughout the codebase, some classes include a method for getting a connection to the database and some classes have that code re-written in multiple places within the same file, working together more closely would have enabled us to see that it would have been helpful to create a utility class with various methods that are widely and frequently used in the business logic of the application, such as getting the connection to the database or  getting the username of a user given their session ID. This approach would also have been greatly useful where there were several different possible approaches to a problem, if we had worked together more closely, we could have decided the best way to solve the problem and only implemented that way, thus making our codebase both more efficient and more consistent. Consistency in turn would have made it easier for one person to read and understand code written by somebody else. It is possible that this lack of working closely enough together occurred because we did not want to appear as though we did not trust each other to work independently.</p>
+    <p>Another change that would have been beneficial would have been to reduce the size of out pull requests. In general we added several features in a single branch, this of course led to some rather sizable pull requests where it wasn’t always clear which piece of code was related to which feature being implemented (also a side effect of the inconsistency mentioned above). If we had been able to stick to implementing a single feature in each branch, our pull requests would have been more frequent but more importantly, smaller. Smaller pull requests would have allowed for faster review because there would be less to check and it would be more obvious which feature implementation was causing a given bug or error. It is likely that this happened because of the fact that we had an abbreviated semester and as such, felt significant time pressure from the beginning and so were eager to implement as much as possible with each pull request we made.</p>
+    <p>Finally, we could have done a better job at planning the structure of our project. Some of our classes were organised into directories and some were not. As previously mentioned, a more structured approach to our utility methods would have been very beneficial also. Our css and javascript files were all stored in the base of the static directory instead of being organised by file type or category. There are several other times where our planning fell short and it is visible from a glance at the codebase. The best solution probably would have been to create a basic style guide and the onset of the project and stick to it religiously and to have a quick review of our project structure at each of our meetings in order to nip any deviations from our agreed upon structure in the bud. This lack of structure is also probably due to our not working closely together enough as well as just a general lack of consideration on our part with regards to the importance of structure in the later stages of the project development. There was also an underlying uncertainty at the beginning of the project about how exactly we wanted to structure it because we were all relatively inexperienced with building web applications as part of a team and so we didn’t want to set anything in stone too early on in case it came back to bite us later.</p>
+    <p>The overarching lessons we learned from our mistakes were to consult each other more often when we may be working on something that has overlap with a feature already implemented or being worked on and to be more rigorous with our planning at the start of the project.</p>
 
-    <h4>Installation Instructions</h4>
+    <h3>Installation Instructions</h3>
+    <p>The following steps should be followed to ensure the project is succesfully installed on your local machine:</p>
+    <ol>
+      <li>Ensure Java version 11 is installed on your system</li>
+      <li>Install <a href="https://www.docker.com/">Docker</a></li>
+      <li>Install a SQL server</li>
+      <li>Import the dump.sql file in the root of the project to you</li>
+      <li>Create a user called "webdev", give it password "ai_marketplace" and assign it an admin role on the new marketplace database</li>
+      <li>Clone the Github <a href="https://github.com/loidtayag/Web_Dev_AI_Marketplace">repository</a></li>
+      <li>From the root of the project, run <span style="font-family: 'Courier New', Courier, monospace;">mvn package</span> to build a JAR file</li>
+      <li>Run <span style="font-family: 'Courier New', Courier, monospace;">docker image build -t green/ai_marketplace:latest .</span> to build the docker image file</li>
+      <li>Run <span style="font-family: 'Courier New', Courier, monospace;">docker run -p 8080:8080 green/ai_marketplace:latest</span> to start the server in a Docker container</li>
+      <li>Browse, see below for usernames and passwords of existing users</li>
+    </ol>
+
+    <table>
+      <tr>
+        <th>Username</th>
+        <th>Password</th>
+      </tr>
+      <tr>
+        <td>admin</td>
+        <td>mypassword</td>
+      </tr>
+      <tr>
+        <td>jamie</td>
+        <td>helloworld</td>
+      </tr>
+      <tr>
+        <td>nicky</td>
+        <td>pass123</td>
+      </tr>
+      <tr>
+        <td>loid</td>
+        <td>password</td>
+      </tr>
+      <tr>
+        <td>radu</td>
+        <td>marketplace</td>
+      </tr>
+      <tr>
+        <td>tom</td>
+        <td>models</td>
+      </tr>
+    </table>
 	</body>
 </html>
