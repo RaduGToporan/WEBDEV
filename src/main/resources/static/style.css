@@ -1,105 +1,115 @@
 
-.search-container{
-  float: left;
-  margin-left: max(40px,4%);
-  height: 6000px;
-  width: 20%;
-  background-color: #DEDEDE;
-  min-width: 300px;
-  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) ;
+.search-container {
+    float: left;
+    margin-left: max(40px, 4%);
+    height: 6000px;
+    width: 20%;
+    background-color: #DEDEDE;
+    min-width: 300px;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
-body{
-  background-color: #FBFBFB;
-  font-family: Arial, Helvetica, sans-serif;
+body {
+    background-color: #FBFBFB;
+    font-family: Arial, Helvetica, sans-serif;
 
 }
 
-.top{
-  height: 30px;
-  background-color: #6A6A6A;
+.top {
+    height: 30px;
+    background-color: #6A6A6A;
 }
-.filter-button{
-  padding: 10px;
+
+.filter-button {
+    padding: 10px;
 }
-.filter-container{
-  margin-top: 20px;
-  text-align: center;
-  width: 100%;
+
+.filter-container {
+    margin-top: 20px;
+    text-align: center;
+    width: 100%;
 
 
 }
-.filter-container tr{
-  height: 40px;
-  background-color: #FBFBFB;
+
+.filter-container tr {
+    height: 40px;
+    background-color: #FBFBFB;
 }
 
-.ad-image{
-  margin-left: 240px;
-  height: 200px;
-  background-color: black;
-}
-.order-by-container{
-  float: right;
-  height: 50px;
-  width: 150px;
-  margin-right: 0px;
-  margin-top: 20px;
+.ad-image {
+    margin-left: 240px;
+    height: 200px;
+    background-color: black;
 }
 
-.product-container{
-
-  background-color: white;
-  margin:auto;
-  margin-left: max(360px, 26%);
-  width: 72%;
-  height: 160px;
-  box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%) ;
-  
-  margin-bottom: 40px;
-
-}
-.product-half-container-des{
-  padding-top: 15px;
-  float: left;
-  width: 50%;
-}
-.product-half-container-price{
-  float: left;
-  width: 45%;
-  margin-top:-10px;
-    margin-left:5%
+.order-by-container {
+    float: right;
+    height: 50px;
+    width: 150px;
+    margin-right: 0px;
+    margin-top: 20px;
 }
 
-.product-container h3{
-  display: inline;
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-right: 0;
+.product-container {
+
+    background-color: white;
+    margin: auto;
+    margin-left: max(360px, 26%);
+    width: 72%;
+    height: 160px;
+    box-shadow: 0 10px 16px 0 rgb(0 0 0 / 20%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+
+    margin-bottom: 40px;
+
 }
-.product-container p{
-  margin-left: 10px;
+
+.product-half-container-des {
+    padding-top: 15px;
+    float: left;
+    width: 50%;
 }
-.product-container h4{
-  width: 10%;
-  margin-top: 10px;
-  margin-left: 10px;
-  margin-right: 0;
+
+.product-half-container-price {
+    float: left;
+    width: 45%;
+    margin-top: -10px;
+    margin-left: 5%
 }
-.quantity-box{
-  float: left;
-  width: 20%;
-  font-size: 20px;
-  border: solid 1px;
-  text-align: center;
-  margin-top: 10px;
-  margin-right: 40px;
+
+.product-container h3 {
+    display: inline;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 0;
 }
-.check-box-container{
-  float: left;
-  width: 40%;
+
+.product-container p {
+    margin-left: 10px;
 }
-  
+
+.product-container h4 {
+    width: 10%;
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 0;
+}
+
+.quantity-box {
+    float: left;
+    width: 20%;
+    font-size: 20px;
+    border: solid 1px;
+    text-align: center;
+    margin-top: 10px;
+    margin-right: 40px;
+}
+
+.check-box-container {
+    float: left;
+    width: 40%;
+}
+
 
 table, input.my-button {
     margin-left: auto;
@@ -126,5 +136,14 @@ h1 {
 .x {
     height: 15px;
     width: 15px;
+}
+
+.tag {
+    border-radius: 7px;
+    /*background-color: #22B14C; logo color*/
+    background-color: lightgreen;
+    padding-left: 3px;
+    padding-right: 3px;
+    margin: 2px;
 }
 

@@ -1,5 +1,6 @@
 package com.green.marketplace;
 
+import com.green.marketplace.service.ModelService;
 import com.green.marketplace.user.Codec;
 import com.green.marketplace.user.User;
 import jakarta.servlet.http.Cookie;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 import java.util.UUID;
 
 import javax.management.RuntimeOperationsException;
@@ -29,6 +31,7 @@ public class UserController {
     @Autowired
     private Codec codec;
     private final String sessionID = "sessionID";
+    private ModelService modelService = new ModelService();
     ObjectMapper objectMapper = new ObjectMapper(); // Utility to read a JSON-formatted List
 
     public String profile(Model model, String sessionId) {
@@ -108,38 +111,43 @@ public class UserController {
     }
 
     @GetMapping("login")
-    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, Model model) {
+    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie,
+                        Model model, @RequestParam(value = "sort", required = false) String sortColumn,
+                        @RequestParam(value = "order", required = false) String sortOrder) {
         if (sessionIDCookie == null) {
             return "user/login";
-        }
-        else {
+        } else {
             try {
                 Connection conn = getConnection();
                 ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
 
                 while (rs.next()) {
                     String sessionID = rs.getString("sessionID");
-                    if (sessionID != null && sessionID.equals(sessionIDCookie)) {
+                    if (sessionID != null && sessionIDCookie.equals(sessionID)) {
                         model.addAttribute("user", new User(rs.getString("username"), rs.getString("password"), rs.getString("email")));
                         if (rs.getString("username").equals("admin")) {
+                            List<ModelBean> modelList = modelService.getAllModels(sortColumn, sortOrder);
+                            model.addAttribute("modelList", modelList);
+                            model.addAttribute("sort", sortColumn);
+                            model.addAttribute("order", sortOrder);
                             return dashboard(model);
-                        }
-                        else {
+                        } else {
                             return profile(model, sessionID);
                         }
                     }
                 }
 
                 return profile(model, sessionID);
-            }
-            catch (SQLException e) {
+            } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
         }
     }
 
     @PostMapping("login")
-    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie, HttpServletResponse res, @RequestParam(defaultValue = "user") String username, @RequestParam String password, Model model) {
+    public String login(@CookieValue(value = "sessionID", required = false) String sessionIDCookie,
+                        HttpServletResponse res, @RequestParam(defaultValue = "user") String username,
+                        @RequestParam String password, Model model) {
         try {
             Connection conn = getConnection();
             ResultSet rs = conn.prepareStatement("SELECT * FROM marketplace.users").executeQuery();
@@ -239,7 +247,7 @@ public class UserController {
 
     @GetMapping("deleteSession")
     @ResponseBody
-    public void deleteSession(@CookieValue(value="sessionID", required = false) String sessionID, HttpServletResponse res) {
+    public void deleteSession(@CookieValue(value = "sessionID", required = false) String sessionID, HttpServletResponse res) {
         if (sessionID != null) {
             try {
                 Connection conn = getConnection();
@@ -260,8 +268,7 @@ public class UserController {
     public int idOfSession(@CookieValue(required = false, defaultValue = "-1") String sessionID) {
         if (sessionID.equals("-1")) {
             return -1;
-        }
-        else {
+        } else {
             try {
                 Connection conn = getConnection();
                 String query = String.format("SELECT uid FROM marketplace.users WHERE sessionID='%s'", sessionID);
@@ -282,8 +289,7 @@ public class UserController {
     public boolean isAdmin(@CookieValue(required = false, defaultValue = "-1") String sessionID) {
         if (sessionID.equals("-1")) {
             return false;
-        }
-        else {
+        } else {
             Connection conn = getConnection();
             ResultSet rs = null;
             try {
