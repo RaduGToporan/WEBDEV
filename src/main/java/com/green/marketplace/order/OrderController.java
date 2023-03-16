@@ -50,7 +50,6 @@ public class OrderController {
 
 			model.addAttribute("page", "Shopping Cart");
 			model.addAttribute("getRequest", false); //This is not a GET request
-			model.addAttribute("cartEmpty", cartCount == 0);
 
 			try{ // try block required for ObjectMapper
 				Map<String, Integer> scMap = objectMapper.readValue(scJson, Map.class); // Parse the JSON-formatted Map
@@ -94,6 +93,7 @@ public class OrderController {
 						}
 					}
 				}
+				model.addAttribute("cartEmpty", scList.size() == 0);
 				model.addAttribute("totalPrice", totalPrice);
 				model.addAttribute("items", scList);
 				if (unavailableItems.size() > 0) {
